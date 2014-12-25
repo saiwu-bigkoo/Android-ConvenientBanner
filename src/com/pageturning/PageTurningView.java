@@ -81,7 +81,7 @@ public class PageTurningView extends LinearLayout {
 		View hView = LayoutInflater.from(context).inflate(
 				R.layout.include_viewpager, this, true);
 		pageAdapter = new ADPageAdapter(pageViews);
-		viewPager = (ScrollViewPager) hView.findViewById(R.id.viewPager);
+		viewPager = (ScrollViewPager) hView.findViewById(R.id.pageturningScrollViewPager);
 		loPageTurningPoint = (ViewGroup) hView
 				.findViewById(R.id.loPageTurningPoint);
 		viewPager.setAdapter(pageAdapter);
