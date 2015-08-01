@@ -29,7 +29,7 @@ dependencies {
 
 def siteUrl = 'https://github.com/saiwu-bigkoo/Android-ConvenientBanner'                        // #CONFIG# // project homepage
 def gitUrl = 'https://github.com/saiwu-bigkoo/Android-ConvenientBanner.git'                     // #CONFIG# // project git
-group = "com.bigkoo.convenientbanner"
+group = "com.bigkoo"
 
 install {
     repositories.mavenInstaller {
