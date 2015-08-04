@@ -6,15 +6,16 @@ import android.view.ViewGroup;
 
 import com.bigkoo.convenientbanner.salvage.RecyclingPagerAdapter;
 
-import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Sai on 15/7/29.
  */
 public class CBPageAdapter<T> extends RecyclingPagerAdapter {
-    protected ArrayList<T> mDatas;
+    protected List<T> mDatas;
     protected CBViewHolderCreator holderCreator;
 
-    public CBPageAdapter(CBViewHolderCreator holderCreator,ArrayList<T> datas) {
+    public CBPageAdapter(CBViewHolderCreator holderCreator,List<T> datas) {
         this.holderCreator = holderCreator;
         this.mDatas = datas;
     }

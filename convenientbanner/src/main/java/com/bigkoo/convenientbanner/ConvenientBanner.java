@@ -2,6 +2,7 @@ package com.bigkoo.convenientbanner;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.os.Handler;
@@ -22,7 +23,7 @@ import android.widget.LinearLayout;
  */
 public class ConvenientBanner<T> extends LinearLayout {
     private CBViewHolderCreator holderCreator;
-    private ArrayList<T> mDatas;
+    private List<T> mDatas;
     private int[] page_indicatorId;
     private ArrayList<ImageView> mPointViews = new ArrayList<ImageView>();
     private CBPageChangeListener pageChangeListener;
@@ -86,19 +87,15 @@ public class ConvenientBanner<T> extends LinearLayout {
         initViewPagerScroll();
     }
 
-    public ConvenientBanner setPages(CBViewHolderCreator holderCreator,ArrayList<T> datas){
+    public ConvenientBanner setPages(CBViewHolderCreator holderCreator,List<T> datas){
         this.mDatas = datas;
         this.holderCreator = holderCreator;
-
-        return this;
-    }
-
-    public void notifyDataSetChange(){
         pageAdapter = new CBPageAdapter(holderCreator,mDatas);
         viewPager.setAdapter(pageAdapter);
         viewPager.setBoundaryCaching(true);
         if (page_indicatorId != null)
             setPageIndicator(page_indicatorId);
+        return this;
     }
 
     /**
