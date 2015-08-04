@@ -12,7 +12,7 @@ ConvenientBanner
 
 demo是用Module方式依赖，你也可以使用gradle 依赖:
 ```java
-   compile 'com.bigkoo:convenientbanner:1.0.0'
+   compile 'com.bigkoo:convenientbanner:1.0.2'
 ```
 
 
@@ -28,50 +28,46 @@ demo是用Module方式依赖，你也可以使用gradle 依赖:
 ### config in java code
 
 ```java
-//不需要圆点指示器可用不设，不需要翻页效果可用不设
-convenientBanner.setPageItemUpdateListener(this)//CBPageItemUpdateListener 在 pageItemUpdate里面返回第几页对应的图片即可
-        //只需要把页数传进来
-        .setItemSize(images.length)
-         //设置两个点图片作为翻页指示器，不设置则没有指示器，可以根据自己需求自行配合自己的指示器
-        .setPageIndicator(new int[]{R.drawable.ic_page_indicator, R.drawable.ic_page_indicator_focused})
-        //设置翻页的效果
-        .setPageTransformer(Transformer.DefaultTransformer);
+//自定义你的Holder，实现更多复杂的界面，不一定是图片翻页，其他任何控件翻页亦可。
+convenientBanner.setPages(
+                new CBViewHolderCreator<LocalImageHolderView>() {
+                    @Override
+                    public LocalImageHolderView createHolder() {
+                        return new LocalImageHolderView();
+                    }
+                },localImages)
+                //设置两个点图片作为翻页指示器，不设置则没有指示器，可以根据自己需求自行配合自己的指示器,不需要圆点指示器可用不设
+                .setPageIndicator(new int[]{R.drawable.ic_page_indicator, R.drawable.ic_page_indicator_focused})
+                //设置翻页的效果，不需要翻页效果可用不设
+                .setPageTransformer(Transformer.DefaultTransformer)
+                .notifyDataSetChange();
         
-public Object pageItemUpdate(ViewGroup container, int position) {
-        //网络图片例子,结合常用的图片缓存库UIL,你可以根据自己需求自己换其他网络图片库
-//        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder().
-//                showImageForEmptyUri(R.drawable.ic_default_adimage)
-//                .cacheInMemory(true).cacheOnDisk(true).build();
-//
-//        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-//                getApplicationContext()).defaultDisplayImageOptions(defaultOptions)
-//                .threadPriority(Thread.NORM_PRIORITY - 2)
-//                .denyCacheImageMultipleSizesInMemory()
-//                .diskCacheFileNameGenerator(new Md5FileNameGenerator())
-//                .tasksProcessingOrder(QueueProcessingType.LIFO).build();
-//        ImageLoader.getInstance().init(config);
-//
-//        ImageView imageView = new ImageView(this);
-//        imageView.setImageResource(R.drawable.ic_default_adimage);
-//        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-//        ImageLoader.getInstance().displayImage(images[position],imageView);
-
-        //本地图片例子
-        ImageView imageView = new ImageView(this);
-        imageView.setImageResource(getResId("ic_test_"+position, R.drawable.class));
+public class LocalImageHolderView implements CBPageAdapter.Holder<Integer>{
+    private ImageView imageView;
+    @Override
+    public View createView(Context context) {
+        imageView = new ImageView(context);
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+        return imageView;
+    }
+
+    @Override
+    public void UpdateUI(Context context, final int position, Integer data) {
+        imageView.setImageResource(data);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(),"点击图片",Toast.LENGTH_SHORT).show();
+                //点击事件
+                Toast.makeText(view.getContext(),"点击了第"+(position+1)+"图片",Toast.LENGTH_SHORT).show();
             }
         });
-
-        return imageView;
     }
+}
 ```
 
 
 ## Thanks
 
 - [ViewPagerTransforms](https://github.com/ToxicBakery/ViewPagerTransforms)
+- [salvage](https://github.com/JakeWharton/salvage)
+- [LoopingViewPager](https://github.com/imbryk/LoopingViewPager)
