@@ -20,11 +20,12 @@ import android.widget.LinearLayout;
  *
  * @author Sai 支持自动翻页
  */
-public class ConvenientBanner extends LinearLayout {
-    private int pageViewsSize;
+public class ConvenientBanner<T> extends LinearLayout {
+    private CBViewHolderCreator holderCreator;
+    private ArrayList<T> mDatas;
+    private int[] page_indicatorId;
     private ArrayList<ImageView> mPointViews = new ArrayList<ImageView>();
     private CBPageChangeListener pageChangeListener;
-    private CBPageItemUpdateListener pageItemUpdateListener;
     private CBPageAdapter pageAdapter;
     private CBLoopViewPager viewPager;
     private ViewGroup loPageTurningPoint;
@@ -79,29 +80,26 @@ public class ConvenientBanner extends LinearLayout {
     private void init(Context context) {
         View hView = LayoutInflater.from(context).inflate(
                 R.layout.include_viewpager, this, true);
-        pageAdapter = new CBPageAdapter(pageViewsSize);
         viewPager = (CBLoopViewPager) hView.findViewById(R.id.cbLoopViewPager);
         loPageTurningPoint = (ViewGroup) hView
                 .findViewById(R.id.loPageTurningPoint);
-        viewPager.setAdapter(pageAdapter);
-        viewPager.setBoundaryCaching(true);
         initViewPagerScroll();
     }
 
-    /**
-     * 设置Items
-     *
-     * @param pageViewsSize
-     * @return
-     */
-    public ConvenientBanner setItemSize(int pageViewsSize) {
-        this.pageViewsSize = pageViewsSize;
-        pageAdapter = new CBPageAdapter(pageViewsSize);
-        pageAdapter.setListener(pageItemUpdateListener);
-        viewPager.setAdapter(pageAdapter);
+    public ConvenientBanner setPages(CBViewHolderCreator holderCreator,ArrayList<T> datas){
+        this.mDatas = datas;
+        this.holderCreator = holderCreator;
+
         return this;
     }
 
+    public void notifyDataSetChange(){
+        pageAdapter = new CBPageAdapter(holderCreator,mDatas);
+        viewPager.setAdapter(pageAdapter);
+        viewPager.setBoundaryCaching(true);
+        if (page_indicatorId != null)
+            setPageIndicator(page_indicatorId);
+    }
 
     /**
      * 设置底部指示器是否可见
@@ -119,7 +117,10 @@ public class ConvenientBanner extends LinearLayout {
      * @param page_indicatorId
      */
     public ConvenientBanner setPageIndicator(int[] page_indicatorId) {
-        for (int count = 0; count < pageViewsSize; count++) {
+        loPageTurningPoint.removeAllViews();
+        mPointViews.clear();
+        this.page_indicatorId = page_indicatorId;
+        for (int count = 0; count < mDatas.size(); count++) {
             // 翻页指示的点
             ImageView pointView = new ImageView(getContext());
             pointView.setPadding(5, 0, 5, 0);
@@ -220,9 +221,4 @@ public class ConvenientBanner extends LinearLayout {
         return super.dispatchTouchEvent(ev);
     }
 
-    public ConvenientBanner setPageItemUpdateListener(CBPageItemUpdateListener pageItemUpdateListener) {
-        this.pageItemUpdateListener = pageItemUpdateListener;
-        pageAdapter.setListener(pageItemUpdateListener);
-        return this;
-    }
 }

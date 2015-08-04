@@ -1,53 +1,46 @@
 package com.bigkoo.convenientbanner;
 
-import android.support.v4.view.PagerAdapter;
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+
+import com.bigkoo.convenientbanner.salvage.RecyclingPagerAdapter;
 
 import java.util.ArrayList;
 /**
  * Created by Sai on 15/7/29.
  */
-public class CBPageAdapter extends PagerAdapter {
-    private CBPageItemUpdateListener listener;
-    private int pageViewsSize;
-    public CBPageAdapter(int pageViewsSize){
-        this.pageViewsSize = pageViewsSize;
-    }
-    @Override
-    public int getCount() {
-        return pageViewsSize;
+public class CBPageAdapter<T> extends RecyclingPagerAdapter {
+    protected ArrayList<T> mDatas;
+    protected CBViewHolderCreator holderCreator;
+
+    public CBPageAdapter(CBViewHolderCreator holderCreator,ArrayList<T> datas) {
+        this.holderCreator = holderCreator;
+        this.mDatas = datas;
     }
 
-    @Override
-    public boolean isViewFromObject(View arg0, Object arg1) {
-        return arg0 == arg1;
-    }
-
-    @Override
-    public int getItemPosition(Object object) {
-        return super.getItemPosition(object);
-    }
-
-    @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
-    }
-
-    @Override
-    public Object instantiateItem(ViewGroup container, int position) {
-        if (listener != null){
-            View item = (View) listener.pageItemUpdate(container,position);
-            container.addView(item);
-            return item;
+    @Override public View getView(int position, View view, ViewGroup container) {
+        Holder holder = null;
+        if (view == null) {
+            holder = (Holder) holderCreator.createHolder();
+            view = holder.createView(container.getContext());
+            view.setTag(holder);
+        } else {
+            holder = (Holder<T>) view.getTag();
         }
-        return null;
-    }
-    public void setListener(CBPageItemUpdateListener listener) {
-        this.listener = listener;
+        holder.UpdateUI(container.getContext(), position, mDatas.get(position));
+        return view;
     }
 
-    public void setPageViewsSize(int pageViewsSize) {
-        this.pageViewsSize = pageViewsSize;
+    @Override public int getCount() {
+        return mDatas.size();
+    }
+
+    /**
+     * @param <T> 任何你指定的对象
+     */
+    public interface Holder<T>{
+        View createView(Context context);
+        void UpdateUI(Context context,int position,T data);
     }
 }
