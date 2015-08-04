@@ -12,7 +12,7 @@ ConvenientBanner
 
 demo是用Module方式依赖，你也可以使用gradle 依赖:
 ```java
-   compile 'com.bigkoo:convenientbanner:1.0.2'
+   compile 'com.bigkoo:convenientbanner:1.0.3'
 ```
 
 
@@ -35,12 +35,11 @@ convenientBanner.setPages(
                     public LocalImageHolderView createHolder() {
                         return new LocalImageHolderView();
                     }
-                },localImages)
+                }, localImages)
                 //设置两个点图片作为翻页指示器，不设置则没有指示器，可以根据自己需求自行配合自己的指示器,不需要圆点指示器可用不设
                 .setPageIndicator(new int[]{R.drawable.ic_page_indicator, R.drawable.ic_page_indicator_focused})
                 //设置翻页的效果，不需要翻页效果可用不设
-                .setPageTransformer(Transformer.DefaultTransformer)
-                .notifyDataSetChange();
+                .setPageTransformer(Transformer.DefaultTransformer);
         
 public class LocalImageHolderView implements CBPageAdapter.Holder<Integer>{
     private ImageView imageView;
