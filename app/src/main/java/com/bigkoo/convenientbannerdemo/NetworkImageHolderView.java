@@ -29,6 +29,7 @@ public class NetworkImageHolderView implements CBPageAdapter.Holder<String>{
             @Override
             public void onClick(View view) {
                 //点击事件
+                ImageLoader.getInstance().displayImage("http://www.5068.com/u/faceimg/20140725173411.jpg",imageView);
             }
         });
     }

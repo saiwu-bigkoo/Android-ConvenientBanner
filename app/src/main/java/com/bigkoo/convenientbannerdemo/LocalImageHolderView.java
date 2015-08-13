@@ -27,7 +27,6 @@ public class LocalImageHolderView implements CBPageAdapter.Holder<Integer>{
             @Override
             public void onClick(View view) {
                 //点击事件
-                Toast.makeText(view.getContext(),"点击了第"+(position+1)+"图片",Toast.LENGTH_SHORT).show();
             }
         });
     }
