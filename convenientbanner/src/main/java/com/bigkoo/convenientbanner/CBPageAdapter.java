@@ -29,11 +29,13 @@ public class CBPageAdapter<T> extends RecyclingPagerAdapter {
         } else {
             holder = (Holder<T>) view.getTag();
         }
+        if(mDatas!=null&&!mDatas.isEmpty())
         holder.UpdateUI(container.getContext(), position, mDatas.get(position));
         return view;
     }
 
     @Override public int getCount() {
+        if(mDatas==null)return 0;
         return mDatas.size();
     }
 
