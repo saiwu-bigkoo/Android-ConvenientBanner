@@ -17,8 +17,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 /**
- * 页面翻转控件
- *
+ * 页面翻转控件，极方便的广告栏
+ * 支持无限循环，自动翻页，翻页特效
  * @author Sai 支持自动翻页
  */
 public class ConvenientBanner<T> extends LinearLayout {
@@ -139,7 +139,25 @@ public class ConvenientBanner<T> extends LinearLayout {
         return this;
     }
 
+    /***
+     * 是否开启了翻页
+     * @return
+     */
+    public boolean isTurning() {
+        return turning;
+    }
+
+    /***
+     * 开始翻页
+     * @param autoTurningTime 自动翻页时间
+     * @return
+     */
     public ConvenientBanner startTurning(long autoTurningTime) {
+        //如果是正在翻页的话先停掉
+        if(turning){
+            stopTurning();
+        }
+        //设置可以翻页并开启翻页
         canTurn = true;
         this.autoTurningTime = autoTurningTime;
         turning = true;
@@ -209,6 +227,7 @@ public class ConvenientBanner<T> extends LinearLayout {
         }
     }
 
+    //触碰控件的时候，翻页应该停止，离开的时候如果之前是开启了翻页的话则重新启动翻页
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
 
