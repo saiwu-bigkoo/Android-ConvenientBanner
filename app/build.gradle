@@ -22,7 +22,7 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:21.0.3'
-    //    compile 'com.bigkoo:convenientbanner:1.0.5'
+    //    compile 'com.bigkoo:convenientbanner:1.0.6'
     compile files('libs/universal-image-loader-1.9.4.jar')
     compile 'com.android.support:recyclerview-v7:21.0.3'
     compile project(':convenientbanner')
