@@ -74,8 +74,7 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
                 //设置翻页的效果，不需要翻页效果可用不设
                 .setPageTransformer(Transformer.DefaultTransformer);
 
-
-
+//        convenientBanner.setManualPageable(false);设置不能手动影响
 
         //网络加载例子
 //        networkImages=Arrays.asList(images);

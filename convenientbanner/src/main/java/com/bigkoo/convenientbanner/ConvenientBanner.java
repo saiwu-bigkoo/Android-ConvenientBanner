@@ -33,6 +33,7 @@ public class ConvenientBanner<T> extends LinearLayout {
     private long autoTurningTime;
     private boolean turning;
     private boolean canTurn = false;
+    private boolean manualPageable = true;
 
     public enum Transformer {
         DefaultTransformer("DefaultTransformer"), AccordionTransformer(
@@ -227,6 +228,14 @@ public class ConvenientBanner<T> extends LinearLayout {
         }
     }
 
+    public boolean isManualPageable() {
+        return manualPageable;
+    }
+
+    public void setManualPageable(boolean manualPageable) {
+        this.manualPageable = manualPageable;
+    }
+
     //触碰控件的时候，翻页应该停止，离开的时候如果之前是开启了翻页的话则重新启动翻页
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
@@ -238,7 +247,8 @@ public class ConvenientBanner<T> extends LinearLayout {
             // 停止翻页
             if (canTurn)stopTurning();
         }
-        return super.dispatchTouchEvent(ev);
+        if(manualPageable)return super.dispatchTouchEvent(ev);
+        else return true;
     }
 
 }
