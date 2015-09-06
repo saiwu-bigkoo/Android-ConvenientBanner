@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 /**
  * 页面翻转控件，极方便的广告栏
@@ -34,6 +35,9 @@ public class ConvenientBanner<T> extends LinearLayout {
     private boolean turning;
     private boolean canTurn = false;
     private boolean manualPageable = true;
+    public enum PageIndicatorAlign{
+        ALIGN_PARENT_LEFT,ALIGN_PARENT_RIGHT,CENTER_HORIZONTAL
+    }
 
     public enum Transformer {
         DefaultTransformer("DefaultTransformer"), AccordionTransformer(
@@ -137,6 +141,20 @@ public class ConvenientBanner<T> extends LinearLayout {
                 page_indicatorId);
         viewPager.setOnPageChangeListener(pageChangeListener);
 
+        return this;
+    }
+
+    /**
+     * 指示器的方向
+     * @param align  三个方向：居左 （RelativeLayout.ALIGN_PARENT_LEFT），居中 （RelativeLayout.CENTER_HORIZONTAL），居右 （RelativeLayout.ALIGN_PARENT_RIGHT）
+     * @return
+     */
+    public ConvenientBanner setPageIndicatorAlign(PageIndicatorAlign align) {
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) loPageTurningPoint.getLayoutParams();
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, align == PageIndicatorAlign.ALIGN_PARENT_LEFT ? RelativeLayout.TRUE : 0);
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, align == PageIndicatorAlign.ALIGN_PARENT_RIGHT ? RelativeLayout.TRUE : 0);
+        layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL, align == PageIndicatorAlign.CENTER_HORIZONTAL ? RelativeLayout.TRUE : 0);
+        loPageTurningPoint.setLayoutParams(layoutParams);
         return this;
     }
 
