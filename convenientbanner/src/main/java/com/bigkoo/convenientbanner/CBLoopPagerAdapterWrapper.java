@@ -16,6 +16,7 @@
 
 package com.bigkoo.convenientbanner;
 
+import android.database.DataSetObserver;
 import android.os.Parcelable;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -44,6 +45,11 @@ public class CBLoopPagerAdapterWrapper extends PagerAdapter {
 
     CBLoopPagerAdapterWrapper(PagerAdapter adapter) {
         this.mAdapter = adapter;
+        adapter.registerDataSetObserver(new DataSetObserver(){
+            public void onChanged(){
+                notifyDataSetChanged();
+            }
+        });
     }
 
     @Override

@@ -101,11 +101,20 @@ public class ConvenientBanner<T> extends LinearLayout {
         pageAdapter = new CBPageAdapter(holderCreator,mDatas);
         viewPager.setAdapter(pageAdapter);
         viewPager.setBoundaryCaching(true);
+
         if (page_indicatorId != null)
             setPageIndicator(page_indicatorId);
         return this;
     }
 
+    /**
+     * 通知数据变化
+     */
+    public void notifyDataSetChanged(){
+        viewPager.getAdapter().notifyDataSetChanged();
+        if (page_indicatorId != null)
+            setPageIndicator(page_indicatorId);
+    }
     /**
      * 设置底部指示器是否可见
      *
@@ -247,11 +256,11 @@ public class ConvenientBanner<T> extends LinearLayout {
     }
 
     public boolean isManualPageable() {
-        return manualPageable;
+        return viewPager.isCanScroll();
     }
 
     public void setManualPageable(boolean manualPageable) {
-        this.manualPageable = manualPageable;
+        viewPager.setCanScroll(manualPageable);
     }
 
     //触碰控件的时候，翻页应该停止，离开的时候如果之前是开启了翻页的话则重新启动翻页
@@ -265,8 +274,7 @@ public class ConvenientBanner<T> extends LinearLayout {
             // 停止翻页
             if (canTurn)stopTurning();
         }
-        if(manualPageable)return super.dispatchTouchEvent(ev);
-        else return true;
+        return super.dispatchTouchEvent(ev);
     }
 
 }

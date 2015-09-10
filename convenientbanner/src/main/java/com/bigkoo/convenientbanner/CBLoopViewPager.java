@@ -20,21 +20,22 @@ import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 
 /**
  * A ViewPager subclass enabling infinte scrolling of the viewPager elements
- * 
+ * <p/>
  * When used for paginating views (in opposite to fragments), no code changes
  * should be needed only change xml's from <android.support.v4.view.ViewPager>
  * to <com.imbryk.viewPager.LoopViewPager>
- * 
+ * <p/>
  * If "blinking" can be seen when paginating to first or last view, simply call
  * seBoundaryCaching( true ), or change DEFAULT_BOUNDARY_CASHING to true
- * 
+ * <p/>
  * When using a FragmentPagerAdapter or FragmentStatePagerAdapter,
- * additional changes in the adapter must be done. 
+ * additional changes in the adapter must be done.
  * The adapter must be prepared to create 2 extra items e.g.:
- * 
+ * <p/>
  * The original adapter creates 4 items: [0,1,2,3]
  * The modified adapter will have to create 6 items [0,1,2,3,4,5]
  * with mapping realPosition=(position-1)%count
@@ -42,34 +43,59 @@ import android.util.AttributeSet;
  */
 public class CBLoopViewPager extends ViewPager {
 
-    private static final boolean DEFAULT_BOUNDARY_CASHING = false;
+    private static final boolean DEFAULT_BOUNDARY_CASHING = true;
 
     OnPageChangeListener mOuterPageChangeListener;
     private CBLoopPagerAdapterWrapper mAdapter;
     private boolean mBoundaryCaching = DEFAULT_BOUNDARY_CASHING;
-    
-    
+
+    private boolean isCanScroll = true;
+
+    public boolean isCanScroll() {
+        return isCanScroll;
+    }
+
+    public void setCanScroll(boolean isCanScroll) {
+        this.isCanScroll = isCanScroll;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent ev) {
+        if (isCanScroll)
+            return super.onTouchEvent(ev);
+        else
+            return false;
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        if (isCanScroll)
+            return super.onInterceptTouchEvent(ev);
+        else
+            return false;
+    }
+
     /**
      * helper function which may be used when implementing FragmentPagerAdapter
-     *   
+     *
      * @param position
      * @param count
      * @return (position-1)%count
      */
-    public static int toRealPosition( int position, int count ){
-        position = position-1;
-        if( position < 0 ){
+    public static int toRealPosition(int position, int count) {
+        position = position - 1;
+        if (position < 0) {
             position += count;
-        }else{
-            position = position%count;
+        } else {
+            position = position % count;
         }
         return position;
     }
-    
+
     /**
      * If set to true, the boundary views (i.e. first and last) will never be destroyed
-     * This may help to prevent "blinking" of some views 
-     * 
+     * This may help to prevent "blinking" of some views
+     *
      * @param flag
      */
     public void setBoundaryCaching(boolean flag) {
@@ -92,6 +118,7 @@ public class CBLoopViewPager extends ViewPager {
         return mAdapter != null ? mAdapter.getRealAdapter() : mAdapter;
     }
 
+
     @Override
     public int getCurrentItem() {
         return mAdapter != null ? mAdapter.toRealPosition(super.getCurrentItem()) : 0;
@@ -112,7 +139,8 @@ public class CBLoopViewPager extends ViewPager {
     @Override
     public void setOnPageChangeListener(OnPageChangeListener listener) {
         mOuterPageChangeListener = listener;
-    };
+    }
+
 
     public CBLoopViewPager(Context context) {
         super(context);
@@ -134,7 +162,6 @@ public class CBLoopViewPager extends ViewPager {
 
         @Override
         public void onPageSelected(int position) {
-
             int realPosition = mAdapter.toRealPosition(position);
             if (mPreviousPosition != realPosition) {
                 mPreviousPosition = realPosition;
@@ -146,11 +173,10 @@ public class CBLoopViewPager extends ViewPager {
 
         @Override
         public void onPageScrolled(int position, float positionOffset,
-                int positionOffsetPixels) {
+                                   int positionOffsetPixels) {
             int realPosition = position;
             if (mAdapter != null) {
                 realPosition = mAdapter.toRealPosition(position);
-
                 if (positionOffset == 0
                         && mPreviousOffset == 0
                         && (position == 0 || position == mAdapter.getCount() - 1)) {
@@ -189,5 +215,4 @@ public class CBLoopViewPager extends ViewPager {
             }
         }
     };
-
 }
