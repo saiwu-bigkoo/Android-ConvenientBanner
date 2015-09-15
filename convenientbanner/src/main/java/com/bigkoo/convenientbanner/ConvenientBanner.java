@@ -216,19 +216,11 @@ public class ConvenientBanner<T> extends LinearLayout {
      * @return
      */
     public ConvenientBanner setPageTransformer(Transformer transformer) {
-        try {
-            viewPager
-                    .setPageTransformer(
-                            true,
-                            (PageTransformer) Class.forName(
-                                    "com.bigkoo.convenientbanner.transforms."
-                                            + transformer.getClassName())
-                                    .newInstance());
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+		try {
+            String pkName = getClass().getPackage().getName();
+            viewPager.setPageTransformer(true, (PageTransformer) Class.forName(pkName +
+                    ".transforms." + transformer.getClassName()).newInstance());
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return this;
