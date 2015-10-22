@@ -125,7 +125,10 @@ public class CBLoopViewPager extends ViewPager {
     }
 
     public void setCurrentItem(int item, boolean smoothScroll) {
-        int realItem = mAdapter.toInnerPosition(item);
+        int realItem = 0;
+        try {
+            realItem = mAdapter.toInnerPosition(item);
+        }catch (NullPointerException e){}
         super.setCurrentItem(realItem, smoothScroll);
     }
 
