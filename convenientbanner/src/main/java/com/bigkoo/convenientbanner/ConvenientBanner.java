@@ -268,5 +268,12 @@ public class ConvenientBanner<T> extends LinearLayout {
         }
         return super.dispatchTouchEvent(ev);
     }
-
+    
+    //获取当前的页面index
+    public int getCurrentPageIndex(){
+        if (viewPager!=null) {
+            return viewPager.getCurrentItem();
+        }
+        return -1;
+    }
 }
