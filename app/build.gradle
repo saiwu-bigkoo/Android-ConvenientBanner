@@ -7,7 +7,6 @@ android {
     defaultConfig {
         applicationId "com.bigkoo.convenientbannerdemo"
         minSdkVersion 14
-        targetSdkVersion 21
         versionCode 1
         versionName "1.0"
     }
