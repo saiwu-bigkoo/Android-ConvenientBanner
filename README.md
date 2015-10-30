@@ -14,7 +14,7 @@ ConvenientBanner
 
 demo是用Module方式依赖，你也可以使用gradle 依赖:
 ```java
-   compile 'com.bigkoo:convenientbanner:1.0.9'
+   compile 'com.bigkoo:convenientbanner:1.1.0'
 ```
 
 
@@ -44,7 +44,8 @@ convenientBanner.setPages(
                 .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
                 //设置翻页的效果，不需要翻页效果可用不设
                 .setPageTransformer(Transformer.DefaultTransformer);
-        
+//        convenientBanner.setManualPageable(false);//设置不能手动影响
+
 public class LocalImageHolderView implements CBPageAdapter.Holder<Integer>{
     private ImageView imageView;
     @Override
@@ -67,10 +68,12 @@ public class LocalImageHolderView implements CBPageAdapter.Holder<Integer>{
     }
 }
 ```
-
+## 更新说明
+v1.1.0 修复了往前滑动最后一页会变空白页的BUG
 
 ## Thanks
 
 - [ViewPagerTransforms](https://github.com/ToxicBakery/ViewPagerTransforms)
 - [salvage](https://github.com/JakeWharton/salvage)
 - [LoopingViewPager](https://github.com/imbryk/LoopingViewPager)
+
