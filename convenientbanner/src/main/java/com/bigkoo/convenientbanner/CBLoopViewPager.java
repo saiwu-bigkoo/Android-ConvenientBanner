@@ -48,6 +48,7 @@ public class CBLoopViewPager extends ViewPager {
     OnPageChangeListener mOuterPageChangeListener;
     private CBLoopPagerAdapterWrapper mAdapter;
     private boolean mBoundaryCaching = DEFAULT_BOUNDARY_CASHING;
+    private ViewPagerScroller scroller;
 
     private boolean isCanScroll = true;
 
@@ -210,7 +211,11 @@ public class CBLoopViewPager extends ViewPager {
                 int realPosition = mAdapter.toRealPosition(position);
                 if (state == ViewPager.SCROLL_STATE_IDLE
                         && (position == 0 || position == mAdapter.getCount() - 1)) {
-                    setCurrentItem(realPosition, false);
+                    //如果是0或者最后一个View，为了无限循环,滚动结束会预先跳到相反的View，如0跳最后，最后跳0
+                    //为了看起来界面没有变化则改变滚动速度，让肉眼看不到是滚动了的。
+                    scroller.setZero(true);
+                    setCurrentItem(realPosition, true);//如果为false，就不会刷新视图，也就出现第一次加载的时候往前滚，会有空白View。
+                    scroller.setZero(false);
                 }
             }
             if (mOuterPageChangeListener != null) {
@@ -218,4 +223,8 @@ public class CBLoopViewPager extends ViewPager {
             }
         }
     };
+
+    public void setScroller(ViewPagerScroller scroller) {
+        this.scroller = scroller;
+    }
 }

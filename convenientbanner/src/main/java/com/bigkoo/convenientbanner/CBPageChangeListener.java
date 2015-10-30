@@ -18,7 +18,6 @@ public class CBPageChangeListener implements ViewPager.OnPageChangeListener {
     }
     @Override
     public void onPageScrollStateChanged(int arg0) {
-
     }
 
     @Override
