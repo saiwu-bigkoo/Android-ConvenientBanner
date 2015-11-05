@@ -25,9 +25,9 @@ public class CBPageAdapter<T> extends RecyclingPagerAdapter {
         if (view == null) {
             holder = (Holder) holderCreator.createHolder();
             view = holder.createView(container.getContext());
-            view.setTag(holder);
+            view.setTag(R.id.cb_item_tag,holder);
         } else {
-            holder = (Holder<T>) view.getTag();
+            holder = (Holder<T>) view.getTag(R.id.cb_item_tag);
         }
         if(mDatas!=null&&!mDatas.isEmpty())
         holder.UpdateUI(container.getContext(), position, mDatas.get(position));
