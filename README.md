@@ -68,9 +68,9 @@ public class LocalImageHolderView implements CBPageAdapter.Holder<Integer>{
     }
 }
 ```
-## 更新说明
-v1.1.0 修复了往前滑动最后一页会变空白页的BUG
-v1.1.1 修复第三方图库下载setTag出错的BUG
+>## 更新说明
+>v1.1.0 修复了往前滑动最后一页会变空白页的BUG  <br />
+>v1.1.1 修复第三方图库下载setTag出错的BUG  <br />
 
 ## Thanks
 
