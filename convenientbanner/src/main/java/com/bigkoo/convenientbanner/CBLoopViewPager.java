@@ -209,6 +209,7 @@ public class CBLoopViewPager extends ViewPager {
             if (mAdapter != null) {
                 int position = CBLoopViewPager.super.getCurrentItem();
                 int realPosition = mAdapter.toRealPosition(position);
+
                 if (state == ViewPager.SCROLL_STATE_IDLE
                         && (position == 0 || position == mAdapter.getCount() - 1)) {
                     //如果是0或者最后一个View，为了无限循环,滚动结束会预先跳到相反的View，如0跳最后，最后跳0

@@ -75,7 +75,8 @@ public class ADRecyclerViewDemo extends Activity implements SwipeRefreshLayout.O
             public NetworkImageHolderView createHolder() {
                 return new NetworkImageHolderView();
             }
-        },networkImages);
+        },networkImages)
+        .setPageIndicator(new int[]{R.drawable.ic_page_indicator, R.drawable.ic_page_indicator_focused});
 
         adapter.addHeader(convenientBanner);
         loadTestDatas();

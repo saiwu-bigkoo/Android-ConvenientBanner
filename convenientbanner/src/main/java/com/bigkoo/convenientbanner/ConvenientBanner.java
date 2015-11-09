@@ -28,6 +28,7 @@ public class ConvenientBanner<T> extends LinearLayout {
     private int[] page_indicatorId;
     private ArrayList<ImageView> mPointViews = new ArrayList<ImageView>();
     private CBPageChangeListener pageChangeListener;
+    private ViewPager.OnPageChangeListener onPageChangeListener;
     private CBPageAdapter pageAdapter;
     private CBLoopViewPager viewPager;
     private ViewGroup loPageTurningPoint;
@@ -149,6 +150,8 @@ public class ConvenientBanner<T> extends LinearLayout {
         pageChangeListener = new CBPageChangeListener(mPointViews,
                 page_indicatorId);
         viewPager.setOnPageChangeListener(pageChangeListener);
+        pageChangeListener.onPageSelected(viewPager.getCurrentItem());
+        if(onPageChangeListener != null)pageChangeListener.setOnPageChangeListener(onPageChangeListener);
 
         return this;
     }
@@ -260,10 +263,11 @@ public class ConvenientBanner<T> extends LinearLayout {
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
 
-        if (ev.getAction() == MotionEvent.ACTION_UP) {
+        int action = ev.getAction();
+        if (action == MotionEvent.ACTION_UP||action == MotionEvent.ACTION_CANCEL||action == MotionEvent.ACTION_OUTSIDE) {
             // 开始翻页
             if (canTurn)startTurning(autoTurningTime);
-        } else if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+        } else if (action == MotionEvent.ACTION_DOWN) {
             // 停止翻页
             if (canTurn)stopTurning();
         }
@@ -276,5 +280,22 @@ public class ConvenientBanner<T> extends LinearLayout {
             return viewPager.getCurrentItem();
         }
         return -1;
+    }
+
+    public ViewPager.OnPageChangeListener getOnPageChangeListener() {
+        return onPageChangeListener;
+    }
+
+    /**
+     * 设置翻页监听器
+     * @param onPageChangeListener
+     * @return
+     */
+    public ConvenientBanner setOnPageChangeListener(ViewPager.OnPageChangeListener onPageChangeListener) {
+        this.onPageChangeListener = onPageChangeListener;
+        //如果有默认的监听器（即是使用了默认的翻页指示器）则把用户设置的依附到默认的上面，否则就直接设置
+        if(pageChangeListener != null)pageChangeListener.setOnPageChangeListener(onPageChangeListener);
+        else viewPager.setOnPageChangeListener(onPageChangeListener);
+        return this;
     }
 }

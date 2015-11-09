@@ -1,11 +1,13 @@
 package com.bigkoo.convenientbannerdemo;
 
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.bigkoo.convenientbanner.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.ConvenientBanner;
@@ -25,7 +27,7 @@ import java.util.List;
  * Created by Sai on 15/7/30.
  * convenientbanner 控件 的 demo
  */
-public class MainActivity extends ActionBarActivity implements AdapterView.OnItemClickListener {
+public class MainActivity extends ActionBarActivity implements AdapterView.OnItemClickListener, ViewPager.OnPageChangeListener {
     private ConvenientBanner convenientBanner;//顶部广告栏控件
     private ArrayList<Integer> localImages = new ArrayList<Integer>();
     private List<String> networkImages;
@@ -75,6 +77,7 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
 //                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
                 //设置翻页的效果，不需要翻页效果可用不设
                 .setPageTransformer(Transformer.DefaultTransformer);
+//                .setOnPageChangeListener(this);监听翻页事件
 
 //        convenientBanner.setManualPageable(false);//设置不能手动影响
 
@@ -173,4 +176,17 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
         convenientBanner.setPageTransformer(transformer);
     }
 
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        Toast.makeText(this,"监听到翻到第"+position+"了",Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+    }
 }

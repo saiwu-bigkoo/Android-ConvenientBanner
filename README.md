@@ -14,7 +14,7 @@ ConvenientBanner
 
 demo是用Module方式依赖，你也可以使用gradle 依赖:
 ```java
-   compile 'com.bigkoo:convenientbanner:1.1.1'
+   compile 'com.bigkoo:convenientbanner:1.1.2'
 ```
 
 
@@ -68,9 +68,13 @@ public class LocalImageHolderView implements CBPageAdapter.Holder<Integer>{
     }
 }
 ```
+
 >## 更新说明
 >v1.1.0 修复了往前滑动最后一页会变空白页的BUG  <br />
 >v1.1.1 修复第三方图库下载setTag出错的BUG  <br />
+>v1.1.2
+ - 修复下拉刷新自动翻页偶尔失效停止BUG  <br />
+ - 提供onPageChangeListener的API调用  <br />
 
 ## Thanks
 
