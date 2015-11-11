@@ -69,16 +69,15 @@ public class LocalImageHolderView implements CBPageAdapter.Holder<Integer>{
 }
 ```
 
->## 更新说明
->v1.1.0 修复了往前滑动最后一页会变空白页的BUG  <br />
->v1.1.1 修复第三方图库下载setTag出错的BUG  <br />
->v1.1.2
- - 修复下拉刷新自动翻页偶尔失效停止BUG  <br />
- - 提供onPageChangeListener的API调用  <br />
-
 ## Thanks
 
 - [ViewPagerTransforms](https://github.com/ToxicBakery/ViewPagerTransforms)
 - [salvage](https://github.com/JakeWharton/salvage)
 - [LoopingViewPager](https://github.com/imbryk/LoopingViewPager)
 
+>## 更新说明
+>v1.1.0 修复了往前滑动最后一页会变空白页的BUG  <br />
+>v1.1.1 修复第三方图库下载setTag出错的BUG  <br />
+>v1.1.2
+ - 修复下拉刷新自动翻页偶尔失效停止BUG  <br />
+ - 提供onPageChangeListener的API调用  <br />
