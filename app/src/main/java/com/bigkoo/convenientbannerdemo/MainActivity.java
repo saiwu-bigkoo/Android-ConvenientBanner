@@ -157,7 +157,7 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
     protected void onResume() {
         super.onResume();
         //开始自动翻页
-        convenientBanner.startTurning(5000);
+        convenientBanner.startTurning(5000);//此值不能小于1200（即ViewPagerScroller的mScrollDuration的值），否则最后一页翻页效果会出问题。如果硬要兼容1200以下，那么请修改ViewPagerScroller的mScrollDuration的值，不过修改后，3d效果就没那么明显了。
     }
 
      // 停止自动翻页
