@@ -50,6 +50,7 @@ public class CBLoopViewPager extends ViewPager {
     private boolean mBoundaryCaching = DEFAULT_BOUNDARY_CASHING;
     private ViewPagerScroller scroller;
 
+    private boolean canLoop = true;
     private boolean isCanScroll = true;
 
     public boolean isCanScroll() {
@@ -106,11 +107,10 @@ public class CBLoopViewPager extends ViewPager {
         }
     }
 
-    @Override
-    public void setAdapter(PagerAdapter adapter) {
-        mAdapter = new CBLoopPagerAdapterWrapper(adapter);
+    public void setAdapter(PagerAdapter adapter,boolean canLoop) {
+        mAdapter = new CBLoopPagerAdapterWrapper(adapter,canLoop);
         mAdapter.setBoundaryCaching(mBoundaryCaching);
-        super.setAdapter(mAdapter);
+        setAdapter(mAdapter);
         setCurrentItem(0, false);
     }
 
@@ -181,7 +181,7 @@ public class CBLoopViewPager extends ViewPager {
             int realPosition = position;
             if (mAdapter != null) {
                 realPosition = mAdapter.toRealPosition(position);
-                if (positionOffset == 0
+                if (canLoop && positionOffset == 0
                         && mPreviousOffset == 0
                         && (position == 0 || position == mAdapter.getCount() - 1)) {
                     setCurrentItem(realPosition, false);
@@ -210,7 +210,7 @@ public class CBLoopViewPager extends ViewPager {
                 int position = CBLoopViewPager.super.getCurrentItem();
                 int realPosition = mAdapter.toRealPosition(position);
 
-                if (state == ViewPager.SCROLL_STATE_IDLE
+                if (canLoop && state == ViewPager.SCROLL_STATE_IDLE
                         && (position == 0 || position == mAdapter.getCount() - 1)) {
                     //如果是0或者最后一个View，为了无限循环,滚动结束会预先跳到相反的View，如0跳最后，最后跳0
                     //为了看起来界面没有变化则改变滚动速度，让肉眼看不到是滚动了的。
@@ -227,5 +227,9 @@ public class CBLoopViewPager extends ViewPager {
 
     public void setScroller(ViewPagerScroller scroller) {
         this.scroller = scroller;
+    }
+
+    public boolean isCanLoop() {
+        return canLoop;
     }
 }

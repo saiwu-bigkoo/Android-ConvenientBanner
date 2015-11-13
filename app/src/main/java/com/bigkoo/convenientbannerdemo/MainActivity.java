@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.bigkoo.convenientbanner.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.ConvenientBanner.Transformer;
+import com.bigkoo.convenientbanner.OnItemClickListener;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -27,7 +28,7 @@ import java.util.List;
  * Created by Sai on 15/7/30.
  * convenientbanner 控件 的 demo
  */
-public class MainActivity extends ActionBarActivity implements AdapterView.OnItemClickListener, ViewPager.OnPageChangeListener {
+public class MainActivity extends ActionBarActivity implements AdapterView.OnItemClickListener, ViewPager.OnPageChangeListener, OnItemClickListener {
     private ConvenientBanner convenientBanner;//顶部广告栏控件
     private ArrayList<Integer> localImages = new ArrayList<Integer>();
     private List<String> networkImages;
@@ -76,7 +77,8 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
                 //设置指示器的方向
 //                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
                 //设置翻页的效果，不需要翻页效果可用不设
-                .setPageTransformer(Transformer.DefaultTransformer);
+                .setPageTransformer(Transformer.DefaultTransformer)
+                .setOnItemClickListener(this);
 //                .setOnPageChangeListener(this);监听翻页事件
 
 //        convenientBanner.setManualPageable(false);//设置不能手动影响
@@ -174,6 +176,17 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
         String name = transformerList.get(position);
         Transformer transformer = Transformer.valueOf(name);
         convenientBanner.setPageTransformer(transformer);
+
+//        点击后加入两个内容
+//        localImages.add(R.drawable.ic_test_2);
+//        localImages.add(R.drawable.ic_test_2);
+//        convenientBanner.notifyDataSetAdd();
+
+//        点击后换新的内容，对于更改内容并不推荐
+//        localImages.clear();
+//        localImages.add(R.drawable.ic_test_2);
+//        localImages.add(R.drawable.ic_test_4);
+//        convenientBanner.notifyDataSetChanged();
     }
 
     @Override
@@ -188,5 +201,10 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
 
     @Override
     public void onPageScrollStateChanged(int state) {
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        Toast.makeText(this,"点击了第"+position+"个",Toast.LENGTH_SHORT).show();
     }
 }

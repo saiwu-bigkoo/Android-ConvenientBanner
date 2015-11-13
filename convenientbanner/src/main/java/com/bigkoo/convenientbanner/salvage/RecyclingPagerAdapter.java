@@ -105,4 +105,5 @@ public abstract class RecyclingPagerAdapter extends PagerAdapter {
    * @return A View corresponding to the data at the specified position.
    */
   public abstract View getView(int position, View convertView, ViewGroup container);
+
 }

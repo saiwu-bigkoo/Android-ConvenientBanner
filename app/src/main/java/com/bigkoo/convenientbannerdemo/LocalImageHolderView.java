@@ -21,14 +21,7 @@ public class LocalImageHolderView implements CBPageAdapter.Holder<Integer>{
     }
 
     @Override
-    public void UpdateUI(Context context, final int position, Integer data) {
+    public void UpdateUI(Context context, int position, Integer data) {
         imageView.setImageResource(data);
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //点击事件
-                Toast.makeText(view.getContext(),"点击了第"+position+"个",Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 }

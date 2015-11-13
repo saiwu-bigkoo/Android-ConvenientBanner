@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.PageTransformer;
@@ -29,13 +30,16 @@ public class ConvenientBanner<T> extends LinearLayout {
     private ArrayList<ImageView> mPointViews = new ArrayList<ImageView>();
     private CBPageChangeListener pageChangeListener;
     private ViewPager.OnPageChangeListener onPageChangeListener;
+    private OnItemClickListener listener;
     private CBPageAdapter pageAdapter;
     private CBLoopViewPager viewPager;
+    private ViewPagerScroller scroller;
     private ViewGroup loPageTurningPoint;
     private long autoTurningTime;
     private boolean turning;
     private boolean canTurn = false;
     private boolean manualPageable = true;
+    private boolean canLoop = true;
     public enum PageIndicatorAlign{
         ALIGN_PARENT_LEFT,ALIGN_PARENT_RIGHT,CENTER_HORIZONTAL
     }
@@ -79,11 +83,14 @@ public class ConvenientBanner<T> extends LinearLayout {
         }
     };
 
-    public ConvenientBanner(Context context) {
+    public ConvenientBanner(Context context,boolean canLoop) {
         this(context, null);
+        this.canLoop = canLoop;
     }
     public ConvenientBanner(Context context, AttributeSet attrs) {
         super(context, attrs);
+        TypedArray a = context.obtainStyledAttributes(attrs,R.styleable.ConvenientBanner);
+        canLoop = a.getBoolean(R.styleable.ConvenientBanner_canLoop,true);
         init(context);
     }
 
@@ -100,7 +107,7 @@ public class ConvenientBanner<T> extends LinearLayout {
         this.mDatas = datas;
         this.holderCreator = holderCreator;
         pageAdapter = new CBPageAdapter(holderCreator,mDatas);
-        viewPager.setAdapter(pageAdapter);
+        viewPager.setAdapter(pageAdapter,canLoop);
         viewPager.setBoundaryCaching(true);
 
         if (page_indicatorId != null)
@@ -109,13 +116,26 @@ public class ConvenientBanner<T> extends LinearLayout {
     }
 
     /**
-     * 通知数据变化
+     * 加入新数据，通知数据变化
      */
-    public void notifyDataSetChanged(){
-        viewPager.getAdapter().notifyDataSetChanged();
+    public void notifyDataSetAdd(){
+        pageAdapter.notifyDataSetChanged();
         if (page_indicatorId != null)
             setPageIndicator(page_indicatorId);
     }
+
+    /**
+     * 通知数据变化
+     * 如果只是增加数据建议使用 notifyDataSetAdd()
+     */
+    public void notifyDataSetChanged(){
+//        pageAdapter = new CBPageAdapter(holderCreator,mDatas);
+        pageAdapter.notifyDataSetChanged();
+        viewPager.setAdapter(pageAdapter, canLoop);
+        if (page_indicatorId != null)
+            setPageIndicator(page_indicatorId);
+    }
+
     /**
      * 设置底部指示器是否可见
      *
@@ -237,7 +257,7 @@ public class ConvenientBanner<T> extends LinearLayout {
             Field mScroller = null;
             mScroller = ViewPager.class.getDeclaredField("mScroller");
             mScroller.setAccessible(true);
-            ViewPagerScroller scroller = new ViewPagerScroller(
+            scroller = new ViewPagerScroller(
                     viewPager.getContext());
 //			scroller.setScrollDuration(1500);
             mScroller.set(viewPager, scroller);
@@ -273,7 +293,7 @@ public class ConvenientBanner<T> extends LinearLayout {
         }
         return super.dispatchTouchEvent(ev);
     }
-    
+
     //获取当前的页面index
     public int getCurrentPageIndex(){
         if (viewPager!=null) {
@@ -297,5 +317,40 @@ public class ConvenientBanner<T> extends LinearLayout {
         if(pageChangeListener != null)pageChangeListener.setOnPageChangeListener(onPageChangeListener);
         else viewPager.setOnPageChangeListener(onPageChangeListener);
         return this;
+    }
+
+    public boolean isCanLoop() {
+        return viewPager.isCanLoop();
+    }
+
+    /**
+     * 监听item点击
+     * @param onItemClickListener
+     */
+    public ConvenientBanner setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        if (onItemClickListener == null) {
+            viewPager.setOnClickListener(null);
+            return this;
+        }
+        this.listener = onItemClickListener;
+        pageAdapter.setOnItemClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onItemClick(getCurrentPageIndex());
+            }
+        });
+        return this;
+    }
+
+    /**
+     * 设置ViewPager的滚动速度
+     * @param scrollDuration
+     */
+    public void setScrollDuration(int scrollDuration){
+        scroller.setScrollDuration(scrollDuration);
+    }
+
+    public int getScrollDuration() {
+        return scroller.getScrollDuration();
     }
 }

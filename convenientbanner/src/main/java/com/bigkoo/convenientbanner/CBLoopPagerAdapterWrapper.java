@@ -43,8 +43,11 @@ public class CBLoopPagerAdapterWrapper extends PagerAdapter {
         mBoundaryCaching = flag;
     }
 
-    CBLoopPagerAdapterWrapper(PagerAdapter adapter) {
+    private boolean canLoop;
+
+    CBLoopPagerAdapterWrapper(PagerAdapter adapter,boolean canLoop) {
         this.mAdapter = adapter;
+        this.canLoop = canLoop;
         adapter.registerDataSetObserver(new DataSetObserver(){
             public void onChanged(){
                 notifyDataSetChanged();
@@ -54,11 +57,12 @@ public class CBLoopPagerAdapterWrapper extends PagerAdapter {
 
     @Override
     public void notifyDataSetChanged() {
-        mToDestroy = new SparseArray<ToDestroy>();
+        mToDestroy.clear();
         super.notifyDataSetChanged();
     }
 
     int toRealPosition(int position) {
+        if (!canLoop)return position;
         int realCount = getRealCount();
         if (realCount == 0)
             return 0;
@@ -70,21 +74,22 @@ public class CBLoopPagerAdapterWrapper extends PagerAdapter {
     }
 
     public int toInnerPosition(int realPosition) {
+        if (!canLoop) return realPosition;
         int position = (realPosition + 1);
         return position;
     }
 
     private int getRealFirstPosition() {
-        return 1;
+        return canLoop ? 1 : 0;
     }
 
     private int getRealLastPosition() {
-        return getRealFirstPosition() + getRealCount() - 1;
+        return canLoop ? getRealFirstPosition() + getRealCount() - 1 : getRealCount() - 1;
     }
 
     @Override
     public int getCount() {
-        return mAdapter.getCount() + 2;
+        return canLoop ? mAdapter.getCount() + 2 : getRealCount();
     }
 
     public int getRealCount() {
@@ -179,5 +184,4 @@ public class CBLoopPagerAdapterWrapper extends PagerAdapter {
             this.object = object;
         }
     }
-
 }

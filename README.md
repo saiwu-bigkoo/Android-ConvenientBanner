@@ -14,7 +14,7 @@ ConvenientBanner
 
 demo是用Module方式依赖，你也可以使用gradle 依赖:
 ```java
-   compile 'com.bigkoo:convenientbanner:1.1.2'
+   compile 'com.bigkoo:convenientbanner:1.1.3’
 ```
 
 
@@ -22,9 +22,12 @@ demo是用Module方式依赖，你也可以使用gradle 依赖:
 
 ```xml
 <com.bigkoo.convenientbanner.ConvenientBanner
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/convenientBanner"
         android:layout_width="match_parent"
-        android:layout_height="200dp"/>
+        android:layout_height="200dp"
+        app:canLoop="true" //控制循环与否
+/>
 ```
 
 ### config in java code
@@ -58,13 +61,6 @@ public class LocalImageHolderView implements CBPageAdapter.Holder<Integer>{
     @Override
     public void UpdateUI(Context context, final int position, Integer data) {
         imageView.setImageResource(data);
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //点击事件
-                Toast.makeText(view.getContext(),"点击了第"+(position+1)+"图片",Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 }
 ```
@@ -81,3 +77,8 @@ public class LocalImageHolderView implements CBPageAdapter.Holder<Integer>{
 >v1.1.2
  - 修复下拉刷新自动翻页偶尔失效停止BUG  <br />
  - 提供onPageChangeListener的API调用  <br />
+>v1.1.3
+ - 循环控制，可以设置为不循环模式  <br />
+ - 加入OnItemClcikListener监听器，修复原先点击图片position失准BUG  <br />
+ - 调整notifyDataSetChanged函数，并加入notifyDataSetAdd函数  <br />
+
