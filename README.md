@@ -74,9 +74,11 @@ public class LocalImageHolderView implements CBPageAdapter.Holder<Integer>{
 >## 更新说明
 >v1.1.0 修复了往前滑动最后一页会变空白页的BUG  <br />
 >v1.1.1 修复第三方图库下载setTag出错的BUG  <br />
+
 >v1.1.2
  - 修复下拉刷新自动翻页偶尔失效停止BUG  <br />
  - 提供onPageChangeListener的API调用  <br />
+ 
 >v1.1.3
  - 循环控制，可以设置为不循环模式  <br />
  - 加入OnItemClcikListener监听器，修复原先点击图片position失准BUG  <br />
