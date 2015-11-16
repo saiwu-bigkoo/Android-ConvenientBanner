@@ -295,11 +295,17 @@ public class ConvenientBanner<T> extends LinearLayout {
     }
 
     //获取当前的页面index
-    public int getCurrentPageIndex(){
+    public int getCurrentItem(){
         if (viewPager!=null) {
             return viewPager.getCurrentItem();
         }
         return -1;
+    }
+    //设置当前的页面index
+    public void setcurrentitem(int index){
+        if (viewPager!=null) {
+            viewPager.setCurrentItem(index);
+        }
     }
 
     public ViewPager.OnPageChangeListener getOnPageChangeListener() {
@@ -336,7 +342,7 @@ public class ConvenientBanner<T> extends LinearLayout {
         pageAdapter.setOnItemClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onItemClick(getCurrentPageIndex());
+                listener.onItemClick(getCurrentItem());
             }
         });
         return this;
