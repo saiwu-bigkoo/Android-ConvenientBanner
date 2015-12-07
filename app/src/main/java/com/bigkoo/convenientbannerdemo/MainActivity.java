@@ -9,10 +9,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.bigkoo.convenientbanner.CBViewHolderCreator;
+import com.bigkoo.convenientbanner.adapter.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.ConvenientBanner.Transformer;
-import com.bigkoo.convenientbanner.OnItemClickListener;
+import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -64,7 +64,7 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
     private void init(){
         initImageLoader();
         loadTestDatas();
-        //本地图片例子
+//        //本地图片例子
         convenientBanner.setPages(
                 new CBViewHolderCreator<LocalImageHolderView>() {
                     @Override
@@ -78,13 +78,13 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
 //                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
                 //设置翻页的效果，不需要翻页效果可用不设
                 .setPageTransformer(Transformer.DefaultTransformer)
+//                .setOnPageChangeListener(this)//监听翻页事件
                 .setOnItemClickListener(this);
-//                .setOnPageChangeListener(this);监听翻页事件
 
 //        convenientBanner.setManualPageable(false);//设置不能手动影响
 
-        //网络加载例子
-//        networkImages=Arrays.asList(images);
+        //＝＝＝＝＝＝＝＝＝＝这是 网络加载例子
+//        networkImages= Arrays.asList(images);
 //        convenientBanner.setPages(new CBViewHolderCreator<NetworkImageHolderView>() {
 //            @Override
 //            public NetworkImageHolderView createHolder() {
@@ -133,6 +133,8 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
         transformerList.add(Transformer.StackTransformer.getClassName());
         transformerList.add(Transformer.ZoomInTransformer.getClassName());
         transformerList.add(Transformer.ZoomOutTranformer.getClassName());
+        transformerList.add(Transformer.TabletTransformer.getClassName());
+        transformerList.add(Transformer.ZoomOutSlideTransformer.getClassName());
 
         transformerArrayAdapter.notifyDataSetChanged();
     }
@@ -159,7 +161,7 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
     protected void onResume() {
         super.onResume();
         //开始自动翻页
-        convenientBanner.startTurning(5000);//此值不能小于1200（即ViewPagerScroller的mScrollDuration的值），否则最后一页翻页效果会出问题。如果硬要兼容1200以下，那么请修改ViewPagerScroller的mScrollDuration的值，不过修改后，3d效果就没那么明显了。
+        convenientBanner.startTurning(5000);
     }
 
      // 停止自动翻页
@@ -177,16 +179,15 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
         Transformer transformer = Transformer.valueOf(name);
         convenientBanner.setPageTransformer(transformer);
 
-//        点击后加入两个内容
-//        localImages.add(R.drawable.ic_test_2);
-//        localImages.add(R.drawable.ic_test_2);
-//        convenientBanner.notifyDataSetAdd();
+        //这里是调节滑动速度的例子，有些3d效果因为滑动速度太快而效果不明显，这里自己调节到合适的速度
+        if(position == 1){
+            convenientBanner.setScrollDuration(1200);
+        }
+        else
+        {
+            convenientBanner.setScrollDuration(ConvenientBanner.SCROLLDURATIONDEFAULT);
+        }
 
-//        点击后换新的内容，对于更改内容并不推荐
-//        localImages.clear();
-//        localImages.add(R.drawable.ic_test_2);
-//        localImages.add(R.drawable.ic_test_4);
-//        convenientBanner.notifyDataSetChanged();
     }
 
     @Override

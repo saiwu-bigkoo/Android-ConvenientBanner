@@ -1,4 +1,4 @@
-package com.bigkoo.convenientbanner;
+package com.bigkoo.convenientbanner.listener;
 
 import android.support.v4.view.ViewPager;
 import android.widget.ImageView;

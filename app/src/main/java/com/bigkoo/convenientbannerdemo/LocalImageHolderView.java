@@ -3,9 +3,8 @@ package com.bigkoo.convenientbannerdemo;
 import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.bigkoo.convenientbanner.CBPageAdapter;
+import com.bigkoo.convenientbanner.adapter.CBPageAdapter;
 
 /**
  * Created by Sai on 15/8/4.

@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-        <com.bigkoo.convenientbanner.CBLoopViewPager
+        <com.bigkoo.convenientbanner.view.CBLoopViewPager
             android:id="@+id/cbLoopViewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

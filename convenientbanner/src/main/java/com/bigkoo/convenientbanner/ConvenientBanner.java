@@ -18,44 +18,52 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.bigkoo.convenientbanner.adapter.CBViewHolderCreator;
+import com.bigkoo.convenientbanner.listener.CBPageChangeListener;
+import com.bigkoo.convenientbanner.listener.OnItemClickListener;
+import com.bigkoo.convenientbanner.view.CBLoopViewPager;
+import com.bigkoo.convenientbanner.adapter.CBPageAdapter;
+
 /**
  * 页面翻转控件，极方便的广告栏
  * 支持无限循环，自动翻页，翻页特效
  * @author Sai 支持自动翻页
  */
 public class ConvenientBanner<T> extends LinearLayout {
-    private CBViewHolderCreator holderCreator;
     private List<T> mDatas;
     private int[] page_indicatorId;
     private ArrayList<ImageView> mPointViews = new ArrayList<ImageView>();
     private CBPageChangeListener pageChangeListener;
     private ViewPager.OnPageChangeListener onPageChangeListener;
     private OnItemClickListener listener;
-    private CBPageAdapter pageAdapter;
     private CBLoopViewPager viewPager;
     private ViewPagerScroller scroller;
     private ViewGroup loPageTurningPoint;
     private long autoTurningTime;
     private boolean turning;
-    private boolean canTurn = false;
-    private boolean manualPageable = true;
+    private boolean canTurn = false;//自动翻页控制
+    private boolean manualPageable = true;//手动滑动控制
     private boolean canLoop = true;
     public enum PageIndicatorAlign{
         ALIGN_PARENT_LEFT,ALIGN_PARENT_RIGHT,CENTER_HORIZONTAL
     }
+    public static int SCROLLDURATIONDEFAULT = 800;// 滑动速度,值越大滑动越慢，滑动太快会使3d效果不明显
 
     public enum Transformer {
         DefaultTransformer("DefaultTransformer"), AccordionTransformer(
                 "AccordionTransformer"), BackgroundToForegroundTransformer(
                 "BackgroundToForegroundTransformer"), CubeInTransformer(
-                "CubeInTransformer"), CubeOutTransformer("CubeOutTransformer"), DepthPageTransformer(
+                "CubeInTransformer"), CubeOutTransformer(
+                "CubeOutTransformer"), DepthPageTransformer(
                 "DepthPageTransformer"), FlipHorizontalTransformer(
                 "FlipHorizontalTransformer"), FlipVerticalTransformer(
                 "FlipVerticalTransformer"), ForegroundToBackgroundTransformer(
                 "ForegroundToBackgroundTransformer"), RotateDownTransformer(
                 "RotateDownTransformer"), RotateUpTransformer(
-                "RotateUpTransformer"), StackTransformer("StackTransformer"), TabletTransformer(
-                "TabletTransformer"), ZoomInTransformer("ZoomInTransformer"), ZoomOutSlideTransformer(
+                "RotateUpTransformer"), StackTransformer(
+                "StackTransformer"), TabletTransformer(
+                "TabletTransformer"), ZoomInTransformer(
+                "ZoomInTransformer"), ZoomOutSlideTransformer(
                 "ZoomOutSlideTransformer"), ZoomOutTranformer(
                 "ZoomOutTranformer");
 
@@ -77,12 +85,21 @@ public class ConvenientBanner<T> extends LinearLayout {
         public void run() {
             if (viewPager != null && turning) {
                 int page = viewPager.getCurrentItem() + 1;
-                viewPager.setCurrentItem(page);
+                if(page >= viewPager.getAdapter().getCount()){
+                    page = viewPager.getFristItem();
+                    viewPager.setCurrentItem(page,false);
+                }
+                else {
+                    viewPager.setCurrentItem(page, true);
+                }
                 timeHandler.postDelayed(adSwitchTask, autoTurningTime);
             }
         }
     };
 
+    public ConvenientBanner(Context context) {
+        this(context, null);
+    }
     public ConvenientBanner(Context context,boolean canLoop) {
         this(context, null);
         this.canLoop = canLoop;
@@ -105,36 +122,22 @@ public class ConvenientBanner<T> extends LinearLayout {
 
     public ConvenientBanner setPages(CBViewHolderCreator holderCreator,List<T> datas){
         this.mDatas = datas;
-        this.holderCreator = holderCreator;
-        pageAdapter = new CBPageAdapter(holderCreator,mDatas);
-        viewPager.setAdapter(pageAdapter,canLoop);
-        viewPager.setBoundaryCaching(true);
+        viewPager.setCanLoop(canLoop);
+        viewPager.setAdapter(new CBPageAdapter(holderCreator,mDatas));
 
         if (page_indicatorId != null)
             setPageIndicator(page_indicatorId);
         return this;
     }
 
-    /**
-     * 加入新数据，通知数据变化
-     */
-    public void notifyDataSetAdd(){
-        pageAdapter.notifyDataSetChanged();
-        if (page_indicatorId != null)
-            setPageIndicator(page_indicatorId);
-    }
-
-    /**
-     * 通知数据变化
-     * 如果只是增加数据建议使用 notifyDataSetAdd()
-     */
-    public void notifyDataSetChanged(){
-//        pageAdapter = new CBPageAdapter(holderCreator,mDatas);
-        pageAdapter.notifyDataSetChanged();
-        viewPager.setAdapter(pageAdapter, canLoop);
-        if (page_indicatorId != null)
-            setPageIndicator(page_indicatorId);
-    }
+//    /**
+//     * 通知数据变化
+//     */
+//    public void notifyDataSetChanged(){
+//        viewPager.getAdapter().notifyDataSetChanged();
+//        if (page_indicatorId != null)
+//            setPageIndicator(page_indicatorId);
+//    }
 
     /**
      * 设置底部指示器是否可见
@@ -170,7 +173,7 @@ public class ConvenientBanner<T> extends LinearLayout {
         pageChangeListener = new CBPageChangeListener(mPointViews,
                 page_indicatorId);
         viewPager.setOnPageChangeListener(pageChangeListener);
-        pageChangeListener.onPageSelected(viewPager.getCurrentItem());
+        pageChangeListener.onPageSelected(viewPager.getRealItem());
         if(onPageChangeListener != null)pageChangeListener.setOnPageChangeListener(onPageChangeListener);
 
         return this;
@@ -261,7 +264,6 @@ public class ConvenientBanner<T> extends LinearLayout {
                     viewPager.getContext());
 //			scroller.setScrollDuration(1500);
             mScroller.set(viewPager, scroller);
-            viewPager.setScroller(scroller);
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         } catch (IllegalArgumentException e) {
@@ -297,7 +299,7 @@ public class ConvenientBanner<T> extends LinearLayout {
     //获取当前的页面index
     public int getCurrentItem(){
         if (viewPager!=null) {
-            return viewPager.getCurrentItem();
+            return viewPager.getRealItem();
         }
         return -1;
     }
@@ -325,6 +327,8 @@ public class ConvenientBanner<T> extends LinearLayout {
         return this;
     }
 
+
+
     public boolean isCanLoop() {
         return viewPager.isCanLoop();
     }
@@ -339,7 +343,7 @@ public class ConvenientBanner<T> extends LinearLayout {
             return this;
         }
         this.listener = onItemClickListener;
-        pageAdapter.setOnItemClickListener(new OnClickListener() {
+        viewPager.getAdapter().setOnItemClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 listener.onItemClick(getCurrentItem());

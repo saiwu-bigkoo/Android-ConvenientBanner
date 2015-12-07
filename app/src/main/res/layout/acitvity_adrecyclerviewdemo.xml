@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v4.widget.SwipeRefreshLayout
+    <com.bigkoo.convenientbannerdemo.recyclerviewdemo.CustomSwipeToRefresh
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -12,6 +12,6 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </com.bigkoo.convenientbannerdemo.recyclerviewdemo.CustomSwipeToRefresh>
 
 </LinearLayout>
