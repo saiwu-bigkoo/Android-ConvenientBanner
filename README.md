@@ -14,7 +14,8 @@ ConvenientBanner
 
 demo是用Module方式依赖，你也可以使用gradle 依赖:
 ```java
-   compile 'com.bigkoo:convenientbanner:2.0.0'
+   compile 'com.bigkoo:convenientbanner:1.1.4'
+   compile 'com.bigkoo:convenientbanner:2.0.0'//这个版本是令人失望的，一二页会有空白问题，容我再调优下
 ```
 
 
