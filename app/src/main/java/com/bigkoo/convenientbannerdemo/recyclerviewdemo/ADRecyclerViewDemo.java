@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.bigkoo.convenientbanner.CBViewHolderCreator;
+import com.bigkoo.convenientbanner.adapter.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbannerdemo.NetworkImageHolderView;
 import com.bigkoo.convenientbannerdemo.R;
@@ -25,10 +25,10 @@ import java.util.List;
 /**
  * Created by Sai on 15/8/13.
  * 这个是RecyclerView配合ConvenientBanner作为header的例子
- * 有issue（ @OVERSKY2003 同学）反馈说RecyclerView刷新会出现空白图片，于是写了这个例子进行测试，也提供给对RecyclerView使用不熟悉的开发者进行参考吧。
+ * 有issue反馈说RecyclerView刷新会出现空白图片，于是写了这个例子进行测试，也提供给对RecyclerView使用不熟悉的开发者进行参考吧。
  */
 public class ADRecyclerViewDemo extends Activity implements SwipeRefreshLayout.OnRefreshListener {
-    private SwipeRefreshLayout refreshLayout;
+    private CustomSwipeToRefresh refreshLayout;
     private RecyclerView listView;
     private ArrayList<String> mDatas = new ArrayList<String>();
     private RecyclerViewHFAdapter adapter;
@@ -54,7 +54,7 @@ public class ADRecyclerViewDemo extends Activity implements SwipeRefreshLayout.O
 
     private void initViews() {
         setContentView(R.layout.acitvity_adrecyclerviewdemo);
-        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.refreshLayout);
+        refreshLayout = (CustomSwipeToRefresh) findViewById(R.id.refreshLayout);
         convenientBanner = (ConvenientBanner) LayoutInflater.from(this).inflate(R.layout.adapter_header_cb,null);
         convenientBanner.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,600));
         listView = (RecyclerView) findViewById(R.id.recyclerView);
@@ -75,7 +75,8 @@ public class ADRecyclerViewDemo extends Activity implements SwipeRefreshLayout.O
             public NetworkImageHolderView createHolder() {
                 return new NetworkImageHolderView();
             }
-        },networkImages);
+        },networkImages)
+        .setPageIndicator(new int[]{R.drawable.ic_page_indicator, R.drawable.ic_page_indicator_focused});
 
         adapter.addHeader(convenientBanner);
         loadTestDatas();
@@ -128,6 +129,105 @@ public class ADRecyclerViewDemo extends Activity implements SwipeRefreshLayout.O
 //        mDatas.add("dsafdsf");
 //        adapter.notifyDataSetChanged();
         //跟上面注释的效果一样
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
+        adapter.addData("onRefresh  ===test========");
         adapter.addData("onRefresh  ===test========");
         refreshLayout.setRefreshing(false);
     }

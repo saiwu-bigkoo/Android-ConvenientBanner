@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
-version = "1.0.8"
+version = "2.0.0"//aar的版本
 
 android {
     compileSdkVersion 21
@@ -10,7 +10,6 @@ android {
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 21
         versionCode 1
         versionName "1.0"
     }
@@ -31,6 +30,7 @@ def siteUrl = 'https://github.com/saiwu-bigkoo/Android-ConvenientBanner'        
 def gitUrl = 'https://github.com/saiwu-bigkoo/Android-ConvenientBanner.git'                     // #CONFIG# // project git
 group = "com.bigkoo"
 
+//通过./gradlew install命令生成pom-default.xml 在 moudle库目录/build/poms/pom-default.xml
 install {
     repositories.mavenInstaller {
         // This generates POM.xml with proper parameters

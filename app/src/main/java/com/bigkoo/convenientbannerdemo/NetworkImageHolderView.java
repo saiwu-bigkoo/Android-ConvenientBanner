@@ -3,9 +3,8 @@ package com.bigkoo.convenientbannerdemo;
 import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.bigkoo.convenientbanner.CBPageAdapter;
+import com.bigkoo.convenientbanner.adapter.CBPageAdapter;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
@@ -23,15 +22,8 @@ public class NetworkImageHolderView implements CBPageAdapter.Holder<String>{
     }
 
     @Override
-    public void UpdateUI(Context context, final int position, String data) {
+    public void UpdateUI(Context context,int position, String data) {
         imageView.setImageResource(R.drawable.ic_default_adimage);
         ImageLoader.getInstance().displayImage(data,imageView);
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //点击事件
-                Toast.makeText(view.getContext(), "点击了第" + position + "个", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 }

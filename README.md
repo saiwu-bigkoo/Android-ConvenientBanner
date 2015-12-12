@@ -14,7 +14,8 @@ ConvenientBanner
 
 demo是用Module方式依赖，你也可以使用gradle 依赖:
 ```java
-   compile 'com.bigkoo:convenientbanner:1.0.8'
+   compile 'com.bigkoo:convenientbanner:1.1.4'
+   compile 'com.bigkoo:convenientbanner:2.0.0'//这个版本是令人失望的，一二页会有空白问题，容我再调优下
 ```
 
 
@@ -22,9 +23,12 @@ demo是用Module方式依赖，你也可以使用gradle 依赖:
 
 ```xml
 <com.bigkoo.convenientbanner.ConvenientBanner
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/convenientBanner"
         android:layout_width="match_parent"
-        android:layout_height="200dp"/>
+        android:layout_height="200dp"
+        app:canLoop="true" //控制循环与否
+/>
 ```
 
 ### config in java code
@@ -44,7 +48,8 @@ convenientBanner.setPages(
                 .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
                 //设置翻页的效果，不需要翻页效果可用不设
                 .setPageTransformer(Transformer.DefaultTransformer);
-        
+//        convenientBanner.setManualPageable(false);//设置不能手动影响
+
 public class LocalImageHolderView implements CBPageAdapter.Holder<Integer>{
     private ImageView imageView;
     @Override
@@ -57,20 +62,34 @@ public class LocalImageHolderView implements CBPageAdapter.Holder<Integer>{
     @Override
     public void UpdateUI(Context context, final int position, Integer data) {
         imageView.setImageResource(data);
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //点击事件
-                Toast.makeText(view.getContext(),"点击了第"+(position+1)+"图片",Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 }
 ```
-
 
 ## Thanks
 
 - [ViewPagerTransforms](https://github.com/ToxicBakery/ViewPagerTransforms)
 - [salvage](https://github.com/JakeWharton/salvage)
 - [LoopingViewPager](https://github.com/imbryk/LoopingViewPager)
+
+>## 更新说明
+>v1.1.0 修复了往前滑动最后一页会变空白页的BUG  <br />
+>v1.1.1 修复第三方图库下载setTag出错的BUG  <br />
+
+>v1.1.2
+ - 修复下拉刷新自动翻页偶尔失效停止BUG  <br />
+ - 提供onPageChangeListener的API调用  <br />
+ 
+>v1.1.3
+ - 循环控制，可以设置为不循环模式  <br />
+ - 加入OnItemClcikListener监听器，修复原先点击图片position失准BUG  <br />
+ - 调整notifyDataSetChanged函数，并加入notifyDataSetAdd函数  <br />
+
+>v1.1.4
+ - getCurrentPageIndex函数改为getCurrentItem  <br />
+ - 加入setcurrentitem函数  <br />
+
+>v2.0.0
+ - 重新修改循环逻辑  <br />
+ - 解决卡顿和白屏现象  <br />
+ - Demo中加入下拉刷新和控件左右拨动冲突方案  <br />

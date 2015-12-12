@@ -1,15 +1,18 @@
 package com.bigkoo.convenientbannerdemo;
 
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
-import com.bigkoo.convenientbanner.CBViewHolderCreator;
+import com.bigkoo.convenientbanner.adapter.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.ConvenientBanner.Transformer;
+import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -25,7 +28,7 @@ import java.util.List;
  * Created by Sai on 15/7/30.
  * convenientbanner 控件 的 demo
  */
-public class MainActivity extends ActionBarActivity implements AdapterView.OnItemClickListener {
+public class MainActivity extends ActionBarActivity implements AdapterView.OnItemClickListener, ViewPager.OnPageChangeListener, OnItemClickListener {
     private ConvenientBanner convenientBanner;//顶部广告栏控件
     private ArrayList<Integer> localImages = new ArrayList<Integer>();
     private List<String> networkImages;
@@ -61,7 +64,7 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
     private void init(){
         initImageLoader();
         loadTestDatas();
-        //本地图片例子
+//        //本地图片例子
         convenientBanner.setPages(
                 new CBViewHolderCreator<LocalImageHolderView>() {
                     @Override
@@ -74,12 +77,14 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
                 //设置指示器的方向
 //                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
                 //设置翻页的效果，不需要翻页效果可用不设
-                .setPageTransformer(Transformer.DefaultTransformer);
+                .setPageTransformer(Transformer.DefaultTransformer)
+//                .setOnPageChangeListener(this)//监听翻页事件
+                .setOnItemClickListener(this);
 
 //        convenientBanner.setManualPageable(false);//设置不能手动影响
 
-        //网络加载例子
-//        networkImages=Arrays.asList(images);
+        //＝＝＝＝＝＝＝＝＝＝这是 网络加载例子
+//        networkImages= Arrays.asList(images);
 //        convenientBanner.setPages(new CBViewHolderCreator<NetworkImageHolderView>() {
 //            @Override
 //            public NetworkImageHolderView createHolder() {
@@ -128,6 +133,8 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
         transformerList.add(Transformer.StackTransformer.getClassName());
         transformerList.add(Transformer.ZoomInTransformer.getClassName());
         transformerList.add(Transformer.ZoomOutTranformer.getClassName());
+        transformerList.add(Transformer.TabletTransformer.getClassName());
+        transformerList.add(Transformer.ZoomOutSlideTransformer.getClassName());
 
         transformerArrayAdapter.notifyDataSetChanged();
     }
@@ -171,6 +178,34 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
         String name = transformerList.get(position);
         Transformer transformer = Transformer.valueOf(name);
         convenientBanner.setPageTransformer(transformer);
+
+        //这里是调节滑动速度的例子，有些3d效果因为滑动速度太快而效果不明显，这里自己调节到合适的速度
+        if(position == 1){
+            convenientBanner.setScrollDuration(1200);
+        }
+        else
+        {
+            convenientBanner.setScrollDuration(ConvenientBanner.SCROLLDURATIONDEFAULT);
+        }
+
     }
 
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        Toast.makeText(this,"监听到翻到第"+position+"了",Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        Toast.makeText(this,"点击了第"+position+"个",Toast.LENGTH_SHORT).show();
+    }
 }

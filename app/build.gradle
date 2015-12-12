@@ -7,7 +7,6 @@ android {
     defaultConfig {
         applicationId "com.bigkoo.convenientbannerdemo"
         minSdkVersion 14
-        targetSdkVersion 21
         versionCode 1
         versionName "1.0"
     }
@@ -21,8 +20,8 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:21.0.3'
-    //    compile 'com.bigkoo:convenientbanner:1.0.7'
+//    compile 'com.android.support:appcompat-v7:21.0.3'
+//        compile 'com.bigkoo:convenientbanner:2.0.0'
     compile files('libs/universal-image-loader-1.9.4.jar')
     compile 'com.android.support:recyclerview-v7:21.0.3'
     compile project(':convenientbanner')

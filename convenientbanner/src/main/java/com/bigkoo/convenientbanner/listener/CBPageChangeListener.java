@@ -1,4 +1,4 @@
-package com.bigkoo.convenientbanner;
+package com.bigkoo.convenientbanner.listener;
 
 import android.support.v4.view.ViewPager;
 import android.widget.ImageView;
@@ -12,18 +12,19 @@ import java.util.ArrayList;
 public class CBPageChangeListener implements ViewPager.OnPageChangeListener {
     private ArrayList<ImageView> pointViews;
     private int[] page_indicatorId;
+    private ViewPager.OnPageChangeListener onPageChangeListener;
     public CBPageChangeListener(ArrayList<ImageView> pointViews,int page_indicatorId[]){
         this.pointViews=pointViews;
         this.page_indicatorId = page_indicatorId;
     }
     @Override
-    public void onPageScrollStateChanged(int arg0) {
-
+    public void onPageScrollStateChanged(int state) {
+        if(onPageChangeListener != null)onPageChangeListener.onPageScrollStateChanged(state);
     }
 
     @Override
-    public void onPageScrolled(int arg0, float arg1, int arg2) {
-
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        if(onPageChangeListener != null)onPageChangeListener.onPageScrolled(position,positionOffset,positionOffsetPixels);
     }
 
     @Override
@@ -34,5 +35,11 @@ public class CBPageChangeListener implements ViewPager.OnPageChangeListener {
                 pointViews.get(i).setImageResource(page_indicatorId[0]);
             }
         }
+        if(onPageChangeListener != null)onPageChangeListener.onPageSelected(index);
+
+    }
+
+    public void setOnPageChangeListener(ViewPager.OnPageChangeListener onPageChangeListener) {
+        this.onPageChangeListener = onPageChangeListener;
     }
 }
