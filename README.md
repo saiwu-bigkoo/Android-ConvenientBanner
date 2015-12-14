@@ -14,8 +14,7 @@ ConvenientBanner
 
 demo是用Module方式依赖，你也可以使用gradle 依赖:
 ```java
-   compile 'com.bigkoo:convenientbanner:1.1.4'
-   compile 'com.bigkoo:convenientbanner:2.0.0'//这个版本是令人失望的，一二页会有空白问题，容我再调优下
+   compile 'com.bigkoo:convenientbanner:2.0.1'
 ```
 
 
@@ -93,3 +92,7 @@ public class LocalImageHolderView implements CBPageAdapter.Holder<Integer>{
  - 重新修改循环逻辑  <br />
  - 解决卡顿和白屏现象  <br />
  - Demo中加入下拉刷新和控件左右拨动冲突方案  <br />
+ 
+>v2.0.1
+ - 回滚到1.1.4的循环逻辑  <br />
+ - 分离特效代码  <br />
