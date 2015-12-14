@@ -2,14 +2,14 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
-version = "2.0.0"//aar的版本
+version = "2.0.1"//aar的版本
 
 android {
     compileSdkVersion 21
     buildToolsVersion "20.0.0"
 
     defaultConfig {
-        minSdkVersion 14
+        minSdkVersion 10
         versionCode 1
         versionName "1.0"
     }

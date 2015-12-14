@@ -9,9 +9,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.bigkoo.convenientbanner.adapter.CBViewHolderCreator;
+import com.ToxicBakery.viewpager.transforms.*;
+import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.ConvenientBanner;
-import com.bigkoo.convenientbanner.ConvenientBanner.Transformer;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -21,7 +21,6 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -64,7 +63,7 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
     private void init(){
         initImageLoader();
         loadTestDatas();
-//        //本地图片例子
+        //本地图片例子
         convenientBanner.setPages(
                 new CBViewHolderCreator<LocalImageHolderView>() {
                     @Override
@@ -76,15 +75,13 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
                 .setPageIndicator(new int[]{R.drawable.ic_page_indicator, R.drawable.ic_page_indicator_focused})
                 //设置指示器的方向
 //                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
-                //设置翻页的效果，不需要翻页效果可用不设
-                .setPageTransformer(Transformer.DefaultTransformer)
-//                .setOnPageChangeListener(this)//监听翻页事件
                 .setOnItemClickListener(this);
+//                .setOnPageChangeListener(this);监听翻页事件
 
 //        convenientBanner.setManualPageable(false);//设置不能手动影响
 
-        //＝＝＝＝＝＝＝＝＝＝这是 网络加载例子
-//        networkImages= Arrays.asList(images);
+        //网络加载例子
+//        networkImages=Arrays.asList(images);
 //        convenientBanner.setPages(new CBViewHolderCreator<NetworkImageHolderView>() {
 //            @Override
 //            public NetworkImageHolderView createHolder() {
@@ -117,24 +114,21 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
             localImages.add(getResId("ic_test_" + position, R.drawable.class));
 
 
-
-        //各种翻页效果
-        transformerList.add(Transformer.DefaultTransformer.getClassName());
-        transformerList.add(Transformer.AccordionTransformer.getClassName());
-        transformerList.add(Transformer.BackgroundToForegroundTransformer.getClassName());
-        transformerList.add(Transformer.CubeInTransformer.getClassName());
-        transformerList.add(Transformer.CubeOutTransformer.getClassName());
-        transformerList.add(Transformer.DepthPageTransformer.getClassName());
-        transformerList.add(Transformer.FlipHorizontalTransformer.getClassName());
-        transformerList.add(Transformer.FlipVerticalTransformer.getClassName());
-        transformerList.add(Transformer.ForegroundToBackgroundTransformer.getClassName());
-        transformerList.add(Transformer.RotateDownTransformer.getClassName());
-        transformerList.add(Transformer.RotateUpTransformer.getClassName());
-        transformerList.add(Transformer.StackTransformer.getClassName());
-        transformerList.add(Transformer.ZoomInTransformer.getClassName());
-        transformerList.add(Transformer.ZoomOutTranformer.getClassName());
-        transformerList.add(Transformer.TabletTransformer.getClassName());
-        transformerList.add(Transformer.ZoomOutSlideTransformer.getClassName());
+//        //各种翻页效果
+        transformerList.add(DefaultTransformer.class.getSimpleName());
+        transformerList.add(AccordionTransformer.class.getSimpleName());
+        transformerList.add(BackgroundToForegroundTransformer.class.getSimpleName());
+        transformerList.add(CubeInTransformer.class.getSimpleName());
+        transformerList.add(CubeOutTransformer.class.getSimpleName());
+        transformerList.add(DepthPageTransformer.class.getSimpleName());
+        transformerList.add(FlipHorizontalTransformer.class.getSimpleName());
+        transformerList.add(FlipVerticalTransformer.class.getSimpleName());
+        transformerList.add(ForegroundToBackgroundTransformer.class.getSimpleName());
+        transformerList.add(RotateDownTransformer.class.getSimpleName());
+        transformerList.add(RotateUpTransformer.class.getSimpleName());
+        transformerList.add(StackTransformer.class.getSimpleName());
+        transformerList.add(ZoomInTransformer.class.getSimpleName());
+        transformerList.add(ZoomOutTranformer.class.getSimpleName());
 
         transformerArrayAdapter.notifyDataSetChanged();
     }
@@ -175,17 +169,32 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
     //点击切换效果
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        String name = transformerList.get(position);
-        Transformer transformer = Transformer.valueOf(name);
-        convenientBanner.setPageTransformer(transformer);
 
-        //这里是调节滑动速度的例子，有些3d效果因为滑动速度太快而效果不明显，这里自己调节到合适的速度
-        if(position == 1){
-            convenientBanner.setScrollDuration(1200);
-        }
-        else
-        {
-            convenientBanner.setScrollDuration(ConvenientBanner.SCROLLDURATIONDEFAULT);
+//        点击后加入两个内容
+//        localImages.clear();
+//        localImages.add(R.drawable.ic_test_2);
+//        localImages.add(R.drawable.ic_test_4);
+//        convenientBanner.notifyDataSetChanged();
+
+
+
+        String transforemerName = transformerList.get(position);
+        try {
+            Class cls = Class.forName("com.ToxicBakery.viewpager.transforms." + transforemerName);
+            ABaseTransformer transforemer= (ABaseTransformer)cls.newInstance();
+            convenientBanner.getViewPager().setPageTransformer(true,transforemer);
+
+            //部分3D特效需要调整滑动速度
+            if(transforemerName.equals("StackTransformer")){
+                convenientBanner.setScrollDuration(1200);
+            }
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
         }
 
     }
