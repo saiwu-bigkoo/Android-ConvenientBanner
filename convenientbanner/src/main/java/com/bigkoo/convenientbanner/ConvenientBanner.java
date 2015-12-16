@@ -287,7 +287,7 @@ public class ConvenientBanner<T> extends LinearLayout {
      */
     public ConvenientBanner setOnItemClickListener(OnItemClickListener onItemClickListener) {
         if (onItemClickListener == null) {
-            viewPager.setOnClickListener(null);
+            pageAdapter.setOnItemClickListener(null);
             return this;
         }
         this.listener = onItemClickListener;

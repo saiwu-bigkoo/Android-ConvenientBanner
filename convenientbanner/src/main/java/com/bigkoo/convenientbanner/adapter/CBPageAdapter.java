@@ -44,8 +44,6 @@ public class CBPageAdapter<T> extends RecyclingPagerAdapter{
         return mDatas.size();
     }
 
-
-
     public void setOnItemClickListener(View.OnClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
