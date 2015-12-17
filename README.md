@@ -97,6 +97,6 @@ public class LocalImageHolderView implements CBPageAdapter.Holder<Integer>{
  - 回滚到1.1.4的循环逻辑  <br />
  - 分离特效代码  <br />
 
->v2.0.1
+>v2.0.2
  - 调整setOnItemClickListener  <br />
  - 加入代码New 控件和 add ListView的HeaderView效果例子  <br />
