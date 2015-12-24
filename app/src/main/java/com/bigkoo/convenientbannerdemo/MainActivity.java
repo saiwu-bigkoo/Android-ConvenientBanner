@@ -75,8 +75,8 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
                 .setPageIndicator(new int[]{R.drawable.ic_page_indicator, R.drawable.ic_page_indicator_focused})
                 //设置指示器的方向
 //                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
+//                .setOnPageChangeListener(this)//监听翻页事件
                 .setOnItemClickListener(this);
-//                .setOnPageChangeListener(this);监听翻页事件
 
 //        convenientBanner.setManualPageable(false);//设置不能手动影响
 
@@ -195,6 +195,8 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
 //        localImages.add(R.drawable.ic_test_4);
 //        convenientBanner.notifyDataSetChanged();
 
+        //控制是否循环
+//        convenientBanner.setCanLoop(!convenientBanner.isCanLoop());
 
 
         String transforemerName = transformerList.get(position);

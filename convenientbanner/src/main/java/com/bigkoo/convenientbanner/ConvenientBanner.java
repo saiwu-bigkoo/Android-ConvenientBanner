@@ -30,7 +30,6 @@ import com.bigkoo.convenientbanner.view.CBLoopViewPager;
  * @author Sai 支持自动翻页
  */
 public class ConvenientBanner<T> extends LinearLayout {
-    private CBViewHolderCreator holderCreator;
     private List<T> mDatas;
     private int[] page_indicatorId;
     private ArrayList<ImageView> mPointViews = new ArrayList<ImageView>();
@@ -85,10 +84,8 @@ public class ConvenientBanner<T> extends LinearLayout {
 
     public ConvenientBanner setPages(CBViewHolderCreator holderCreator,List<T> datas){
         this.mDatas = datas;
-        this.holderCreator = holderCreator;
         pageAdapter = new CBPageAdapter(holderCreator,mDatas);
         viewPager.setAdapter(pageAdapter,canLoop);
-        viewPager.setBoundaryCaching(true);
 
         if (page_indicatorId != null)
             setPageIndicator(page_indicatorId);
@@ -100,7 +97,7 @@ public class ConvenientBanner<T> extends LinearLayout {
      * 如果只是增加数据建议使用 notifyDataSetAdd()
      */
     public void notifyDataSetChanged(){
-        viewPager.setAdapter(pageAdapter, canLoop);
+        viewPager.getAdapter().notifyDataSetChanged();
         if (page_indicatorId != null)
             setPageIndicator(page_indicatorId);
     }
@@ -139,7 +136,7 @@ public class ConvenientBanner<T> extends LinearLayout {
         pageChangeListener = new CBPageChangeListener(mPointViews,
                 page_indicatorId);
         viewPager.setOnPageChangeListener(pageChangeListener);
-        pageChangeListener.onPageSelected(viewPager.getCurrentItem());
+        pageChangeListener.onPageSelected(viewPager.getRealItem());
         if(onPageChangeListener != null)pageChangeListener.setOnPageChangeListener(onPageChangeListener);
 
         return this;
@@ -213,7 +210,7 @@ public class ConvenientBanner<T> extends LinearLayout {
             scroller = new ViewPagerScroller(
                     viewPager.getContext());
             mScroller.set(viewPager, scroller);
-            viewPager.setScroller(scroller);
+
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         } catch (IllegalArgumentException e) {
@@ -249,7 +246,7 @@ public class ConvenientBanner<T> extends LinearLayout {
     //获取当前的页面index
     public int getCurrentItem(){
         if (viewPager!=null) {
-            return viewPager.getCurrentItem();
+            return viewPager.getRealItem();
         }
         return -1;
     }
@@ -314,5 +311,10 @@ public class ConvenientBanner<T> extends LinearLayout {
 
     public CBLoopViewPager getViewPager() {
         return viewPager;
+    }
+
+    public void setCanLoop(boolean canLoop) {
+        this.canLoop = canLoop;
+        viewPager.setCanLoop(canLoop);
     }
 }
