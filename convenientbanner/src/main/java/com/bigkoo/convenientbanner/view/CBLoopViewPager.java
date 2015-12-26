@@ -7,16 +7,18 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 import com.bigkoo.convenientbanner.adapter.CBPageAdapter;
+import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 
 
 public class CBLoopViewPager extends ViewPager {
     OnPageChangeListener mOuterPageChangeListener;
+    private OnItemClickListener onItemClickListener;
     private CBPageAdapter mAdapter;
 
     private boolean isCanScroll = true;
     private boolean canLoop = true;
 
-    public void setAdapter(PagerAdapter adapter,boolean canLoop) {
+    public void setAdapter(PagerAdapter adapter, boolean canLoop) {
         mAdapter = (CBPageAdapter) adapter;
         mAdapter.setCanLoop(canLoop);
         mAdapter.setViewPager(this);
@@ -25,11 +27,11 @@ public class CBLoopViewPager extends ViewPager {
         setCurrentItem(getFristItem(), false);
     }
 
-    public int getFristItem(){
+    public int getFristItem() {
         return canLoop ? mAdapter.getRealCount() : 0;
     }
 
-    public int getLastItem(){
+    public int getLastItem() {
         return mAdapter.getRealCount() - 1;
     }
 
@@ -41,11 +43,30 @@ public class CBLoopViewPager extends ViewPager {
         this.isCanScroll = isCanScroll;
     }
 
+    private float oldX = 0, newX = 0;
+    private static final float sens = 5;
+
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        if (isCanScroll)
+        if (isCanScroll) {
+            if (onItemClickListener != null) {
+                switch (ev.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        oldX = ev.getX();
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        newX = ev.getX();
+                        if (Math.abs(oldX - newX) < sens) {
+                            onItemClickListener.onItemClick((getRealItem()));
+                        }
+                        oldX = 0;
+                        newX = 0;
+                        break;
+                }
+            }
             return super.onTouchEvent(ev);
-        else
+        } else
             return false;
     }
 
@@ -130,13 +151,18 @@ public class CBLoopViewPager extends ViewPager {
     public boolean isCanLoop() {
         return canLoop;
     }
+
     public void setCanLoop(boolean canLoop) {
         this.canLoop = canLoop;
-        if(canLoop == false){
-            setCurrentItem(getRealItem(),false);
+        if (canLoop == false) {
+            setCurrentItem(getRealItem(), false);
         }
-        if(mAdapter == null) return;
+        if (mAdapter == null) return;
         mAdapter.setCanLoop(canLoop);
         mAdapter.notifyDataSetChanged();
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 }

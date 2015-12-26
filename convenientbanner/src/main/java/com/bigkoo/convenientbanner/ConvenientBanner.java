@@ -35,7 +35,6 @@ public class ConvenientBanner<T> extends LinearLayout {
     private ArrayList<ImageView> mPointViews = new ArrayList<ImageView>();
     private CBPageChangeListener pageChangeListener;
     private ViewPager.OnPageChangeListener onPageChangeListener;
-    private OnItemClickListener listener;
     private CBPageAdapter pageAdapter;
     private CBLoopViewPager viewPager;
     private ViewPagerScroller scroller;
@@ -284,16 +283,10 @@ public class ConvenientBanner<T> extends LinearLayout {
      */
     public ConvenientBanner setOnItemClickListener(OnItemClickListener onItemClickListener) {
         if (onItemClickListener == null) {
-            pageAdapter.setOnItemClickListener(null);
+            viewPager.setOnItemClickListener(null);
             return this;
         }
-        this.listener = onItemClickListener;
-        pageAdapter.setOnItemClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listener.onItemClick(getCurrentItem());
-            }
-        });
+        viewPager.setOnItemClickListener(onItemClickListener);
         return this;
     }
 
