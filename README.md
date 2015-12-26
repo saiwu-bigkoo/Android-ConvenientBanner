@@ -14,7 +14,7 @@ ConvenientBanner
 
 demo是用Module方式依赖，你也可以使用gradle 依赖:
 ```java
-   compile 'com.bigkoo:convenientbanner:2.0.3'
+   compile 'com.bigkoo:convenientbanner:2.0.4'
 ```
 
 
@@ -103,3 +103,6 @@ public class LocalImageHolderView implements CBPageAdapter.Holder<Integer>{
  
 >v2.0.3
  - 逻辑由  301230 改为 012301230123—》当第一个0的时候变为第二个0，最后一个3的时候变为第二个3 <br />
+ 
+>v2.0.4
+ - 修复添加动画效果后点击无效问题 <br />
