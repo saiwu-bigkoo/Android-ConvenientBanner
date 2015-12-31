@@ -1,12 +1,7 @@
 package com.bigkoo.convenientbanner;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.PageTransformer;
 import android.util.AttributeSet;
@@ -17,12 +12,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-
 import com.bigkoo.convenientbanner.adapter.CBPageAdapter;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.listener.CBPageChangeListener;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.bigkoo.convenientbanner.view.CBLoopViewPager;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 页面翻转控件，极方便的广告栏
@@ -49,14 +47,14 @@ public class ConvenientBanner<T> extends LinearLayout {
     }
 
 
-    private Handler timeHandler = new Handler();
+
     private Runnable adSwitchTask = new Runnable() {
         @Override
         public void run() {
             if (viewPager != null && turning) {
                 int page = viewPager.getCurrentItem() + 1;
                 viewPager.setCurrentItem(page);
-                timeHandler.postDelayed(adSwitchTask, autoTurningTime);
+                postDelayed(adSwitchTask, autoTurningTime);
             }
         }
     };
@@ -177,13 +175,13 @@ public class ConvenientBanner<T> extends LinearLayout {
         canTurn = true;
         this.autoTurningTime = autoTurningTime;
         turning = true;
-        timeHandler.postDelayed(adSwitchTask, autoTurningTime);
+        postDelayed(adSwitchTask, autoTurningTime);
         return this;
     }
 
     public void stopTurning() {
         turning = false;
-        timeHandler.removeCallbacks(adSwitchTask);
+        removeCallbacks(adSwitchTask);
     }
 
     /**
