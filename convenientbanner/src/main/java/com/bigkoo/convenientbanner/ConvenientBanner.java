@@ -1,7 +1,9 @@
 package com.bigkoo.convenientbanner;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.PageTransformer;
 import android.util.AttributeSet;
@@ -18,6 +20,7 @@ import com.bigkoo.convenientbanner.listener.CBPageChangeListener;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.bigkoo.convenientbanner.view.CBLoopViewPager;
 
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,28 +48,36 @@ public class ConvenientBanner<T> extends LinearLayout {
     public enum PageIndicatorAlign{
         ALIGN_PARENT_LEFT,ALIGN_PARENT_RIGHT,CENTER_HORIZONTAL
     }
+    private AdSwitchTask adSwitchTask ;
 
-
-
-    private Runnable adSwitchTask = new Runnable() {
-        @Override
-        public void run() {
-            if (viewPager != null && turning) {
-                int page = viewPager.getCurrentItem() + 1;
-                viewPager.setCurrentItem(page);
-                postDelayed(adSwitchTask, autoTurningTime);
-            }
-        }
-    };
-
-    public ConvenientBanner(Context context,boolean canLoop) {
-        this(context, null);
-        this.canLoop = canLoop;
+    public ConvenientBanner(Context context) {
+        super(context);
+        init(context);
     }
+
     public ConvenientBanner(Context context, AttributeSet attrs) {
         super(context, attrs);
         TypedArray a = context.obtainStyledAttributes(attrs,R.styleable.ConvenientBanner);
         canLoop = a.getBoolean(R.styleable.ConvenientBanner_canLoop,true);
+        a.recycle();
+        init(context);
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public ConvenientBanner(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        TypedArray a = context.obtainStyledAttributes(attrs,R.styleable.ConvenientBanner);
+        canLoop = a.getBoolean(R.styleable.ConvenientBanner_canLoop,true);
+        a.recycle();
+        init(context);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public ConvenientBanner(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        TypedArray a = context.obtainStyledAttributes(attrs,R.styleable.ConvenientBanner);
+        canLoop = a.getBoolean(R.styleable.ConvenientBanner_canLoop,true);
+        a.recycle();
         init(context);
     }
 
@@ -77,6 +88,30 @@ public class ConvenientBanner<T> extends LinearLayout {
         loPageTurningPoint = (ViewGroup) hView
                 .findViewById(R.id.loPageTurningPoint);
         initViewPagerScroll();
+
+        adSwitchTask = new AdSwitchTask(this);
+    }
+
+    static class AdSwitchTask implements Runnable {
+
+        private final WeakReference<ConvenientBanner> reference;
+
+        AdSwitchTask(ConvenientBanner convenientBanner) {
+            this.reference = new WeakReference<ConvenientBanner>(convenientBanner);
+        }
+
+        @Override
+        public void run() {
+            ConvenientBanner convenientBanner = reference.get();
+
+            if(convenientBanner != null){
+                if (convenientBanner.viewPager != null && convenientBanner.turning) {
+                    int page = convenientBanner.viewPager.getCurrentItem() + 1;
+                    convenientBanner.viewPager.setCurrentItem(page);
+                    convenientBanner.postDelayed(convenientBanner.adSwitchTask, convenientBanner.autoTurningTime);
+                }
+            }
+        }
     }
 
     public ConvenientBanner setPages(CBViewHolderCreator holderCreator,List<T> datas){
