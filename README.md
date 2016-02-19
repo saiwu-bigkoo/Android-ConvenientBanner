@@ -49,7 +49,7 @@ convenientBanner.setPages(
                 //.setPageTransformer(Transformer.DefaultTransformer);    集成特效之后会有白屏现象，新版已经分离，如果要集成特效的例子可以看Demo的点击响应。
 //        convenientBanner.setManualPageable(false);//设置不能手动影响
 
-public class LocalImageHolderView implements CBPageAdapter.Holder<Integer>{
+public class LocalImageHolderView implements Holder<Integer>{
     private ImageView imageView;
     @Override
     public View createView(Context context) {
