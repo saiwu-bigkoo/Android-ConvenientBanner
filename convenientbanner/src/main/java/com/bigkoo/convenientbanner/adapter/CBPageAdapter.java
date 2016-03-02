@@ -99,7 +99,10 @@ public class CBPageAdapter<T> extends PagerAdapter {
             holder.UpdateUI(container.getContext(), position, mDatas.get(position));
         return view;
     }
-
+    @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
+    }
 //    public void setOnItemClickListener(View.OnClickListener onItemClickListener) {
 //        this.onItemClickListener = onItemClickListener;
 //    }
