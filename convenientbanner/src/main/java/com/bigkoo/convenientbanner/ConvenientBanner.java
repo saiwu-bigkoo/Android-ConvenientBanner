@@ -117,7 +117,7 @@ public class ConvenientBanner<T> extends LinearLayout {
     public ConvenientBanner setPages(CBViewHolderCreator holderCreator,List<T> datas){
         this.mDatas = datas;
         pageAdapter = new CBPageAdapter(holderCreator,mDatas);
-        viewPager.setAdapter(pageAdapter,canLoop);
+        viewPager.setAdapter(pageAdapter, canLoop);
 
         if (page_indicatorId != null)
             setPageIndicator(page_indicatorId);
@@ -144,6 +144,44 @@ public class ConvenientBanner<T> extends LinearLayout {
         return this;
     }
 
+    /**
+     * 设置指示器的高度（新加的方法）
+     * @param height
+     * @return
+     */
+    public ConvenientBanner setPageIndicatorLineHeight(int height) {
+        loPageTurningPoint.getLayoutParams().height=height;
+        return this;
+    }
+    /**
+     * 底部指示器资源颜色（新加的方法，其实就是修改了下setPageIndicator）
+     *
+     * @param page_indicatorId
+     */
+    public ConvenientBanner setPageIndicatorLine(int[] page_indicatorId) {loPageTurningPoint.removeAllViews();
+        mPointViews.clear();
+        this.page_indicatorId = page_indicatorId;
+        if (mDatas == null)
+            return this;
+        for (int count = 0; count < mDatas.size(); count++) {
+            // 翻页指示的点
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+            params.weight = 1;
+            ImageView pointView = new ImageView(getContext());
+            if (mPointViews.isEmpty())
+                pointView.setBackgroundResource(page_indicatorId[1]);
+            else
+                pointView.setBackgroundResource(page_indicatorId[0]);
+            loPageTurningPoint.addView(pointView, params);
+            mPointViews.add(pointView);
+        }
+        pageChangeListener = new CBPageChangeListener(mPointViews,
+                page_indicatorId);
+        viewPager.setOnPageChangeListener(pageChangeListener);
+
+        return this;
+    }
     /**
      * 底部指示器资源图片
      *

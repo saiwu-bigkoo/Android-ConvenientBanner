@@ -15,12 +15,12 @@
 
         <!-- 翻页指示点的viewgroup -->
 
+        <!--修改了指示器空间的宽度，去掉了margin（- -b）-->
         <LinearLayout
             android:id="@+id/loPageTurningPoint"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_margin="10dp"
             android:layout_centerHorizontal="true"
             android:orientation="horizontal" >
         </LinearLayout>
