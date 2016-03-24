@@ -58,18 +58,22 @@ public class CBPageAdapter<T> extends PagerAdapter {
         int oldCount = mChildCount;
         int newCount = getRealCount();
         if (oldCount == 0) {
-            // Both child counts 0, no changes.
+            // Both children count 0, no change.
             if (newCount == 0) {
                 return;
             }
+            // Reset adapter. notifyDataSetChanged() is not working here
             else {
                 viewPager.setAdapter(this);
             }
         } else {
+            // call super notifyDataSetChanged()
             if (newCount == 0) {
                 mInvalidatedCount = oldCount;
                 super.notifyDataSetChanged();
             }
+            // Both children are greater than 0. notifyDataSetChanged() is still not working at some time. We donnot know why.
+            // So we call setAdapter() again.
             else {
                 int oldPos = viewPager.getCurrentItem();
                 int newPos = oldPos % mChildCount;
@@ -83,7 +87,7 @@ public class CBPageAdapter<T> extends PagerAdapter {
                 viewPager.setCurrentItem(newPos, false);
             }
         }
-        mChildCount = getRealCount();
+        mChildCount = newCount;
     }
 
     @Override
@@ -121,7 +125,9 @@ public class CBPageAdapter<T> extends PagerAdapter {
         }
         try {
             viewPager.setCurrentItem(position, false);
-        }catch (IllegalStateException e){}
+        }catch (IllegalStateException e){
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -138,7 +144,7 @@ public class CBPageAdapter<T> extends PagerAdapter {
     }
 
     public View getView(int position, View view, ViewGroup container) {
-        Holder holder = null;
+        Holder holder;
         if (view == null) {
             holder = (Holder) holderCreator.createHolder();
             view = holder.createView(container.getContext());
