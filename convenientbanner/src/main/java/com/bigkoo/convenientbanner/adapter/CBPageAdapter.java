@@ -22,12 +22,68 @@ public class CBPageAdapter<T> extends PagerAdapter {
     private CBLoopViewPager viewPager;
     private final int MULTIPLE_COUNT = 300;
 
+    private int mChildCount;
+    private int mInvalidatedCount;
+
+    public CBPageAdapter(CBViewHolderCreator holderCreator, List<T> datas) {
+        this.holderCreator = holderCreator;
+        this.mDatas = datas;
+        if (datas == null) {
+            this.mChildCount = 0;
+        } else {
+            this.mChildCount = datas.size();
+        }
+        this.mInvalidatedCount = 0;
+    }
+
     public int toRealPosition(int position) {
         int realCount = getRealCount();
         if (realCount == 0)
             return 0;
-        int realPosition = position % realCount;
-        return realPosition;
+        return position % realCount;
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+        if (mInvalidatedCount > 0) {
+            mInvalidatedCount--;
+            return POSITION_NONE;
+        } else {
+            return super.getItemPosition(object);
+        }
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        int oldCount = mChildCount;
+        int newCount = getRealCount();
+        if (oldCount == 0) {
+            // Both child counts 0, no changes.
+            if (newCount == 0) {
+                return;
+            }
+            else {
+                viewPager.setAdapter(this);
+            }
+        } else {
+            if (newCount == 0) {
+                mInvalidatedCount = oldCount;
+                super.notifyDataSetChanged();
+            }
+            else {
+                int oldPos = viewPager.getCurrentItem();
+                int newPos = oldPos % mChildCount;
+                if (newPos == 0) {
+                    newPos = getRealCount();
+                }
+                else if (newPos >= newCount) {
+                    newPos = newCount - 1;
+                }
+                viewPager.setAdapter(this);
+                viewPager.setCurrentItem(newPos, false);
+            }
+        }
+        mChildCount = getRealCount();
     }
 
     @Override
@@ -79,11 +135,6 @@ public class CBPageAdapter<T> extends PagerAdapter {
 
     public void setViewPager(CBLoopViewPager viewPager) {
         this.viewPager = viewPager;
-    }
-
-    public CBPageAdapter(CBViewHolderCreator holderCreator, List<T> datas) {
-        this.holderCreator = holderCreator;
-        this.mDatas = datas;
     }
 
     public View getView(int position, View view, ViewGroup container) {
