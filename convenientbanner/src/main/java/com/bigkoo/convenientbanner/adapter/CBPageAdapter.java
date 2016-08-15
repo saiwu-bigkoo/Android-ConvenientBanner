@@ -21,6 +21,7 @@ public class CBPageAdapter<T> extends PagerAdapter {
     private boolean canLoop = true;
     private CBLoopViewPager viewPager;
     private final int MULTIPLE_COUNT = 300;
+    private LinkedList<View> mViewCache;   // view cache
 
     public int toRealPosition(int position) {
         int realCount = getRealCount();
@@ -42,9 +43,7 @@ public class CBPageAdapter<T> extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         int realPosition = toRealPosition(position);
-
-        View view = getView(realPosition, null, container);
-//        if(onItemClickListener != null) view.setOnClickListener(onItemClickListener);
+        View view = getView(realPosition, container);
         container.addView(view);
         return view;
     }
@@ -53,6 +52,7 @@ public class CBPageAdapter<T> extends PagerAdapter {
     public void destroyItem(ViewGroup container, int position, Object object) {
         View view = (View) object;
         container.removeView(view);
+        this.mViewCache.add(view);
     }
 
     @Override
@@ -84,15 +84,17 @@ public class CBPageAdapter<T> extends PagerAdapter {
     public CBPageAdapter(CBViewHolderCreator holderCreator, List<T> datas) {
         this.holderCreator = holderCreator;
         this.mDatas = datas;
+        this.mViewCache = new LinkedList<>();
     }
 
-    public View getView(int position, View view, ViewGroup container) {
+    public View getView(int position, ViewGroup container) {
         Holder holder = null;
-        if (view == null) {
+        if (mViewCache.isEmpty()) {
             holder = (Holder) holderCreator.createHolder();
             view = holder.createView(container.getContext());
             view.setTag(R.id.cb_item_tag, holder);
         } else {
+            view = mViewCache.removeFirst();
             holder = (Holder<T>) view.getTag(R.id.cb_item_tag);
         }
         if (mDatas != null && !mDatas.isEmpty())
@@ -100,7 +102,4 @@ public class CBPageAdapter<T> extends PagerAdapter {
         return view;
     }
 
-//    public void setOnItemClickListener(View.OnClickListener onItemClickListener) {
-//        this.onItemClickListener = onItemClickListener;
-//    }
 }
