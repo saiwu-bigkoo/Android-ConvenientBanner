@@ -12,8 +12,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+
 import com.bigkoo.convenientbanner.adapter.CBPageAdapter;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.listener.CBPageChangeListener;
@@ -30,7 +30,7 @@ import java.util.List;
  * 支持无限循环，自动翻页，翻页特效
  * @author Sai 支持自动翻页
  */
-public class ConvenientBanner<T> extends LinearLayout {
+public class ConvenientBanner<T> extends RelativeLayout {
     private List<T> mDatas;
     private int[] page_indicatorId;
     private ArrayList<ImageView> mPointViews = new ArrayList<ImageView>();
