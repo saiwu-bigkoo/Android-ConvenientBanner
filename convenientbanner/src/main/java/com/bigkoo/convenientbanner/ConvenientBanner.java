@@ -12,7 +12,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.bigkoo.convenientbanner.adapter.CBPageAdapter;
@@ -33,7 +32,7 @@ import java.util.List;
  * @author Sai 支持自动翻页
  */
 @SuppressWarnings("WeakerAccess")
-public class ConvenientBanner<T> extends LinearLayout {
+public class ConvenientBanner<T> extends RelativeLayout {
     private List<T> mDatas;
     private int[] mPageIndicatorId;
     private ArrayList<ImageView> mPointViews = new ArrayList<>();
@@ -211,7 +210,9 @@ public class ConvenientBanner<T> extends LinearLayout {
     public ConvenientBanner startTurning(long autoTurningTime) {
         //如果是正在翻页的话先停掉
         if (turning) {
-            stopTurning();
+//            stopTurning();
+            //防止下拉刷新，滑动快速闪动问题
+            return this;
         }
         //设置可以翻页并开启翻页
         canTurn = true;
@@ -268,9 +269,10 @@ public class ConvenientBanner<T> extends LinearLayout {
     //触碰控件的时候，翻页应该停止，离开的时候如果之前是开启了翻页的话则重新启动翻页
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-
         int action = ev.getAction();
-        if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL || action == MotionEvent.ACTION_OUTSIDE) {
+        if (action == MotionEvent.ACTION_UP
+                || action == MotionEvent.ACTION_CANCEL
+                || action == MotionEvent.ACTION_OUTSIDE) {
             // 开始翻页
             if (canTurn) {
                 startTurning(autoTurningTime);
@@ -349,7 +351,10 @@ public class ConvenientBanner<T> extends LinearLayout {
     }
 
     public void setCanLoop(boolean canLoop) {
-        this.canLoop = canLoop;
-        viewPager.setCanLoop(canLoop);
+        //当图片数量不大于1的时候，禁止自动轮播
+        if (mDatas.size() > 1) {
+            this.canLoop = canLoop;
+            viewPager.setCanLoop(canLoop);
+        }
     }
 }
