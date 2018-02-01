@@ -18,7 +18,7 @@ public class CBPageAdapter<T> extends PagerAdapter {
     protected CBViewHolderCreator holderCreator;
     private boolean canLoop = true;
     private CBLoopViewPager viewPager;
-    private static final int MULTIPLE_COUNT = 300;
+    private static final int MULTIPLE_COUNT = 500;
     private LinkedList<View> mViewCache;   // view cache
 
     private int mChildCount;
@@ -123,9 +123,7 @@ public class CBPageAdapter<T> extends PagerAdapter {
         } else if (position == getCount() - 1) {
             position = viewPager.getLastItem();
         }
-        if (getCount() > position) {
-            viewPager.setCurrentItem(position, false);
-        }
+        viewPager.setCurrentItem(position, false);
     }
 
     @Override

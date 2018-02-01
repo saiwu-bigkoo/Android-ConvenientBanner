@@ -120,6 +120,7 @@ public class ConvenientBanner<T> extends RelativeLayout {
     public ConvenientBanner setPages(CBViewHolderCreator holderCreator, List<T> datas) {
         this.mDatas = datas;
         pageAdapter = new CBPageAdapter(holderCreator, mDatas);
+        canLoop = mDatas.size() > 1;
         viewPager.setAdapter(pageAdapter, canLoop);
 
         if (mPageIndicatorId != null) {
@@ -210,9 +211,9 @@ public class ConvenientBanner<T> extends RelativeLayout {
     public ConvenientBanner startTurning(long autoTurningTime) {
         this.autoTurningTime = autoTurningTime;
         //设置可以翻页并开启翻页
-        canTurn = true;
+        canTurn = mDatas.size() > 1;
         //当设置循环变量及图片数量大于1时，进行循环轮播
-        if (!turning && canLoop && mDatas.size() > 1) {
+        if (!turning && canLoop) {
             postDelayed(adSwitchTask, autoTurningTime);
         }
         turning = true;
