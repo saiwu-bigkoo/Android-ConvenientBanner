@@ -18,8 +18,8 @@ demo是用Module方式依赖，你也可以使用gradle 依赖:
    或
    compile 'com.github.wexia:Android-ConvenientBanner:1.0.0'
     (1.设置图片数量不大于1张时，禁止自动轮播及手动滑动翻页，并且不显示指示器。
-    2.修复多次下拉刷新，轮播加快滑动，错位闪烁的问题。
-    3.修复设置canLoop为false且图片数量为1时报错的问题。)
+     2.修复多次下拉刷新，轮播加快滑动，错位闪烁的问题。
+     3.修复设置canLoop为false且图片数量为1时报错的问题。)
 ```
 
 
