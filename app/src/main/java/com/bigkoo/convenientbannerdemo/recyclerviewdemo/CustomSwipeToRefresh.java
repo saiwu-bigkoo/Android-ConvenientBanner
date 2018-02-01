@@ -36,6 +36,10 @@ public class CustomSwipeToRefresh extends SwipeRefreshLayout {
                 if (xDiff > mTouchSlop) {
                     return false;
                 }
+                break;
+
+            default:
+                break;
         }
 
         return super.onInterceptTouchEvent(event);

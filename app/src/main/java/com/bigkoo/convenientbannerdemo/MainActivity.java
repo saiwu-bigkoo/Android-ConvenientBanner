@@ -129,8 +129,9 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
     * */
     private void loadTestDatas() {
         //本地图片集合
-        for (int position = 0; position < 7; position++)
+        for (int position = 0; position < 7; position++) {
             localImages.add(getResId("ic_test_" + position, R.drawable.class));
+        }
 
 
 //        //各种翻页效果
@@ -206,7 +207,7 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
             convenientBanner.getViewPager().setPageTransformer(true,transforemer);
 
             //部分3D特效需要调整滑动速度
-            if(transforemerName.equals("StackTransformer")){
+            if("StackTransformer".equals(transforemerName)){
                 convenientBanner.setScrollDuration(1200);
             }
 

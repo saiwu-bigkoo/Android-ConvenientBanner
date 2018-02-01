@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+
 import com.bigkoo.convenientbanner.adapter.CBPageAdapter;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.listener.CBPageChangeListener;
@@ -28,12 +29,14 @@ import java.util.List;
 /**
  * 页面翻转控件，极方便的广告栏
  * 支持无限循环，自动翻页，翻页特效
+ *
  * @author Sai 支持自动翻页
  */
+@SuppressWarnings("WeakerAccess")
 public class ConvenientBanner<T> extends LinearLayout {
     private List<T> mDatas;
-    private int[] page_indicatorId;
-    private ArrayList<ImageView> mPointViews = new ArrayList<ImageView>();
+    private int[] mPageIndicatorId;
+    private ArrayList<ImageView> mPointViews = new ArrayList<>();
     private CBPageChangeListener pageChangeListener;
     private ViewPager.OnPageChangeListener onPageChangeListener;
     private CBPageAdapter pageAdapter;
@@ -45,10 +48,12 @@ public class ConvenientBanner<T> extends LinearLayout {
     private boolean canTurn = false;
     private boolean manualPageable = true;
     private boolean canLoop = true;
-    public enum PageIndicatorAlign{
-        ALIGN_PARENT_LEFT,ALIGN_PARENT_RIGHT,CENTER_HORIZONTAL
+
+    public enum PageIndicatorAlign {
+        ALIGN_PARENT_LEFT, ALIGN_PARENT_RIGHT, CENTER_HORIZONTAL
     }
-    private AdSwitchTask adSwitchTask ;
+
+    private AdSwitchTask adSwitchTask;
 
     public ConvenientBanner(Context context) {
         super(context);
@@ -57,8 +62,8 @@ public class ConvenientBanner<T> extends LinearLayout {
 
     public ConvenientBanner(Context context, AttributeSet attrs) {
         super(context, attrs);
-        TypedArray a = context.obtainStyledAttributes(attrs,R.styleable.ConvenientBanner);
-        canLoop = a.getBoolean(R.styleable.ConvenientBanner_canLoop,true);
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ConvenientBanner);
+        canLoop = a.getBoolean(R.styleable.ConvenientBanner_canLoop, true);
         a.recycle();
         init(context);
     }
@@ -66,8 +71,8 @@ public class ConvenientBanner<T> extends LinearLayout {
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public ConvenientBanner(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        TypedArray a = context.obtainStyledAttributes(attrs,R.styleable.ConvenientBanner);
-        canLoop = a.getBoolean(R.styleable.ConvenientBanner_canLoop,true);
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ConvenientBanner);
+        canLoop = a.getBoolean(R.styleable.ConvenientBanner_canLoop, true);
         a.recycle();
         init(context);
     }
@@ -75,8 +80,8 @@ public class ConvenientBanner<T> extends LinearLayout {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public ConvenientBanner(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        TypedArray a = context.obtainStyledAttributes(attrs,R.styleable.ConvenientBanner);
-        canLoop = a.getBoolean(R.styleable.ConvenientBanner_canLoop,true);
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ConvenientBanner);
+        canLoop = a.getBoolean(R.styleable.ConvenientBanner_canLoop, true);
         a.recycle();
         init(context);
     }
@@ -97,14 +102,14 @@ public class ConvenientBanner<T> extends LinearLayout {
         private final WeakReference<ConvenientBanner> reference;
 
         AdSwitchTask(ConvenientBanner convenientBanner) {
-            this.reference = new WeakReference<ConvenientBanner>(convenientBanner);
+            this.reference = new WeakReference<>(convenientBanner);
         }
 
         @Override
         public void run() {
             ConvenientBanner convenientBanner = reference.get();
 
-            if(convenientBanner != null){
+            if (convenientBanner != null) {
                 if (convenientBanner.viewPager != null && convenientBanner.turning) {
                     int page = convenientBanner.viewPager.getCurrentItem() + 1;
                     convenientBanner.viewPager.setCurrentItem(page);
@@ -114,13 +119,15 @@ public class ConvenientBanner<T> extends LinearLayout {
         }
     }
 
-    public ConvenientBanner setPages(CBViewHolderCreator holderCreator,List<T> datas){
+    @SuppressWarnings("unchecked")
+    public ConvenientBanner setPages(CBViewHolderCreator holderCreator, List<T> datas) {
         this.mDatas = datas;
-        pageAdapter = new CBPageAdapter(holderCreator,mDatas);
-        viewPager.setAdapter(pageAdapter,canLoop);
+        pageAdapter = new CBPageAdapter(holderCreator, mDatas);
+        viewPager.setAdapter(pageAdapter, canLoop);
 
-        if (page_indicatorId != null)
-            setPageIndicator(page_indicatorId);
+        if (mPageIndicatorId != null) {
+            setPageIndicator(mPageIndicatorId);
+        }
         return this;
     }
 
@@ -128,16 +135,15 @@ public class ConvenientBanner<T> extends LinearLayout {
      * 通知数据变化
      * 如果只是增加数据建议使用 notifyDataSetAdd()
      */
-    public void notifyDataSetChanged(){
+    public void notifyDataSetChanged() {
         viewPager.getAdapter().notifyDataSetChanged();
-        if (page_indicatorId != null)
-            setPageIndicator(page_indicatorId);
+        if (mPageIndicatorId != null) {
+            setPageIndicator(mPageIndicatorId);
+        }
     }
 
     /**
      * 设置底部指示器是否可见
-     *
-     * @param visible
      */
     public ConvenientBanner setPointViewVisible(boolean visible) {
         loPageTurningPoint.setVisibility(visible ? View.VISIBLE : View.GONE);
@@ -146,38 +152,41 @@ public class ConvenientBanner<T> extends LinearLayout {
 
     /**
      * 底部指示器资源图片
-     *
-     * @param page_indicatorId
      */
-    public ConvenientBanner setPageIndicator(int[] page_indicatorId) {
+    public ConvenientBanner setPageIndicator(int[] pageIndicatorId) {
         loPageTurningPoint.removeAllViews();
         mPointViews.clear();
-        this.page_indicatorId = page_indicatorId;
-        if(mDatas==null)return this;
+        this.mPageIndicatorId = pageIndicatorId;
+        if (mDatas == null) {
+            return this;
+        }
         for (int count = 0; count < mDatas.size(); count++) {
             // 翻页指示的点
             ImageView pointView = new ImageView(getContext());
             pointView.setPadding(5, 0, 5, 0);
-            if (mPointViews.isEmpty())
-                pointView.setImageResource(page_indicatorId[1]);
-            else
-                pointView.setImageResource(page_indicatorId[0]);
+            if (mPointViews.isEmpty()) {
+                pointView.setImageResource(pageIndicatorId[1]);
+            } else {
+                pointView.setImageResource(pageIndicatorId[0]);
+            }
             mPointViews.add(pointView);
             loPageTurningPoint.addView(pointView);
         }
         pageChangeListener = new CBPageChangeListener(mPointViews,
-                page_indicatorId);
+                pageIndicatorId);
         viewPager.setOnPageChangeListener(pageChangeListener);
         pageChangeListener.onPageSelected(viewPager.getRealItem());
-        if(onPageChangeListener != null)pageChangeListener.setOnPageChangeListener(onPageChangeListener);
+        if (onPageChangeListener != null) {
+            pageChangeListener.setOnPageChangeListener(onPageChangeListener);
+        }
 
         return this;
     }
 
     /**
      * 指示器的方向
-     * @param align  三个方向：居左 （RelativeLayout.ALIGN_PARENT_LEFT），居中 （RelativeLayout.CENTER_HORIZONTAL），居右 （RelativeLayout.ALIGN_PARENT_RIGHT）
-     * @return
+     *
+     * @param align 三个方向：居左 （RelativeLayout.ALIGN_PARENT_LEFT），居中 （RelativeLayout.CENTER_HORIZONTAL），居右 （RelativeLayout.ALIGN_PARENT_RIGHT）
      */
     public ConvenientBanner setPageIndicatorAlign(PageIndicatorAlign align) {
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) loPageTurningPoint.getLayoutParams();
@@ -190,7 +199,6 @@ public class ConvenientBanner<T> extends LinearLayout {
 
     /***
      * 是否开启了翻页
-     * @return
      */
     public boolean isTurning() {
         return turning;
@@ -199,11 +207,10 @@ public class ConvenientBanner<T> extends LinearLayout {
     /***
      * 开始翻页
      * @param autoTurningTime 自动翻页时间
-     * @return
      */
     public ConvenientBanner startTurning(long autoTurningTime) {
         //如果是正在翻页的话先停掉
-        if(turning){
+        if (turning) {
             stopTurning();
         }
         //设置可以翻页并开启翻页
@@ -221,9 +228,6 @@ public class ConvenientBanner<T> extends LinearLayout {
 
     /**
      * 自定义翻页动画效果
-     *
-     * @param transformer
-     * @return
      */
     public ConvenientBanner setPageTransformer(PageTransformer transformer) {
         viewPager.setPageTransformer(true, transformer);
@@ -233,10 +237,11 @@ public class ConvenientBanner<T> extends LinearLayout {
 
     /**
      * 设置ViewPager的滑动速度
-     * */
+     */
+    @SuppressWarnings("TryWithIdenticalCatches")
     private void initViewPagerScroll() {
         try {
-            Field mScroller = null;
+            Field mScroller;
             mScroller = ViewPager.class.getDeclaredField("mScroller");
             mScroller.setAccessible(true);
             scroller = new ViewPagerScroller(
@@ -265,26 +270,31 @@ public class ConvenientBanner<T> extends LinearLayout {
     public boolean dispatchTouchEvent(MotionEvent ev) {
 
         int action = ev.getAction();
-        if (action == MotionEvent.ACTION_UP||action == MotionEvent.ACTION_CANCEL||action == MotionEvent.ACTION_OUTSIDE) {
+        if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL || action == MotionEvent.ACTION_OUTSIDE) {
             // 开始翻页
-            if (canTurn)startTurning(autoTurningTime);
+            if (canTurn) {
+                startTurning(autoTurningTime);
+            }
         } else if (action == MotionEvent.ACTION_DOWN) {
             // 停止翻页
-            if (canTurn)stopTurning();
+            if (canTurn) {
+                stopTurning();
+            }
         }
         return super.dispatchTouchEvent(ev);
     }
 
     //获取当前的页面index
-    public int getCurrentItem(){
-        if (viewPager!=null) {
+    public int getCurrentItem() {
+        if (viewPager != null) {
             return viewPager.getRealItem();
         }
         return -1;
     }
+
     //设置当前的页面index
-    public void setcurrentitem(int index){
-        if (viewPager!=null) {
+    public void setcurrentitem(int index) {
+        if (viewPager != null) {
             viewPager.setCurrentItem(index);
         }
     }
@@ -295,14 +305,15 @@ public class ConvenientBanner<T> extends LinearLayout {
 
     /**
      * 设置翻页监听器
-     * @param onPageChangeListener
-     * @return
      */
     public ConvenientBanner setOnPageChangeListener(ViewPager.OnPageChangeListener onPageChangeListener) {
         this.onPageChangeListener = onPageChangeListener;
         //如果有默认的监听器（即是使用了默认的翻页指示器）则把用户设置的依附到默认的上面，否则就直接设置
-        if(pageChangeListener != null)pageChangeListener.setOnPageChangeListener(onPageChangeListener);
-        else viewPager.setOnPageChangeListener(onPageChangeListener);
+        if (pageChangeListener != null) {
+            pageChangeListener.setOnPageChangeListener(onPageChangeListener);
+        } else {
+            viewPager.setOnPageChangeListener(onPageChangeListener);
+        }
         return this;
     }
 
@@ -312,7 +323,6 @@ public class ConvenientBanner<T> extends LinearLayout {
 
     /**
      * 监听item点击
-     * @param onItemClickListener
      */
     public ConvenientBanner setOnItemClickListener(OnItemClickListener onItemClickListener) {
         if (onItemClickListener == null) {
@@ -325,9 +335,8 @@ public class ConvenientBanner<T> extends LinearLayout {
 
     /**
      * 设置ViewPager的滚动速度
-     * @param scrollDuration
      */
-    public void setScrollDuration(int scrollDuration){
+    public void setScrollDuration(int scrollDuration) {
         scroller.setScrollDuration(scrollDuration);
     }
 

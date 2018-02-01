@@ -11,28 +11,25 @@ import com.bigkoo.convenientbanner.view.CBLoopViewPager;
 
 import java.util.List;
 
-/**
- * Created by Sai on 15/7/29.
- */
+@SuppressWarnings("WeakerAccess")
 public class CBPageAdapter<T> extends PagerAdapter {
     protected List<T> mDatas;
     protected CBViewHolderCreator holderCreator;
-//    private View.OnClickListener onItemClickListener;
     private boolean canLoop = true;
     private CBLoopViewPager viewPager;
-    private final int MULTIPLE_COUNT = 300;
+    private static final int MULTIPLE_COUNT = 300;
 
     public int toRealPosition(int position) {
         int realCount = getRealCount();
-        if (realCount == 0)
+        if (realCount == 0) {
             return 0;
-        int realPosition = position % realCount;
-        return realPosition;
+        }
+        return position % realCount;
     }
 
     @Override
     public int getCount() {
-        return canLoop ? getRealCount()*MULTIPLE_COUNT : getRealCount();
+        return canLoop ? getRealCount() * MULTIPLE_COUNT : getRealCount();
     }
 
     public int getRealCount() {
@@ -41,17 +38,15 @@ public class CBPageAdapter<T> extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        int realPosition = toRealPosition(position);
-
-        View view = getView(realPosition, null, container);
-//        if(onItemClickListener != null) view.setOnClickListener(onItemClickListener);
+        final int realPosition = toRealPosition(position);
+        final View view = getView(realPosition, null, container);
         container.addView(view);
         return view;
     }
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        View view = (View) object;
+        final View view = (View) object;
         container.removeView(view);
     }
 
@@ -65,7 +60,8 @@ public class CBPageAdapter<T> extends PagerAdapter {
         }
         try {
             viewPager.setCurrentItem(position, false);
-        }catch (IllegalStateException e){}
+        } catch (IllegalStateException ignored) {
+        }
     }
 
     @Override
@@ -86,8 +82,9 @@ public class CBPageAdapter<T> extends PagerAdapter {
         this.mDatas = datas;
     }
 
+    @SuppressWarnings("unchecked")
     public View getView(int position, View view, ViewGroup container) {
-        Holder holder = null;
+        Holder holder;
         if (view == null) {
             holder = (Holder) holderCreator.createHolder();
             view = holder.createView(container.getContext());
@@ -95,12 +92,9 @@ public class CBPageAdapter<T> extends PagerAdapter {
         } else {
             holder = (Holder<T>) view.getTag(R.id.cb_item_tag);
         }
-        if (mDatas != null && !mDatas.isEmpty())
-            holder.UpdateUI(container.getContext(), position, mDatas.get(position));
+        if (mDatas != null && !mDatas.isEmpty()) {
+            holder.updateUI(container.getContext(), position, mDatas.get(position));
+        }
         return view;
     }
-
-//    public void setOnItemClickListener(View.OnClickListener onItemClickListener) {
-//        this.onItemClickListener = onItemClickListener;
-//    }
 }

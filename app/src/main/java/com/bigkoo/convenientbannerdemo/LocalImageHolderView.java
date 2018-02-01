@@ -10,8 +10,10 @@ import com.bigkoo.convenientbanner.holder.Holder;
  * Created by Sai on 15/8/4.
  * 本地图片Holder例子
  */
+@SuppressWarnings("WeakerAccess")
 public class LocalImageHolderView implements Holder<Integer> {
     private ImageView imageView;
+
     @Override
     public View createView(Context context) {
         imageView = new ImageView(context);
@@ -20,7 +22,7 @@ public class LocalImageHolderView implements Holder<Integer> {
     }
 
     @Override
-    public void UpdateUI(Context context, int position, Integer data) {
+    public void updateUI(Context context, int position, Integer data) {
         imageView.setImageResource(data);
     }
 }
