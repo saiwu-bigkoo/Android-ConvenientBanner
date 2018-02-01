@@ -35,7 +35,8 @@ public class CBPageChangeListener implements ViewPager.OnPageChangeListener {
 
     @Override
     public void onPageSelected(int index) {
-        for (int i = 0; i < pointViews.size(); i++) {
+        final int size = pointViews.size();
+        for (int i = 0; i < size; i++) {
             pointViews.get(index).setImageResource(mPageIndicatorId[1]);
             if (index != i) {
                 pointViews.get(i).setImageResource(mPageIndicatorId[0]);

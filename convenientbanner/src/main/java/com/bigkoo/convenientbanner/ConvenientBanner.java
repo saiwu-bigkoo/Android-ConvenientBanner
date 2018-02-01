@@ -61,7 +61,7 @@ public class ConvenientBanner<T> extends RelativeLayout {
 
     public ConvenientBanner(Context context, AttributeSet attrs) {
         super(context, attrs);
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ConvenientBanner);
+        final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ConvenientBanner);
         canLoop = a.getBoolean(R.styleable.ConvenientBanner_canLoop, true);
         a.recycle();
         init(context);
@@ -70,7 +70,7 @@ public class ConvenientBanner<T> extends RelativeLayout {
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public ConvenientBanner(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ConvenientBanner);
+        final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ConvenientBanner);
         canLoop = a.getBoolean(R.styleable.ConvenientBanner_canLoop, true);
         a.recycle();
         init(context);
@@ -79,14 +79,14 @@ public class ConvenientBanner<T> extends RelativeLayout {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public ConvenientBanner(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ConvenientBanner);
+        final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ConvenientBanner);
         canLoop = a.getBoolean(R.styleable.ConvenientBanner_canLoop, true);
         a.recycle();
         init(context);
     }
 
     private void init(Context context) {
-        View hView = LayoutInflater.from(context).inflate(
+        final View hView = LayoutInflater.from(context).inflate(
                 R.layout.include_viewpager, this, true);
         viewPager = (CBLoopViewPager) hView.findViewById(R.id.cbLoopViewPager);
         loPageTurningPoint = (ViewGroup) hView
@@ -97,7 +97,6 @@ public class ConvenientBanner<T> extends RelativeLayout {
     }
 
     static class AdSwitchTask implements Runnable {
-
         private final WeakReference<ConvenientBanner> reference;
 
         AdSwitchTask(ConvenientBanner convenientBanner) {
@@ -106,8 +105,7 @@ public class ConvenientBanner<T> extends RelativeLayout {
 
         @Override
         public void run() {
-            ConvenientBanner convenientBanner = reference.get();
-
+            final ConvenientBanner convenientBanner = reference.get();
             if (convenientBanner != null) {
                 if (convenientBanner.viewPager != null && convenientBanner.turning) {
                     int page = convenientBanner.viewPager.getCurrentItem() + 1;
@@ -159,26 +157,28 @@ public class ConvenientBanner<T> extends RelativeLayout {
         if (mDatas == null) {
             return this;
         }
-        for (int count = 0; count < mDatas.size(); count++) {
-            // 翻页指示的点
-            ImageView pointView = new ImageView(getContext());
-            pointView.setPadding(5, 0, 5, 0);
-            if (mPointViews.isEmpty()) {
-                pointView.setImageResource(pageIndicatorId[1]);
-            } else {
-                pointView.setImageResource(pageIndicatorId[0]);
+        final int size = mDatas.size();
+        //当图片数量不大于1时，不设置指示器
+        if (size > 1) {
+            for (int count = 0; count < size; count++) {
+                // 翻页指示的点
+                ImageView pointView = new ImageView(getContext());
+                pointView.setPadding(5, 0, 5, 0);
+                if (mPointViews.isEmpty()) {
+                    pointView.setImageResource(pageIndicatorId[1]);
+                } else {
+                    pointView.setImageResource(pageIndicatorId[0]);
+                }
+                mPointViews.add(pointView);
+                loPageTurningPoint.addView(pointView);
             }
-            mPointViews.add(pointView);
-            loPageTurningPoint.addView(pointView);
         }
-        pageChangeListener = new CBPageChangeListener(mPointViews,
-                pageIndicatorId);
+        pageChangeListener = new CBPageChangeListener(mPointViews, pageIndicatorId);
         viewPager.setOnPageChangeListener(pageChangeListener);
         pageChangeListener.onPageSelected(viewPager.getRealItem());
         if (onPageChangeListener != null) {
             pageChangeListener.setOnPageChangeListener(onPageChangeListener);
         }
-
         return this;
     }
 
@@ -208,17 +208,14 @@ public class ConvenientBanner<T> extends RelativeLayout {
      * @param autoTurningTime 自动翻页时间
      */
     public ConvenientBanner startTurning(long autoTurningTime) {
-        //如果是正在翻页的话先停掉
-        if (turning) {
-//            stopTurning();
-            //防止下拉刷新，滑动快速闪动问题
-            return this;
-        }
+        this.autoTurningTime = autoTurningTime;
         //设置可以翻页并开启翻页
         canTurn = true;
-        this.autoTurningTime = autoTurningTime;
+        //当设置循环变量及图片数量大于1时，进行循环轮播
+        if (!turning && canLoop && mDatas.size() > 1) {
+            postDelayed(adSwitchTask, autoTurningTime);
+        }
         turning = true;
-        postDelayed(adSwitchTask, autoTurningTime);
         return this;
     }
 
@@ -235,7 +232,6 @@ public class ConvenientBanner<T> extends RelativeLayout {
         return this;
     }
 
-
     /**
      * 设置ViewPager的滑动速度
      */
@@ -248,7 +244,6 @@ public class ConvenientBanner<T> extends RelativeLayout {
             scroller = new ViewPagerScroller(
                     viewPager.getContext());
             mScroller.set(viewPager, scroller);
-
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         } catch (IllegalArgumentException e) {
@@ -351,10 +346,7 @@ public class ConvenientBanner<T> extends RelativeLayout {
     }
 
     public void setCanLoop(boolean canLoop) {
-        //当图片数量不大于1的时候，禁止自动轮播
-        if (mDatas.size() > 1) {
-            this.canLoop = canLoop;
-            viewPager.setCanLoop(canLoop);
-        }
+        this.canLoop = canLoop;
+        viewPager.setCanLoop(canLoop);
     }
 }

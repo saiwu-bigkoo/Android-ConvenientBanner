@@ -9,9 +9,8 @@ import android.view.MotionEvent;
 import com.bigkoo.convenientbanner.adapter.CBPageAdapter;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 
-
 public class CBLoopViewPager extends ViewPager {
-    OnPageChangeListener mOuterPageChangeListener;
+    private OnPageChangeListener mOuterPageChangeListener;
     private OnItemClickListener onItemClickListener;
     private CBPageAdapter mAdapter;
 
@@ -19,15 +18,16 @@ public class CBLoopViewPager extends ViewPager {
     private boolean canLoop = true;
 
     public void setAdapter(PagerAdapter adapter, boolean canLoop) {
+        this.canLoop = canLoop;
         mAdapter = (CBPageAdapter) adapter;
         mAdapter.setCanLoop(canLoop);
         mAdapter.setViewPager(this);
         super.setAdapter(mAdapter);
 
-        setCurrentItem(getFristItem(), false);
+        setCurrentItem(getFirstItem(), false);
     }
 
-    public int getFristItem() {
+    public int getFirstItem() {
         return canLoop ? mAdapter.getRealCount() : 0;
     }
 
@@ -134,8 +134,7 @@ public class CBLoopViewPager extends ViewPager {
                     if (positionOffset > .5) {
                         mOuterPageChangeListener.onPageScrolled(0, 0, 0);
                     } else {
-                        mOuterPageChangeListener.onPageScrolled(position,
-                                0, 0);
+                        mOuterPageChangeListener.onPageScrolled(position, 0, 0);
                     }
                 }
             }

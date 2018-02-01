@@ -1,8 +1,9 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+<android.support.v7.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <com.bigkoo.convenientbanner.ConvenientBanner
         android:id="@+id/convenientBanner"
@@ -10,8 +11,8 @@
         android:layout_height="200dp"
         app:canLoop="true"/>
 
-    <ListView
+    <android.support.v7.widget.ListViewCompat
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-</LinearLayout>
+</android.support.v7.widget.LinearLayoutCompat>

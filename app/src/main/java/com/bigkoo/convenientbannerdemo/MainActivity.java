@@ -1,17 +1,31 @@
 package com.bigkoo.convenientbannerdemo;
 
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ListViewCompat;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
-import com.ToxicBakery.viewpager.transforms.*;
-import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
+import com.ToxicBakery.viewpager.transforms.ABaseTransformer;
+import com.ToxicBakery.viewpager.transforms.AccordionTransformer;
+import com.ToxicBakery.viewpager.transforms.BackgroundToForegroundTransformer;
+import com.ToxicBakery.viewpager.transforms.CubeInTransformer;
+import com.ToxicBakery.viewpager.transforms.CubeOutTransformer;
+import com.ToxicBakery.viewpager.transforms.DefaultTransformer;
+import com.ToxicBakery.viewpager.transforms.DepthPageTransformer;
+import com.ToxicBakery.viewpager.transforms.FlipHorizontalTransformer;
+import com.ToxicBakery.viewpager.transforms.FlipVerticalTransformer;
+import com.ToxicBakery.viewpager.transforms.ForegroundToBackgroundTransformer;
+import com.ToxicBakery.viewpager.transforms.RotateDownTransformer;
+import com.ToxicBakery.viewpager.transforms.RotateUpTransformer;
+import com.ToxicBakery.viewpager.transforms.StackTransformer;
+import com.ToxicBakery.viewpager.transforms.ZoomInTransformer;
+import com.ToxicBakery.viewpager.transforms.ZoomOutTranformer;
 import com.bigkoo.convenientbanner.ConvenientBanner;
+import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -27,9 +41,11 @@ import java.util.List;
  * Created by Sai on 15/7/30.
  * convenientbanner 控件 的 demo
  */
-public class MainActivity extends ActionBarActivity implements AdapterView.OnItemClickListener, ViewPager.OnPageChangeListener, OnItemClickListener {
+@SuppressWarnings("unchecked")
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener,
+        ViewPager.OnPageChangeListener, OnItemClickListener {
     private ConvenientBanner convenientBanner;//顶部广告栏控件
-    private ArrayList<Integer> localImages = new ArrayList<Integer>();
+    private ArrayList<Integer> localImages = new ArrayList<>();
     private List<String> networkImages;
     private String[] images = {"http://img2.imgtn.bdimg.com/it/u=3093785514,1341050958&fm=21&gp=0.jpg",
             "http://img2.3lian.com/2014/f2/37/d/40.jpg",
@@ -40,9 +56,9 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
             "http://f.hiphotos.baidu.com/image/pic/item/09fa513d269759ee50f1971ab6fb43166c22dfba.jpg"
     };
 
-    private ListView listView;
+    private ListViewCompat listView;
     private ArrayAdapter transformerArrayAdapter;
-    private ArrayList<String> transformerList = new ArrayList<String>();
+    private ArrayList<String> transformerList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,13 +70,13 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
 
     private void initViews() {
         convenientBanner = (ConvenientBanner) findViewById(R.id.convenientBanner);
-        listView = (ListView) findViewById(R.id.listView);
-        transformerArrayAdapter = new ArrayAdapter(this,R.layout.adapter_transformer,transformerList);
+        listView = (ListViewCompat) findViewById(R.id.listView);
+        transformerArrayAdapter = new ArrayAdapter(this, R.layout.adapter_transformer, transformerList);
         listView.setAdapter(transformerArrayAdapter);
         listView.setOnItemClickListener(this);
     }
 
-    private void init(){
+    private void init() {
         initImageLoader();
         loadTestDatas();
         //本地图片例子
@@ -90,7 +106,6 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
 //        },networkImages);
 
 
-
 //手动New并且添加到ListView Header的例子
 //        ConvenientBanner mConvenientBanner = new ConvenientBanner(this,false);
 //        mConvenientBanner.setMinimumHeight(500);
@@ -110,7 +125,7 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
     }
 
     //初始化网络图片缓存库
-    private void initImageLoader(){
+    private void initImageLoader() {
         //网络图片例子,结合常用的图片缓存库UIL,你可以根据自己需求自己换其他网络图片库
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder().
                 showImageForEmptyUri(R.drawable.ic_default_adimage)
@@ -124,17 +139,14 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
                 .tasksProcessingOrder(QueueProcessingType.LIFO).build();
         ImageLoader.getInstance().init(config);
     }
-    /*
-    加入测试Views
-    * */
+
     private void loadTestDatas() {
         //本地图片集合
-        for (int position = 0; position < 7; position++) {
+        for (int position = 0; position < 2; position++) {
             localImages.add(getResId("ic_test_" + position, R.drawable.class));
         }
 
-
-//        //各种翻页效果
+        //各种翻页效果
         transformerList.add(DefaultTransformer.class.getSimpleName());
         transformerList.add(AccordionTransformer.class.getSimpleName());
         transformerList.add(BackgroundToForegroundTransformer.class.getSimpleName());
@@ -155,10 +167,6 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
 
     /**
      * 通过文件名获取资源id 例子：getResId("icon", R.drawable.class);
-     *
-     * @param variableName
-     * @param c
-     * @return
      */
     public static int getResId(String variableName, Class<?> c) {
         try {
@@ -178,7 +186,7 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
         convenientBanner.startTurning(5000);
     }
 
-     // 停止自动翻页
+    // 停止自动翻页
     @Override
     protected void onPause() {
         super.onPause();
@@ -187,6 +195,7 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
     }
 
     //点击切换效果
+    @SuppressWarnings("TryWithIdenticalCatches")
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 
@@ -199,18 +208,16 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
         //控制是否循环
 //        convenientBanner.setCanLoop(!convenientBanner.isCanLoop());
 
-
         String transforemerName = transformerList.get(position);
         try {
             Class cls = Class.forName("com.ToxicBakery.viewpager.transforms." + transforemerName);
-            ABaseTransformer transforemer= (ABaseTransformer)cls.newInstance();
-            convenientBanner.getViewPager().setPageTransformer(true,transforemer);
+            ABaseTransformer transforemer = (ABaseTransformer) cls.newInstance();
+            convenientBanner.getViewPager().setPageTransformer(true, transforemer);
 
             //部分3D特效需要调整滑动速度
-            if("StackTransformer".equals(transforemerName)){
+            if ("StackTransformer".equals(transforemerName)) {
                 convenientBanner.setScrollDuration(1200);
             }
-
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {
@@ -218,7 +225,6 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
@@ -228,7 +234,7 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
 
     @Override
     public void onPageSelected(int position) {
-        Toast.makeText(this,"监听到翻到第"+position+"了",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "监听到翻到第" + position + "了", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -237,6 +243,6 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
 
     @Override
     public void onItemClick(int position) {
-        Toast.makeText(this,"点击了第"+position+"个",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "点击了第" + position + "个", Toast.LENGTH_SHORT).show();
     }
 }
