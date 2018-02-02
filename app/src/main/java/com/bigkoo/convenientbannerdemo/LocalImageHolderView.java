@@ -1,23 +1,19 @@
 package com.bigkoo.convenientbannerdemo;
 
 import android.content.Context;
+import android.support.v7.widget.AppCompatImageView;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.bigkoo.convenientbanner.holder.Holder;
 
-/**
- * Created by Sai on 15/8/4.
- * 本地图片Holder例子
- */
 @SuppressWarnings("WeakerAccess")
 public class LocalImageHolderView implements Holder<Integer> {
-    private ImageView imageView;
+    private AppCompatImageView imageView;
 
     @Override
     public View createView(Context context) {
-        imageView = new ImageView(context);
-        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+        imageView = new AppCompatImageView(context);
+        imageView.setScaleType(AppCompatImageView.ScaleType.FIT_XY);
         return imageView;
     }
 

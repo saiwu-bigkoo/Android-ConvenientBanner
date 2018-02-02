@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private ConvenientBanner convenientBanner;//顶部广告栏控件
     private ArrayList<Integer> localImages = new ArrayList<>();
     private List<String> networkImages;
+    @SuppressWarnings({"unused", "MismatchedReadAndWriteOfArray"})
     private String[] images = {"http://img2.imgtn.bdimg.com/it/u=3093785514,1341050958&fm=21&gp=0.jpg",
             "http://img2.3lian.com/2014/f2/37/d/40.jpg",
             "http://d.3987.com/sqmy_131219/001.jpg",
@@ -86,10 +87,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 //设置两个点图片作为翻页指示器，不设置则没有指示器，可以根据自己需求自行配合自己的指示器,不需要圆点指示器可用不设
                 .setPageIndicator(new int[]{R.drawable.ic_page_indicator, R.drawable.ic_page_indicator_focused})
                 //设置指示器的方向
-//                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
-//                .setOnPageChangeListener(this)//监听翻页事件
+                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
+                //监听翻页事件
+                .setOnPageChangeListener(this)
+                //设置item点击事件
                 .setOnItemClickListener(this)
-                .setManualPageable(false)
+                //设置手动滑动翻页
+                .setManualPageable(true)
+                //设置自动轮播
                 .setCanLoop(true);
 
         //网络加载例子
@@ -101,8 +106,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 //            }
 //        },networkImages);
 
-
-//手动New并且添加到ListView Header的例子
+        //手动New并且添加到ListView Header的例子
 //        ConvenientBanner mConvenientBanner = new ConvenientBanner(this,false);
 //        mConvenientBanner.setMinimumHeight(500);
 //        mConvenientBanner.setPages(
@@ -112,9 +116,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 //                        return new LocalImageHolderView();
 //                    }
 //                }, localImages)
-//                //设置两个点图片作为翻页指示器，不设置则没有指示器，可以根据自己需求自行配合自己的指示器,不需要圆点指示器可用不设
+        //设置两个点图片作为翻页指示器，不设置则没有指示器，可以根据自己需求自行配合自己的指示器,不需要圆点指示器可用不设
 //                .setPageIndicator(new int[]{R.drawable.ic_page_indicator, R.drawable.ic_page_indicator_focused})
-//                        //设置指示器的方向
+        //设置指示器的方向
 //                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
 //                .setOnItemClickListener(this);
 //        listView.addHeaderView(mConvenientBanner);
