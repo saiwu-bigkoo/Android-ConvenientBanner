@@ -1,5 +1,6 @@
 package com.bigkoo.convenientbannerdemo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +28,7 @@ import com.ToxicBakery.viewpager.transforms.ZoomOutTranformer;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
+import com.bigkoo.convenientbannerdemo.recyclerviewdemo.ADRecyclerViewDemo;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -71,6 +73,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         transformerArrayAdapter = new ArrayAdapter(this, R.layout.adapter_transformer, transformerList);
         listView.setAdapter(transformerArrayAdapter);
         listView.setOnItemClickListener(this);
+
+        findViewById(R.id.main_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, ADRecyclerViewDemo.class));
+            }
+        });
     }
 
     private void init() {
