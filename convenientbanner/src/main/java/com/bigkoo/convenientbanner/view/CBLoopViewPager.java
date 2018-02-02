@@ -59,6 +59,8 @@ public class CBLoopViewPager extends ViewPager {
                     oldX = ev.getX();
                 }
                 isStopManualSliding = !this.isCanScroll;
+                getParent().requestDisallowInterceptTouchEvent(true);
+
             } else if (action == MotionEvent.ACTION_UP
                     || action == MotionEvent.ACTION_CANCEL
                     || action == MotionEvent.ACTION_OUTSIDE) {
@@ -72,6 +74,7 @@ public class CBLoopViewPager extends ViewPager {
                     newX = 0;
                 }
                 isStopManualSliding = !this.canLoop && !isCanScroll;
+                getParent().requestDisallowInterceptTouchEvent(false);
             }
         }
         return isStopManualSliding || super.onTouchEvent(ev);
