@@ -1,4 +1,4 @@
-[![Android Gems](http://www.android-gems.com/badge/saiwu-bigkoo/Android-ConvenientBanner.svg?branch=master)](http://www.android-gems.com/lib/saiwu-bigkoo/Android-ConvenientBanner)
+[![Android Gems](http://www.android-gems.com/badge/saiwu-bigkoo/Android-ConvenientBanner.svg?branch=master)](http://www.android-gems.com/lib/saiwu-bigkoo/Android-ConvenientBanner) [![](https://jitpack.io/v/wexia/Android-ConvenientBanner.svg)](https://jitpack.io/#wexia/Android-ConvenientBanner)
 
 ConvenientBanner
 ===========
