@@ -16,7 +16,7 @@ demo是用Module方式依赖，你也可以使用gradle 依赖:
 ```class
    compile 'com.bigkoo:convenientbanner:2.0.5'
    或
-   compile 'com.github.wexia:Android-ConvenientBanner:1.0.1'
+   compile 'com.github.wexia:Android-ConvenientBanner:1.0.2'
 ```
 
 
