@@ -1,5 +1,6 @@
 package com.bigkoo.convenientbannerdemo.recyclerviewdemo;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -30,7 +31,7 @@ import java.util.List;
 public class ADRecyclerViewDemo extends Activity implements SwipeRefreshLayout.OnRefreshListener {
     private SwipeRefreshLayout refreshLayout;
     private RecyclerView listView;
-    private ArrayList<String> mDatas = new ArrayList<String>();
+    private ArrayList<String> mDatas = new ArrayList<>();
     private RecyclerViewHFAdapter adapter;
     private ConvenientBanner convenientBanner;
 
@@ -52,15 +53,17 @@ public class ADRecyclerViewDemo extends Activity implements SwipeRefreshLayout.O
         initEvents();
     }
 
+    @SuppressLint("InflateParams")
     private void initViews() {
         setContentView(R.layout.acitvity_adrecyclerviewdemo);
         refreshLayout = (SwipeRefreshLayout) findViewById(R.id.refreshLayout);
-        convenientBanner = (ConvenientBanner) LayoutInflater.from(this).inflate(R.layout.adapter_header_cb,null);
-        convenientBanner.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,600));
+        convenientBanner = (ConvenientBanner) LayoutInflater.from(this).inflate(R.layout.adapter_header_cb, null);
+        convenientBanner.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 600));
         listView = (RecyclerView) findViewById(R.id.recyclerView);
     }
 
-    private void init(){
+    @SuppressWarnings("unchecked")
+    private void init() {
         initImageLoader();
 
         listView.setHasFixedSize(true);
@@ -69,23 +72,25 @@ public class ADRecyclerViewDemo extends Activity implements SwipeRefreshLayout.O
         adapter = new RecyclerViewHFAdapter(mDatas);
         listView.setAdapter(adapter);
 
-        networkImages= Arrays.asList(images);
+        networkImages = Arrays.asList(images);
         convenientBanner.setPages(new CBViewHolderCreator<NetworkImageHolderView>() {
             @Override
             public NetworkImageHolderView createHolder() {
                 return new NetworkImageHolderView();
             }
-        },networkImages)
-        .setPageIndicator(new int[]{R.drawable.ic_page_indicator, R.drawable.ic_page_indicator_focused});
+        }, networkImages)
+                .setPageIndicator(new int[]{R.drawable.ic_page_indicator, R.drawable.ic_page_indicator_focused});
 
         adapter.addHeader(convenientBanner);
         loadTestDatas();
     }
+
     private void initEvents() {
         refreshLayout.setOnRefreshListener(this);
     }
+
     //初始化网络图片缓存库
-    private void initImageLoader(){
+    private void initImageLoader() {
         //网络图片例子,结合常用的图片缓存库UIL,你可以根据自己需求自己换其他网络图片库
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder().
                 showImageForEmptyUri(R.drawable.ic_default_adimage)
@@ -99,6 +104,7 @@ public class ADRecyclerViewDemo extends Activity implements SwipeRefreshLayout.O
                 .tasksProcessingOrder(QueueProcessingType.LIFO).build();
         ImageLoader.getInstance().init(config);
     }
+
     /*
     加入测试Views
     * */
@@ -107,6 +113,7 @@ public class ADRecyclerViewDemo extends Activity implements SwipeRefreshLayout.O
         mDatas.add("test＝＝＝＝＝＝＝＝＝＝＝");
         adapter.notifyDataSetChanged();
     }
+
     // 开始自动翻页
     @Override
     protected void onResume() {

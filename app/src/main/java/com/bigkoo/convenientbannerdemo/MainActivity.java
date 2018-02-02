@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private void loadTestDatas() {
         //本地图片集合
-        for (int position = 0; position < 2; position++) {
+        for (int position = 0; position < 3; position++) {
             localImages.add(getResId("ic_test_" + position, R.drawable.class));
         }
 

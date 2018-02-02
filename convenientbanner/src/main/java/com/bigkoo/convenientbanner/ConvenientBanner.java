@@ -4,6 +4,8 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.PageTransformer;
 import android.support.v7.widget.AppCompatImageView;
@@ -31,8 +33,10 @@ import java.util.List;
  *
  * @author Sai 支持自动翻页
  */
-@SuppressWarnings("WeakerAccess")
+@SuppressWarnings({"WeakerAccess", "FieldCanBeLocal"})
 public class ConvenientBanner<T> extends RelativeLayout {
+    private static final int START_TURN_CODE = 1;
+
     private List<T> mDatas;
     private int[] mPageIndicatorId;
     private ArrayList<AppCompatImageView> mPointViews = new ArrayList<>();
@@ -50,8 +54,6 @@ public class ConvenientBanner<T> extends RelativeLayout {
     public enum PageIndicatorAlign {
         ALIGN_PARENT_LEFT, ALIGN_PARENT_RIGHT, CENTER_HORIZONTAL
     }
-
-    private AdSwitchTask adSwitchTask;
 
     public ConvenientBanner(Context context) {
         super(context);
@@ -91,27 +93,25 @@ public class ConvenientBanner<T> extends RelativeLayout {
         loPageTurningPoint = (ViewGroup) hView
                 .findViewById(R.id.loPageTurningPoint);
         initViewPagerScroll();
-
-        adSwitchTask = new AdSwitchTask(this);
     }
 
-    static class AdSwitchTask implements Runnable {
-        private final WeakReference<ConvenientBanner> reference;
-
-        AdSwitchTask(ConvenientBanner convenientBanner) {
-            this.reference = new WeakReference<>(convenientBanner);
-        }
-
-        @Override
-        public void run() {
-            final ConvenientBanner convenientBanner = reference.get();
-            if (convenientBanner != null) {
-                if (convenientBanner.viewPager != null && convenientBanner.turning) {
-                    int page = convenientBanner.viewPager.getCurrentItem() + 1;
-                    convenientBanner.viewPager.setCurrentItem(page);
-                    convenientBanner.postDelayed(convenientBanner.adSwitchTask, convenientBanner.autoTurningTime);
-                }
-            }
+    /**
+     * 设置ViewPager的滑动速度
+     */
+    @SuppressWarnings("TryWithIdenticalCatches")
+    private void initViewPagerScroll() {
+        try {
+            final Field mScroller = ViewPager.class.getDeclaredField("mScroller");
+            mScroller.setAccessible(true);
+            scroller = new ViewPagerScroller(
+                    viewPager.getContext());
+            mScroller.set(viewPager, scroller);
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
         }
     }
 
@@ -126,17 +126,6 @@ public class ConvenientBanner<T> extends RelativeLayout {
             setPageIndicator(mPageIndicatorId);
         }
         return this;
-    }
-
-    /**
-     * 通知数据变化
-     * 如果只是增加数据建议使用 notifyDataSetAdd()
-     */
-    public void notifyDataSetChanged() {
-        viewPager.getAdapter().notifyDataSetChanged();
-        if (mPageIndicatorId != null) {
-            setPageIndicator(mPageIndicatorId);
-        }
     }
 
     /**
@@ -185,22 +174,35 @@ public class ConvenientBanner<T> extends RelativeLayout {
     /**
      * 指示器的方向
      *
-     * @param align 三个方向：居左 （RelativeLayout.ALIGN_PARENT_LEFT），居中 （RelativeLayout.CENTER_HORIZONTAL），居右 （RelativeLayout.ALIGN_PARENT_RIGHT）
+     * @param align 三个方向：
+     *              居左 （RelativeLayout.ALIGN_PARENT_LEFT），
+     *              居中 （RelativeLayout.CENTER_HORIZONTAL），
+     *              居右 （RelativeLayout.ALIGN_PARENT_RIGHT）
      */
     public ConvenientBanner setPageIndicatorAlign(PageIndicatorAlign align) {
-        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) loPageTurningPoint.getLayoutParams();
-        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, align == PageIndicatorAlign.ALIGN_PARENT_LEFT ? RelativeLayout.TRUE : 0);
-        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, align == PageIndicatorAlign.ALIGN_PARENT_RIGHT ? RelativeLayout.TRUE : 0);
-        layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL, align == PageIndicatorAlign.CENTER_HORIZONTAL ? RelativeLayout.TRUE : 0);
+        final RelativeLayout.LayoutParams layoutParams =
+                (RelativeLayout.LayoutParams) loPageTurningPoint.getLayoutParams();
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT,
+                align == PageIndicatorAlign.ALIGN_PARENT_LEFT ? RelativeLayout.TRUE : 0);
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT,
+                align == PageIndicatorAlign.ALIGN_PARENT_RIGHT ? RelativeLayout.TRUE : 0);
+        layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL,
+                align == PageIndicatorAlign.CENTER_HORIZONTAL ? RelativeLayout.TRUE : 0);
         loPageTurningPoint.setLayoutParams(layoutParams);
         return this;
     }
 
-    /***
-     * 是否开启了翻页
+    /**
+     * 自定义翻页动画效果
      */
-    public boolean isTurning() {
-        return turning;
+    public ConvenientBanner setPageTransformer(PageTransformer transformer) {
+        viewPager.setPageTransformer(true, transformer);
+        return this;
+    }
+
+    public ConvenientBanner setManualPageable(boolean manualPageable) {
+        viewPager.setCanScroll(manualPageable);
+        return this;
     }
 
     /***
@@ -212,81 +214,14 @@ public class ConvenientBanner<T> extends RelativeLayout {
         //设置可以翻页并开启翻页
         canTurn = mDatas.size() > 1;
         //当设置循环变量及图片数量大于1时，进行循环轮播
-        if (!turning && canLoop) {
-            postDelayed(adSwitchTask, autoTurningTime);
-        }
-        turning = true;
-        return this;
-    }
-
-    public void stopTurning() {
-        turning = false;
-        removeCallbacks(adSwitchTask);
-    }
-
-    /**
-     * 自定义翻页动画效果
-     */
-    public ConvenientBanner setPageTransformer(PageTransformer transformer) {
-        viewPager.setPageTransformer(true, transformer);
-        return this;
-    }
-
-    /**
-     * 设置ViewPager的滑动速度
-     */
-    @SuppressWarnings("TryWithIdenticalCatches")
-    private void initViewPagerScroll() {
-        try {
-            Field mScroller;
-            mScroller = ViewPager.class.getDeclaredField("mScroller");
-            mScroller.setAccessible(true);
-            scroller = new ViewPagerScroller(
-                    viewPager.getContext());
-            mScroller.set(viewPager, scroller);
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public boolean isManualPageable() {
-        return viewPager.isCanScroll();
-    }
-
-    public ConvenientBanner setManualPageable(boolean manualPageable) {
-        viewPager.setCanScroll(manualPageable);
-        return this;
-    }
-
-    //触碰控件的时候，翻页应该停止，离开的时候如果之前是开启了翻页的话则重新启动翻页
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        int action = ev.getAction();
-        if (action == MotionEvent.ACTION_UP
-                || action == MotionEvent.ACTION_CANCEL
-                || action == MotionEvent.ACTION_OUTSIDE) {
-            // 开始翻页
-            if (canTurn) {
-                startTurning(autoTurningTime);
+        if (canLoop) {
+            turning = true;
+            if (myHandler.hasMessages(START_TURN_CODE)) {
+                myHandler.removeMessages(START_TURN_CODE);
             }
-        } else if (action == MotionEvent.ACTION_DOWN) {
-            // 停止翻页
-            if (canTurn) {
-                stopTurning();
-            }
+            myHandler.sendEmptyMessageDelayed(START_TURN_CODE, autoTurningTime);
         }
-        return super.dispatchTouchEvent(ev);
-    }
-
-    public int getCurrentItem() {
-        if (viewPager != null) {
-            return viewPager.getRealItem();
-        }
-        return -1;
+        return this;
     }
 
     /**
@@ -297,10 +232,6 @@ public class ConvenientBanner<T> extends RelativeLayout {
             viewPager.setCurrentItem(index);
         }
         return this;
-    }
-
-    public ViewPager.OnPageChangeListener getOnPageChangeListener() {
-        return onPageChangeListener;
     }
 
     /**
@@ -315,10 +246,6 @@ public class ConvenientBanner<T> extends RelativeLayout {
             viewPager.setOnPageChangeListener(onPageChangeListener);
         }
         return this;
-    }
-
-    public boolean isCanLoop() {
-        return viewPager.isCanLoop();
     }
 
     /**
@@ -341,6 +268,58 @@ public class ConvenientBanner<T> extends RelativeLayout {
         return this;
     }
 
+    public void setCanLoop(boolean canLoop) {
+        this.canLoop = canLoop;
+        viewPager.setCanLoop(canLoop);
+    }
+
+    public void stopTurning() {
+        turning = false;
+        myHandler.removeMessages(START_TURN_CODE);
+    }
+
+    /**
+     * 通知数据变化
+     * 如果只是增加数据建议使用 notifyDataSetAdd()
+     */
+    public void notifyDataSetChanged() {
+        viewPager.getAdapter().notifyDataSetChanged();
+        if (mPageIndicatorId != null) {
+            setPageIndicator(mPageIndicatorId);
+        }
+    }
+
+    /***
+     * 是否正在轮播中
+     */
+    public boolean isTurning() {
+        return turning;
+    }
+
+    /**
+     * 是否开启自动循环轮播
+     */
+    public boolean isCanLoop() {
+        return viewPager.isCanLoop();
+    }
+
+    /**
+     * 是否开启手动滑动翻页
+     */
+    public boolean isManualPageable() {
+        return viewPager.isCanScroll();
+    }
+
+    /**
+     * 获取当前item
+     */
+    public int getCurrentItem() {
+        return viewPager != null ? viewPager.getRealItem() : -1;
+    }
+
+    /**
+     * 获取滚动速度
+     */
     public int getScrollDuration() {
         return scroller.getScrollDuration();
     }
@@ -349,8 +328,66 @@ public class ConvenientBanner<T> extends RelativeLayout {
         return viewPager;
     }
 
-    public void setCanLoop(boolean canLoop) {
-        this.canLoop = canLoop;
-        viewPager.setCanLoop(canLoop);
+    public ViewPager.OnPageChangeListener getOnPageChangeListener() {
+        return onPageChangeListener;
+    }
+
+    private MyHandler myHandler = new MyHandler(this);
+
+    private static class MyHandler extends Handler {
+        private final WeakReference<ConvenientBanner> mWeakReference;
+
+        public MyHandler(ConvenientBanner convenientBanner) {
+            mWeakReference = new WeakReference<>(convenientBanner);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            final ConvenientBanner convenientBanner = mWeakReference.get();
+            if (convenientBanner != null) {
+                if (convenientBanner.viewPager != null && convenientBanner.turning) {
+                    final int page = convenientBanner.viewPager.getCurrentItem() + 1;
+                    convenientBanner.viewPager.setCurrentItem(page);
+                    convenientBanner.myHandler.sendEmptyMessageDelayed(START_TURN_CODE, convenientBanner.autoTurningTime);
+                }
+            }
+        }
+    }
+
+    //触碰控件的时候，翻页应该停止，离开的时候如果之前是开启了翻页的话则重新启动翻页
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        final int action = ev.getAction();
+        if (action == MotionEvent.ACTION_UP
+                || action == MotionEvent.ACTION_CANCEL
+                || action == MotionEvent.ACTION_OUTSIDE) {
+            // 开始翻页
+            if (canTurn) {
+                startTurning(autoTurningTime);
+            }
+        } else if (action == MotionEvent.ACTION_DOWN) {
+            // 停止翻页
+            if (canTurn) {
+                stopTurning();
+            }
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (viewPager != null) {
+            viewPager.requestLayout();
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (myHandler != null) {
+            myHandler.removeCallbacksAndMessages(null);
+        }
+        canLoop = false;
     }
 }

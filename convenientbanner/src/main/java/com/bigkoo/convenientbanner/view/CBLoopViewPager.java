@@ -51,33 +51,27 @@ public class CBLoopViewPager extends ViewPager {
         //是否禁止手动滑动
         boolean isStopManualSliding = false;
         if (onItemClickListener != null) {
-            switch (ev.getActionMasked()) {
-                case MotionEvent.ACTION_DOWN:
+            final int action = ev.getActionMasked();
+            if (action == MotionEvent.ACTION_DOWN
+                    || action == MotionEvent.ACTION_MOVE) {
+
+                if (action == MotionEvent.ACTION_DOWN) {
                     oldX = ev.getX();
-                    isStopManualSliding = !this.isCanScroll;
-                    break;
+                }
+                isStopManualSliding = !this.isCanScroll;
+            } else if (action == MotionEvent.ACTION_UP
+                    || action == MotionEvent.ACTION_CANCEL
+                    || action == MotionEvent.ACTION_OUTSIDE) {
 
-                case MotionEvent.ACTION_MOVE:
-                    isStopManualSliding = !this.isCanScroll;
-                    break;
-
-                case MotionEvent.ACTION_UP:
+                if (action == MotionEvent.ACTION_UP) {
                     newX = ev.getX();
                     if (Math.abs(oldX - newX) < SENS) {
                         onItemClickListener.onItemClick((getRealItem()));
                     }
                     oldX = 0;
                     newX = 0;
-                    isStopManualSliding = !this.canLoop && !isCanScroll;
-                    break;
-
-                case MotionEvent.ACTION_CANCEL:
-                    isStopManualSliding = !this.canLoop && !isCanScroll;
-                    break;
-
-                default:
-                    isStopManualSliding = !this.canLoop && !isCanScroll;
-                    break;
+                }
+                isStopManualSliding = !this.canLoop && !isCanScroll;
             }
         }
         return isStopManualSliding || super.onTouchEvent(ev);
@@ -113,6 +107,7 @@ public class CBLoopViewPager extends ViewPager {
         init();
     }
 
+    @SuppressWarnings("deprecation")
     private void init() {
         super.setOnPageChangeListener(onPageChangeListener);
     }

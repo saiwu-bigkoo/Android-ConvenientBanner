@@ -10,9 +10,7 @@ import com.bigkoo.convenientbannerdemo.R;
 
 import java.util.List;
 
-/**
- * Created by Sai on 15/8/13.
- */
+@SuppressWarnings("WeakerAccess")
 public class RecyclerViewHFAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int TYPE_HEADER = 0;
@@ -54,6 +52,7 @@ public class RecyclerViewHFAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         throw new RuntimeException("there is no type that matches the type " + viewType + " + make sure your using types correctly");
     }
 
+    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ItemHolder) {
@@ -145,7 +144,7 @@ public class RecyclerViewHFAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     //refresh data
-    public void refreshData(List<String> datas){
+    public void refreshData(List<String> datas) {
         items.clear();
         addDatas(datas);
     }
