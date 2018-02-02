@@ -214,8 +214,8 @@ public class ConvenientBanner<T> extends RelativeLayout {
         //设置可以翻页并开启翻页
         canTurn = mDatas.size() > 1;
         //当设置循环变量及图片数量大于1时，进行循环轮播
-        turning = true;
         if (canLoop) {
+            turning = true;
             if (myHandler.hasMessages(START_TURN_CODE)) {
                 myHandler.removeMessages(START_TURN_CODE);
             }
@@ -377,10 +377,13 @@ public class ConvenientBanner<T> extends RelativeLayout {
 
     @Override
     protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
         if (viewPager != null) {
             viewPager.requestLayout();
         }
+        if (myHandler != null && isTurning()) {
+            startTurning(this.autoTurningTime);
+        }
+        super.onAttachedToWindow();
     }
 
     @Override
