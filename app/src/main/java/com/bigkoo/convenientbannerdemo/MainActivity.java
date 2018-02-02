@@ -37,10 +37,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Sai on 15/7/30.
- * convenientbanner 控件 的 demo
- */
 @SuppressWarnings("unchecked")
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener,
         ViewPager.OnPageChangeListener, OnItemClickListener {
@@ -93,9 +89,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 //                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
 //                .setOnPageChangeListener(this)//监听翻页事件
                 .setOnItemClickListener(this)
-                .setCanLoop(false);
-
-//        convenientBanner.setManualPageable(false);//设置不能手动影响
+                .setManualPageable(false)
+                .setCanLoop(true);
 
         //网络加载例子
 //        networkImages=Arrays.asList(images);
@@ -199,7 +194,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @SuppressWarnings("TryWithIdenticalCatches")
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-
 //        点击后加入两个内容
 //        localImages.clear();
 //        localImages.add(R.drawable.ic_test_2);
@@ -246,6 +240,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public void onItemClick(int position) {
         Toast.makeText(this, "点击了第" + position + "个"
                 + "    currentItem：" + convenientBanner.getCurrentItem(), Toast.LENGTH_SHORT).show();
-        convenientBanner.setcurrentitem(1);
+//        convenientBanner.setCurrentItem(1);
     }
 }

@@ -257,8 +257,9 @@ public class ConvenientBanner<T> extends RelativeLayout {
         return viewPager.isCanScroll();
     }
 
-    public void setManualPageable(boolean manualPageable) {
+    public ConvenientBanner setManualPageable(boolean manualPageable) {
         viewPager.setCanScroll(manualPageable);
+        return this;
     }
 
     //触碰控件的时候，翻页应该停止，离开的时候如果之前是开启了翻页的话则重新启动翻页
@@ -281,7 +282,6 @@ public class ConvenientBanner<T> extends RelativeLayout {
         return super.dispatchTouchEvent(ev);
     }
 
-    //获取当前的页面index
     public int getCurrentItem() {
         if (viewPager != null) {
             return viewPager.getRealItem();
@@ -289,11 +289,14 @@ public class ConvenientBanner<T> extends RelativeLayout {
         return -1;
     }
 
-    //设置当前的页面index
-    public void setcurrentitem(int index) {
+    /**
+     * 设置当前的页面index
+     */
+    public ConvenientBanner setCurrentItem(int index) {
         if (viewPager != null) {
             viewPager.setCurrentItem(index);
         }
+        return this;
     }
 
     public ViewPager.OnPageChangeListener getOnPageChangeListener() {
@@ -333,8 +336,9 @@ public class ConvenientBanner<T> extends RelativeLayout {
     /**
      * 设置ViewPager的滚动速度
      */
-    public void setScrollDuration(int scrollDuration) {
+    public ConvenientBanner setScrollDuration(int scrollDuration) {
         scroller.setScrollDuration(scrollDuration);
+        return this;
     }
 
     public int getScrollDuration() {

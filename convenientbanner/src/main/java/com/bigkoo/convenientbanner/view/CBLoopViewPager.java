@@ -48,30 +48,39 @@ public class CBLoopViewPager extends ViewPager {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        if (isCanScroll) {
-            if (onItemClickListener != null) {
-                switch (ev.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        oldX = ev.getX();
-                        break;
+        //是否禁止手动滑动
+        boolean isStopManualSliding = false;
+        if (onItemClickListener != null) {
+            switch (ev.getActionMasked()) {
+                case MotionEvent.ACTION_DOWN:
+                    oldX = ev.getX();
+                    isStopManualSliding = !this.isCanScroll;
+                    break;
 
-                    case MotionEvent.ACTION_UP:
-                        newX = ev.getX();
-                        if (Math.abs(oldX - newX) < SENS) {
-                            onItemClickListener.onItemClick((getRealItem()));
-                        }
-                        oldX = 0;
-                        newX = 0;
-                        break;
+                case MotionEvent.ACTION_MOVE:
+                    isStopManualSliding = !this.isCanScroll;
+                    break;
 
-                    default:
-                        break;
-                }
+                case MotionEvent.ACTION_UP:
+                    newX = ev.getX();
+                    if (Math.abs(oldX - newX) < SENS) {
+                        onItemClickListener.onItemClick((getRealItem()));
+                    }
+                    oldX = 0;
+                    newX = 0;
+                    isStopManualSliding = !this.canLoop && !isCanScroll;
+                    break;
+
+                case MotionEvent.ACTION_CANCEL:
+                    isStopManualSliding = !this.canLoop && !isCanScroll;
+                    break;
+
+                default:
+                    isStopManualSliding = !this.canLoop && !isCanScroll;
+                    break;
             }
-            return super.onTouchEvent(ev);
-        } else {
-            return false;
         }
+        return isStopManualSliding || super.onTouchEvent(ev);
     }
 
     @Override
