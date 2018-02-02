@@ -132,4 +132,8 @@ public class LocalImageHolderView implements Holder<Integer> {
 >v1.0.1 
  - 修复动态设置canLoop无效的问题
  - 修复设置 setManualPageable 无效的问题 (是否手动滑动翻页)
+ 
+>v1.0.2
+ - 优化banner自动轮播任务
+ - 优化banner开始和终止的执行方法
 
