@@ -1,7 +1,7 @@
 package com.bigkoo.convenientbanner.listener;
 
 import android.support.v4.view.ViewPager;
-import android.widget.ImageView;
+import android.support.v7.widget.AppCompatImageView;
 
 import java.util.ArrayList;
 
@@ -10,11 +10,11 @@ import java.util.ArrayList;
  * 翻页指示器适配器
  */
 public class CBPageChangeListener implements ViewPager.OnPageChangeListener {
-    private ArrayList<ImageView> pointViews;
+    private ArrayList<AppCompatImageView> pointViews;
     private int[] mPageIndicatorId;
     private ViewPager.OnPageChangeListener onPageChangeListener;
 
-    public CBPageChangeListener(ArrayList<ImageView> pointViews, int[] pageIndicatorId) {
+    public CBPageChangeListener(ArrayList<AppCompatImageView> pointViews, int[] pageIndicatorId) {
         this.pointViews = pointViews;
         this.mPageIndicatorId = pageIndicatorId;
     }
@@ -45,7 +45,6 @@ public class CBPageChangeListener implements ViewPager.OnPageChangeListener {
         if (onPageChangeListener != null) {
             onPageChangeListener.onPageSelected(index);
         }
-
     }
 
     public void setOnPageChangeListener(ViewPager.OnPageChangeListener onPageChangeListener) {

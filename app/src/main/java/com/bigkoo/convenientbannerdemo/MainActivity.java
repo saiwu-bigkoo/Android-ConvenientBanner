@@ -92,7 +92,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 //设置指示器的方向
 //                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
 //                .setOnPageChangeListener(this)//监听翻页事件
-                .setOnItemClickListener(this);
+                .setOnItemClickListener(this)
+                .setCanLoop(false);
 
 //        convenientBanner.setManualPageable(false);//设置不能手动影响
 
@@ -243,6 +244,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public void onItemClick(int position) {
-        Toast.makeText(this, "点击了第" + position + "个", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "点击了第" + position + "个"
+                + "    currentItem：" + convenientBanner.getCurrentItem(), Toast.LENGTH_SHORT).show();
+        convenientBanner.setcurrentitem(1);
     }
 }

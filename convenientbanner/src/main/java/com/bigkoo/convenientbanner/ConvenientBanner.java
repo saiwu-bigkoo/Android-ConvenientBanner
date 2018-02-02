@@ -6,12 +6,12 @@ import android.content.res.TypedArray;
 import android.os.Build;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.PageTransformer;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.bigkoo.convenientbanner.adapter.CBPageAdapter;
@@ -35,7 +35,7 @@ import java.util.List;
 public class ConvenientBanner<T> extends RelativeLayout {
     private List<T> mDatas;
     private int[] mPageIndicatorId;
-    private ArrayList<ImageView> mPointViews = new ArrayList<>();
+    private ArrayList<AppCompatImageView> mPointViews = new ArrayList<>();
     private CBPageChangeListener pageChangeListener;
     private ViewPager.OnPageChangeListener onPageChangeListener;
     private CBPageAdapter pageAdapter;
@@ -45,7 +45,6 @@ public class ConvenientBanner<T> extends RelativeLayout {
     private long autoTurningTime;
     private boolean turning;
     private boolean canTurn = false;
-    private boolean manualPageable = true;
     private boolean canLoop = true;
 
     public enum PageIndicatorAlign {
@@ -163,7 +162,7 @@ public class ConvenientBanner<T> extends RelativeLayout {
         if (size > 1) {
             for (int count = 0; count < size; count++) {
                 // 翻页指示的点
-                ImageView pointView = new ImageView(getContext());
+                final AppCompatImageView pointView = new AppCompatImageView(getContext());
                 pointView.setPadding(5, 0, 5, 0);
                 if (mPointViews.isEmpty()) {
                     pointView.setImageResource(pageIndicatorId[1]);

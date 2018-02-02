@@ -9,7 +9,7 @@
         android:id="@+id/convenientBanner"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        app:canLoop="true"/>
+        app:canLoop="false"/>
 
     <android.support.v7.widget.ListViewCompat
         android:id="@+id/listView"
