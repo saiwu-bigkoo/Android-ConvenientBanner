@@ -16,7 +16,7 @@ demo是用Module方式依赖，你也可以使用gradle 依赖:
 ```class
    compile 'com.bigkoo:convenientbanner:2.0.5'
    或
-   compile 'com.github.wexia:Android-ConvenientBanner:1.0.4'
+   compile 'com.github.wexia:Android-ConvenientBanner:1.0.5'
 ```
 
 
@@ -142,4 +142,7 @@ public class LocalImageHolderView implements Holder<Integer> {
  
 >v1.0.4
  - 优化banner加载，通过窗口是否处于当前可见屏幕时设置是否轮播
+ 
+>1.0.5
+ - 修复调用startTurning报错的问题
 

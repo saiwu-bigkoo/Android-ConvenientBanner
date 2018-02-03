@@ -143,10 +143,7 @@ public class ConvenientBanner<T> extends RelativeLayout {
         loPageTurningPoint.removeAllViews();
         mPointViews.clear();
         this.mPageIndicatorId = pageIndicatorId;
-        if (mDatas == null) {
-            return this;
-        }
-        final int size = mDatas.size();
+        final int size = mDatas == null ? 0 : mDatas.size();
         //当图片数量不大于1时，不设置指示器
         if (size > 1) {
             for (int count = 0; count < size; count++) {
@@ -205,14 +202,20 @@ public class ConvenientBanner<T> extends RelativeLayout {
         return this;
     }
 
+    public ConvenientBanner startTurning() {
+        startTurning(this.autoTurningTime);
+        return this;
+    }
+
     /***
      * 开始翻页
      * @param autoTurningTime 自动翻页时间
      */
     public ConvenientBanner startTurning(long autoTurningTime) {
         this.autoTurningTime = autoTurningTime;
+        final int dataSize = mDatas == null ? 0 : mDatas.size();
         //设置可以翻页并开启翻页
-        canTurn = mDatas.size() > 1;
+        canTurn = dataSize > 1;
         //当设置循环变量及图片数量大于1时，进行循环轮播
         if (canLoop) {
             turning = true;
@@ -363,7 +366,7 @@ public class ConvenientBanner<T> extends RelativeLayout {
                 || action == MotionEvent.ACTION_OUTSIDE) {
             // 开始翻页
             if (canTurn) {
-                startTurning(autoTurningTime);
+                startTurning();
             }
         } else if (action == MotionEvent.ACTION_DOWN
                 || action == MotionEvent.ACTION_MOVE) {
@@ -381,7 +384,7 @@ public class ConvenientBanner<T> extends RelativeLayout {
             viewPager.requestLayout();
         }
         if (myHandler != null && isTurning()) {
-            startTurning(this.autoTurningTime);
+            startTurning();
         }
         super.onAttachedToWindow();
     }
