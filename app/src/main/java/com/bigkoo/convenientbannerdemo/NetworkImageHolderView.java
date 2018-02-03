@@ -22,7 +22,7 @@ public class NetworkImageHolderView implements Holder<String> {
     }
 
     @Override
-    public void UpdateUI(Context context,int position, String data) {
+    public void updateUI(Context context, int position, String data) {
         imageView.setImageResource(R.drawable.ic_default_adimage);
         ImageLoader.getInstance().displayImage(data,imageView);
     }

@@ -9,30 +9,36 @@ import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
 import com.bigkoo.convenientbanner.view.CBLoopViewPager;
 
+import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by Sai on 15/7/29.
- */
+@SuppressWarnings({"WeakerAccess", "unchecked"})
 public class CBPageAdapter<T> extends PagerAdapter {
     protected List<T> mDatas;
     protected CBViewHolderCreator holderCreator;
-//    private View.OnClickListener onItemClickListener;
     private boolean canLoop = true;
     private CBLoopViewPager viewPager;
-    private final int MULTIPLE_COUNT = 300;
+    private static final int MULTIPLE_COUNT = 500;
+    private LinkedList<View> mViewCache;   // view cache
+
+
+    public CBPageAdapter(CBViewHolderCreator holderCreator, List<T> datas) {
+        this.holderCreator = holderCreator;
+        this.mDatas = datas;
+        this.mViewCache = new LinkedList<>();
+    }
 
     public int toRealPosition(int position) {
-        int realCount = getRealCount();
-        if (realCount == 0)
+        final int realCount = getRealCount();
+        if (realCount == 0) {
             return 0;
-        int realPosition = position % realCount;
-        return realPosition;
+        }
+        return position % realCount;
     }
 
     @Override
     public int getCount() {
-        return canLoop ? getRealCount()*MULTIPLE_COUNT : getRealCount();
+        return canLoop ? getRealCount() * MULTIPLE_COUNT : getRealCount();
     }
 
     public int getRealCount() {
@@ -41,31 +47,28 @@ public class CBPageAdapter<T> extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        int realPosition = toRealPosition(position);
-
-        View view = getView(realPosition, null, container);
-//        if(onItemClickListener != null) view.setOnClickListener(onItemClickListener);
+        final int realPosition = toRealPosition(position);
+        final View view = getView(realPosition, container);
         container.addView(view);
         return view;
     }
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        View view = (View) object;
+        final View view = (View) object;
         container.removeView(view);
+        this.mViewCache.add(view);
     }
 
     @Override
     public void finishUpdate(ViewGroup container) {
         int position = viewPager.getCurrentItem();
         if (position == 0) {
-            position = viewPager.getFristItem();
+            position = viewPager.getFirstItem();
         } else if (position == getCount() - 1) {
             position = viewPager.getLastItem();
         }
-        try {
-            viewPager.setCurrentItem(position, false);
-        }catch (IllegalStateException e){}
+        viewPager.setCurrentItem(position, false);
     }
 
     @Override
@@ -81,26 +84,20 @@ public class CBPageAdapter<T> extends PagerAdapter {
         this.viewPager = viewPager;
     }
 
-    public CBPageAdapter(CBViewHolderCreator holderCreator, List<T> datas) {
-        this.holderCreator = holderCreator;
-        this.mDatas = datas;
-    }
-
-    public View getView(int position, View view, ViewGroup container) {
-        Holder holder = null;
-        if (view == null) {
+    public View getView(int position, ViewGroup container) {
+        Holder holder;
+        View view;
+        if (mViewCache.isEmpty()) {
             holder = (Holder) holderCreator.createHolder();
             view = holder.createView(container.getContext());
             view.setTag(R.id.cb_item_tag, holder);
         } else {
+            view = mViewCache.removeFirst();
             holder = (Holder<T>) view.getTag(R.id.cb_item_tag);
         }
-        if (mDatas != null && !mDatas.isEmpty())
-            holder.UpdateUI(container.getContext(), position, mDatas.get(position));
+        if (mDatas != null && !mDatas.isEmpty()) {
+            holder.updateUI(container.getContext(), position, mDatas.get(position));
+        }
         return view;
     }
-
-//    public void setOnItemClickListener(View.OnClickListener onItemClickListener) {
-//        this.onItemClickListener = onItemClickListener;
-//    }
 }

@@ -4,16 +4,18 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.PageTransformer;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+
 import com.bigkoo.convenientbanner.adapter.CBPageAdapter;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.listener.CBPageChangeListener;
@@ -28,12 +30,16 @@ import java.util.List;
 /**
  * 页面翻转控件，极方便的广告栏
  * 支持无限循环，自动翻页，翻页特效
+ *
  * @author Sai 支持自动翻页
  */
-public class ConvenientBanner<T> extends LinearLayout {
+@SuppressWarnings({"WeakerAccess", "FieldCanBeLocal"})
+public class ConvenientBanner<T> extends RelativeLayout {
+    private static final int START_TURN_CODE = 1;
+
     private List<T> mDatas;
-    private int[] page_indicatorId;
-    private ArrayList<ImageView> mPointViews = new ArrayList<ImageView>();
+    private int[] mPageIndicatorId;
+    private ArrayList<AppCompatImageView> mPointViews = new ArrayList<>();
     private CBPageChangeListener pageChangeListener;
     private ViewPager.OnPageChangeListener onPageChangeListener;
     private CBPageAdapter pageAdapter;
@@ -43,12 +49,11 @@ public class ConvenientBanner<T> extends LinearLayout {
     private long autoTurningTime;
     private boolean turning;
     private boolean canTurn = false;
-    private boolean manualPageable = true;
     private boolean canLoop = true;
-    public enum PageIndicatorAlign{
-        ALIGN_PARENT_LEFT,ALIGN_PARENT_RIGHT,CENTER_HORIZONTAL
+
+    public enum PageIndicatorAlign {
+        ALIGN_PARENT_LEFT, ALIGN_PARENT_RIGHT, CENTER_HORIZONTAL
     }
-    private AdSwitchTask adSwitchTask ;
 
     public ConvenientBanner(Context context) {
         super(context);
@@ -57,8 +62,8 @@ public class ConvenientBanner<T> extends LinearLayout {
 
     public ConvenientBanner(Context context, AttributeSet attrs) {
         super(context, attrs);
-        TypedArray a = context.obtainStyledAttributes(attrs,R.styleable.ConvenientBanner);
-        canLoop = a.getBoolean(R.styleable.ConvenientBanner_canLoop,true);
+        final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ConvenientBanner);
+        canLoop = a.getBoolean(R.styleable.ConvenientBanner_canLoop, true);
         a.recycle();
         init(context);
     }
@@ -66,8 +71,8 @@ public class ConvenientBanner<T> extends LinearLayout {
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public ConvenientBanner(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        TypedArray a = context.obtainStyledAttributes(attrs,R.styleable.ConvenientBanner);
-        canLoop = a.getBoolean(R.styleable.ConvenientBanner_canLoop,true);
+        final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ConvenientBanner);
+        canLoop = a.getBoolean(R.styleable.ConvenientBanner_canLoop, true);
         a.recycle();
         init(context);
     }
@@ -75,174 +80,32 @@ public class ConvenientBanner<T> extends LinearLayout {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public ConvenientBanner(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        TypedArray a = context.obtainStyledAttributes(attrs,R.styleable.ConvenientBanner);
-        canLoop = a.getBoolean(R.styleable.ConvenientBanner_canLoop,true);
+        final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ConvenientBanner);
+        canLoop = a.getBoolean(R.styleable.ConvenientBanner_canLoop, true);
         a.recycle();
         init(context);
     }
 
     private void init(Context context) {
-        View hView = LayoutInflater.from(context).inflate(
+        final View hView = LayoutInflater.from(context).inflate(
                 R.layout.include_viewpager, this, true);
         viewPager = (CBLoopViewPager) hView.findViewById(R.id.cbLoopViewPager);
         loPageTurningPoint = (ViewGroup) hView
                 .findViewById(R.id.loPageTurningPoint);
         initViewPagerScroll();
-
-        adSwitchTask = new AdSwitchTask(this);
     }
-
-    static class AdSwitchTask implements Runnable {
-
-        private final WeakReference<ConvenientBanner> reference;
-
-        AdSwitchTask(ConvenientBanner convenientBanner) {
-            this.reference = new WeakReference<ConvenientBanner>(convenientBanner);
-        }
-
-        @Override
-        public void run() {
-            ConvenientBanner convenientBanner = reference.get();
-
-            if(convenientBanner != null){
-                if (convenientBanner.viewPager != null && convenientBanner.turning) {
-                    int page = convenientBanner.viewPager.getCurrentItem() + 1;
-                    convenientBanner.viewPager.setCurrentItem(page);
-                    convenientBanner.postDelayed(convenientBanner.adSwitchTask, convenientBanner.autoTurningTime);
-                }
-            }
-        }
-    }
-
-    public ConvenientBanner setPages(CBViewHolderCreator holderCreator,List<T> datas){
-        this.mDatas = datas;
-        pageAdapter = new CBPageAdapter(holderCreator,mDatas);
-        viewPager.setAdapter(pageAdapter,canLoop);
-
-        if (page_indicatorId != null)
-            setPageIndicator(page_indicatorId);
-        return this;
-    }
-
-    /**
-     * 通知数据变化
-     * 如果只是增加数据建议使用 notifyDataSetAdd()
-     */
-    public void notifyDataSetChanged(){
-        viewPager.getAdapter().notifyDataSetChanged();
-        if (page_indicatorId != null)
-            setPageIndicator(page_indicatorId);
-    }
-
-    /**
-     * 设置底部指示器是否可见
-     *
-     * @param visible
-     */
-    public ConvenientBanner setPointViewVisible(boolean visible) {
-        loPageTurningPoint.setVisibility(visible ? View.VISIBLE : View.GONE);
-        return this;
-    }
-
-    /**
-     * 底部指示器资源图片
-     *
-     * @param page_indicatorId
-     */
-    public ConvenientBanner setPageIndicator(int[] page_indicatorId) {
-        loPageTurningPoint.removeAllViews();
-        mPointViews.clear();
-        this.page_indicatorId = page_indicatorId;
-        if(mDatas==null)return this;
-        for (int count = 0; count < mDatas.size(); count++) {
-            // 翻页指示的点
-            ImageView pointView = new ImageView(getContext());
-            pointView.setPadding(5, 0, 5, 0);
-            if (mPointViews.isEmpty())
-                pointView.setImageResource(page_indicatorId[1]);
-            else
-                pointView.setImageResource(page_indicatorId[0]);
-            mPointViews.add(pointView);
-            loPageTurningPoint.addView(pointView);
-        }
-        pageChangeListener = new CBPageChangeListener(mPointViews,
-                page_indicatorId);
-        viewPager.setOnPageChangeListener(pageChangeListener);
-        pageChangeListener.onPageSelected(viewPager.getRealItem());
-        if(onPageChangeListener != null)pageChangeListener.setOnPageChangeListener(onPageChangeListener);
-
-        return this;
-    }
-
-    /**
-     * 指示器的方向
-     * @param align  三个方向：居左 （RelativeLayout.ALIGN_PARENT_LEFT），居中 （RelativeLayout.CENTER_HORIZONTAL），居右 （RelativeLayout.ALIGN_PARENT_RIGHT）
-     * @return
-     */
-    public ConvenientBanner setPageIndicatorAlign(PageIndicatorAlign align) {
-        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) loPageTurningPoint.getLayoutParams();
-        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, align == PageIndicatorAlign.ALIGN_PARENT_LEFT ? RelativeLayout.TRUE : 0);
-        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, align == PageIndicatorAlign.ALIGN_PARENT_RIGHT ? RelativeLayout.TRUE : 0);
-        layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL, align == PageIndicatorAlign.CENTER_HORIZONTAL ? RelativeLayout.TRUE : 0);
-        loPageTurningPoint.setLayoutParams(layoutParams);
-        return this;
-    }
-
-    /***
-     * 是否开启了翻页
-     * @return
-     */
-    public boolean isTurning() {
-        return turning;
-    }
-
-    /***
-     * 开始翻页
-     * @param autoTurningTime 自动翻页时间
-     * @return
-     */
-    public ConvenientBanner startTurning(long autoTurningTime) {
-        //如果是正在翻页的话先停掉
-        if(turning){
-            stopTurning();
-        }
-        //设置可以翻页并开启翻页
-        canTurn = true;
-        this.autoTurningTime = autoTurningTime;
-        turning = true;
-        postDelayed(adSwitchTask, autoTurningTime);
-        return this;
-    }
-
-    public void stopTurning() {
-        turning = false;
-        removeCallbacks(adSwitchTask);
-    }
-
-    /**
-     * 自定义翻页动画效果
-     *
-     * @param transformer
-     * @return
-     */
-    public ConvenientBanner setPageTransformer(PageTransformer transformer) {
-        viewPager.setPageTransformer(true, transformer);
-        return this;
-    }
-
 
     /**
      * 设置ViewPager的滑动速度
-     * */
+     */
+    @SuppressWarnings("TryWithIdenticalCatches")
     private void initViewPagerScroll() {
         try {
-            Field mScroller = null;
-            mScroller = ViewPager.class.getDeclaredField("mScroller");
+            final Field mScroller = ViewPager.class.getDeclaredField("mScroller");
             mScroller.setAccessible(true);
             scroller = new ViewPagerScroller(
                     viewPager.getContext());
             mScroller.set(viewPager, scroller);
-
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         } catch (IllegalArgumentException e) {
@@ -252,67 +115,144 @@ public class ConvenientBanner<T> extends LinearLayout {
         }
     }
 
-    public boolean isManualPageable() {
-        return viewPager.isCanScroll();
+    @SuppressWarnings("unchecked")
+    public ConvenientBanner setPages(CBViewHolderCreator holderCreator, List<T> datas) {
+        this.mDatas = datas;
+        pageAdapter = new CBPageAdapter(holderCreator, mDatas);
+        canLoop = mDatas.size() > 1;
+        viewPager.setAdapter(pageAdapter, canLoop);
+
+        if (mPageIndicatorId != null) {
+            setPageIndicator(mPageIndicatorId);
+        }
+        return this;
     }
 
-    public void setManualPageable(boolean manualPageable) {
+    /**
+     * 设置底部指示器是否可见
+     */
+    public ConvenientBanner setPointViewVisible(boolean visible) {
+        loPageTurningPoint.setVisibility(visible ? View.VISIBLE : View.GONE);
+        return this;
+    }
+
+    /**
+     * 底部指示器资源图片
+     */
+    public ConvenientBanner setPageIndicator(int[] pageIndicatorId) {
+        loPageTurningPoint.removeAllViews();
+        mPointViews.clear();
+        this.mPageIndicatorId = pageIndicatorId;
+        final int size = mDatas == null ? 0 : mDatas.size();
+        //当图片数量不大于1时，不设置指示器
+        if (size > 1) {
+            for (int count = 0; count < size; count++) {
+                // 翻页指示的点
+                final AppCompatImageView pointView = new AppCompatImageView(getContext());
+                pointView.setPadding(5, 0, 5, 0);
+                if (mPointViews.isEmpty()) {
+                    pointView.setImageResource(pageIndicatorId[1]);
+                } else {
+                    pointView.setImageResource(pageIndicatorId[0]);
+                }
+                mPointViews.add(pointView);
+                loPageTurningPoint.addView(pointView);
+            }
+        }
+        pageChangeListener = new CBPageChangeListener(mPointViews, pageIndicatorId);
+        viewPager.setOnPageChangeListener(pageChangeListener);
+        pageChangeListener.onPageSelected(viewPager.getRealItem());
+        if (onPageChangeListener != null) {
+            pageChangeListener.setOnPageChangeListener(onPageChangeListener);
+        }
+        return this;
+    }
+
+    /**
+     * 指示器的方向
+     *
+     * @param align 三个方向：
+     *              居左 （RelativeLayout.ALIGN_PARENT_LEFT），
+     *              居中 （RelativeLayout.CENTER_HORIZONTAL），
+     *              居右 （RelativeLayout.ALIGN_PARENT_RIGHT）
+     */
+    public ConvenientBanner setPageIndicatorAlign(PageIndicatorAlign align) {
+        final RelativeLayout.LayoutParams layoutParams =
+                (RelativeLayout.LayoutParams) loPageTurningPoint.getLayoutParams();
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT,
+                align == PageIndicatorAlign.ALIGN_PARENT_LEFT ? RelativeLayout.TRUE : 0);
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT,
+                align == PageIndicatorAlign.ALIGN_PARENT_RIGHT ? RelativeLayout.TRUE : 0);
+        layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL,
+                align == PageIndicatorAlign.CENTER_HORIZONTAL ? RelativeLayout.TRUE : 0);
+        loPageTurningPoint.setLayoutParams(layoutParams);
+        return this;
+    }
+
+    /**
+     * 自定义翻页动画效果
+     */
+    public ConvenientBanner setPageTransformer(PageTransformer transformer) {
+        viewPager.setPageTransformer(true, transformer);
+        return this;
+    }
+
+    public ConvenientBanner setManualPageable(boolean manualPageable) {
         viewPager.setCanScroll(manualPageable);
+        return this;
     }
 
-    //触碰控件的时候，翻页应该停止，离开的时候如果之前是开启了翻页的话则重新启动翻页
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
+    public ConvenientBanner startTurning() {
+        startTurning(this.autoTurningTime);
+        return this;
+    }
 
-        int action = ev.getAction();
-        if (action == MotionEvent.ACTION_UP||action == MotionEvent.ACTION_CANCEL||action == MotionEvent.ACTION_OUTSIDE) {
-            // 开始翻页
-            if (canTurn)startTurning(autoTurningTime);
-        } else if (action == MotionEvent.ACTION_DOWN) {
-            // 停止翻页
-            if (canTurn)stopTurning();
+    /***
+     * 开始翻页
+     * @param autoTurningTime 自动翻页时间
+     */
+    public ConvenientBanner startTurning(long autoTurningTime) {
+        this.autoTurningTime = autoTurningTime;
+        final int dataSize = mDatas == null ? 0 : mDatas.size();
+        //设置可以翻页并开启翻页
+        canTurn = dataSize > 1;
+        //当设置循环变量及图片数量大于1时，进行循环轮播
+        if (canLoop) {
+            turning = true;
+            if (myHandler.hasMessages(START_TURN_CODE)) {
+                myHandler.removeMessages(START_TURN_CODE);
+            }
+            myHandler.sendEmptyMessageDelayed(START_TURN_CODE, autoTurningTime);
         }
-        return super.dispatchTouchEvent(ev);
+        return this;
     }
 
-    //获取当前的页面index
-    public int getCurrentItem(){
-        if (viewPager!=null) {
-            return viewPager.getRealItem();
-        }
-        return -1;
-    }
-    //设置当前的页面index
-    public void setcurrentitem(int index){
-        if (viewPager!=null) {
+    /**
+     * 设置当前的页面index
+     */
+    public ConvenientBanner setCurrentItem(int index) {
+        if (viewPager != null) {
             viewPager.setCurrentItem(index);
         }
-    }
-
-    public ViewPager.OnPageChangeListener getOnPageChangeListener() {
-        return onPageChangeListener;
+        return this;
     }
 
     /**
      * 设置翻页监听器
-     * @param onPageChangeListener
-     * @return
      */
     public ConvenientBanner setOnPageChangeListener(ViewPager.OnPageChangeListener onPageChangeListener) {
         this.onPageChangeListener = onPageChangeListener;
         //如果有默认的监听器（即是使用了默认的翻页指示器）则把用户设置的依附到默认的上面，否则就直接设置
-        if(pageChangeListener != null)pageChangeListener.setOnPageChangeListener(onPageChangeListener);
-        else viewPager.setOnPageChangeListener(onPageChangeListener);
+        if (pageChangeListener != null) {
+            pageChangeListener.setOnPageChangeListener(onPageChangeListener);
+        } else {
+            viewPager.setOnPageChangeListener(onPageChangeListener);
+        }
         return this;
-    }
-
-    public boolean isCanLoop() {
-        return viewPager.isCanLoop();
     }
 
     /**
      * 监听item点击
-     * @param onItemClickListener
      */
     public ConvenientBanner setOnItemClickListener(OnItemClickListener onItemClickListener) {
         if (onItemClickListener == null) {
@@ -325,12 +265,64 @@ public class ConvenientBanner<T> extends LinearLayout {
 
     /**
      * 设置ViewPager的滚动速度
-     * @param scrollDuration
      */
-    public void setScrollDuration(int scrollDuration){
+    public ConvenientBanner setScrollDuration(int scrollDuration) {
         scroller.setScrollDuration(scrollDuration);
+        return this;
     }
 
+    public void setCanLoop(boolean canLoop) {
+        this.canLoop = canLoop;
+        viewPager.setCanLoop(canLoop);
+    }
+
+    public void stopTurning() {
+        turning = false;
+        myHandler.removeMessages(START_TURN_CODE);
+    }
+
+    /**
+     * 通知数据变化
+     * 如果只是增加数据建议使用 notifyDataSetAdd()
+     */
+    public void notifyDataSetChanged() {
+        viewPager.getAdapter().notifyDataSetChanged();
+        if (mPageIndicatorId != null) {
+            setPageIndicator(mPageIndicatorId);
+        }
+    }
+
+    /***
+     * 是否正在轮播中
+     */
+    public boolean isTurning() {
+        return turning;
+    }
+
+    /**
+     * 是否开启自动循环轮播
+     */
+    public boolean isCanLoop() {
+        return viewPager.isCanLoop();
+    }
+
+    /**
+     * 是否开启手动滑动翻页
+     */
+    public boolean isManualPageable() {
+        return viewPager.isCanScroll();
+    }
+
+    /**
+     * 获取当前item
+     */
+    public int getCurrentItem() {
+        return viewPager != null ? viewPager.getRealItem() : -1;
+    }
+
+    /**
+     * 获取滚动速度
+     */
     public int getScrollDuration() {
         return scroller.getScrollDuration();
     }
@@ -339,8 +331,69 @@ public class ConvenientBanner<T> extends LinearLayout {
         return viewPager;
     }
 
-    public void setCanLoop(boolean canLoop) {
-        this.canLoop = canLoop;
-        viewPager.setCanLoop(canLoop);
+    public ViewPager.OnPageChangeListener getOnPageChangeListener() {
+        return onPageChangeListener;
+    }
+
+    private MyHandler myHandler = new MyHandler(this);
+
+    private static class MyHandler extends Handler {
+        private final WeakReference<ConvenientBanner> mWeakReference;
+
+        public MyHandler(ConvenientBanner convenientBanner) {
+            mWeakReference = new WeakReference<>(convenientBanner);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            final ConvenientBanner convenientBanner = mWeakReference.get();
+            if (convenientBanner != null) {
+                if (convenientBanner.viewPager != null && convenientBanner.turning) {
+                    final int page = convenientBanner.viewPager.getCurrentItem() + 1;
+                    convenientBanner.viewPager.setCurrentItem(page);
+                    convenientBanner.myHandler.sendEmptyMessageDelayed(START_TURN_CODE, convenientBanner.autoTurningTime);
+                }
+            }
+        }
+    }
+
+    //触碰控件的时候，翻页应该停止，离开的时候如果之前是开启了翻页的话则重新启动翻页
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        final int action = ev.getAction();
+        if (action == MotionEvent.ACTION_UP
+                || action == MotionEvent.ACTION_CANCEL
+                || action == MotionEvent.ACTION_OUTSIDE) {
+            // 开始翻页
+            if (canTurn) {
+                startTurning();
+            }
+        } else if (action == MotionEvent.ACTION_DOWN
+                || action == MotionEvent.ACTION_MOVE) {
+            // 停止翻页
+            if (canTurn) {
+                stopTurning();
+            }
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        if (viewPager != null) {
+            viewPager.requestLayout();
+        }
+        if (myHandler != null && isTurning()) {
+            startTurning();
+        }
+        super.onAttachedToWindow();
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        if (myHandler != null) {
+            myHandler.removeCallbacksAndMessages(null);
+        }
+        super.onDetachedFromWindow();
     }
 }
