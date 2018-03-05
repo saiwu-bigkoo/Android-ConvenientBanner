@@ -6,12 +6,15 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true" >
 
         <com.bigkoo.convenientbanner.view.CBLoopViewPager
             android:id="@+id/cbLoopViewPager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:clipToPadding="false" />
 
         <!-- 翻页指示点的viewgroup -->
 
