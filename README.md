@@ -14,7 +14,8 @@ ConvenientBanner
 
 demo是用Module方式依赖，你也可以使用gradle 依赖:
 ```java
-   compile 'com.bigkoo:convenientbanner:2.0.5'
+   compile 'com.bigkoo:convenientbanner:2.0.6'
+//compile 'com.bigkoo:convenientbanner:2.0.5'旧版
 ```
 
 
@@ -72,40 +73,10 @@ public class LocalImageHolderView implements Holder<Integer>{
 - [LoopingViewPager](https://github.com/imbryk/LoopingViewPager)
 
 >## 更新说明
->v1.1.0 修复了往前滑动最后一页会变空白页的BUG  <br />
->v1.1.1 修复第三方图库下载setTag出错的BUG  <br />
 
->v1.1.2
- - 修复下拉刷新自动翻页偶尔失效停止BUG  <br />
- - 提供onPageChangeListener的API调用  <br />
- 
->v1.1.3
- - 循环控制，可以设置为不循环模式  <br />
- - 加入OnItemClcikListener监听器，修复原先点击图片position失准BUG  <br />
- - 调整notifyDataSetChanged函数，并加入notifyDataSetAdd函数  <br />
 
->v1.1.4
- - getCurrentPageIndex函数改为getCurrentItem  <br />
- - 加入setcurrentitem函数  <br />
-
->v2.0.0
- - 重新修改循环逻辑  <br />
- - 解决卡顿和白屏现象  <br />
- - Demo中加入下拉刷新和控件左右拨动冲突方案  <br />
- 
->v2.0.1
- - 回滚到1.1.4的循环逻辑  <br />
- - 分离特效代码  <br />
-
->v2.0.2
- - 调整setOnItemClickListener  <br />
- - 加入代码New 控件和 add ListView的HeaderView效果例子  <br />
- 
->v2.0.3
- - 逻辑由  301230 改为 012301230123—》当第一个0的时候变为第二个0，最后一个3的时候变为第二个3 <br />
- 
->v2.0.4
- - 修复添加动画效果后点击无效问题 <br />
+>v2.0.6
+ - 使用RecycleView进行重新实现，api基本不改变，加入xml配置翻页时间 <br />
 
 >v2.0.5
- - 使用WeakReference fix 内存泄漏问题 <br />
+ - ViewPager实现方式 <br />
