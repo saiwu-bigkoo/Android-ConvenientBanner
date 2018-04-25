@@ -21,6 +21,6 @@ android {
 dependencies {
     implementation 'com.android.support:appcompat-v7:27.0.2'
     implementation 'com.android.support:recyclerview-v7:27.0.2'
-    compile 'com.bigkoo:convenientbanner:2.0.6'
-//    implementation project(':convenientbanner')
+//    compile 'com.bigkoo:convenientbanner:2.0.6'
+    implementation project(':convenientbanner')
 }

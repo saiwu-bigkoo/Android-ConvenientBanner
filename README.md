@@ -71,6 +71,7 @@ public class LocalImageHolderView implements Holder<Integer>{
 - [ViewPagerTransforms](https://github.com/ToxicBakery/ViewPagerTransforms)
 - [salvage](https://github.com/JakeWharton/salvage)
 - [LoopingViewPager](https://github.com/imbryk/LoopingViewPager)
+- [RecyclerViewCardGallery](https://github.com/zjw-swun/RecyclerViewCardGallery)
 
 >## 更新说明
 
