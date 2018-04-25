@@ -2,13 +2,20 @@ package com.bigkoo.convenientbanner.holder;
 
 /**
  * Created by Sai on 15/12/14.
+ *
  * @param <T> 任何你指定的对象
  */
 
-import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-public interface Holder<T>{
-    View createView(Context context);
-    void UpdateUI(Context context,int position,T data);
+public abstract class Holder<T> extends RecyclerView.ViewHolder {
+    public Holder(View itemView) {
+        super(itemView);
+        initView(itemView);
+    }
+
+    protected abstract void initView(View itemView);
+
+    public abstract void updateUI(T data);
 }

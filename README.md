@@ -3,16 +3,16 @@
 ConvenientBanner
 ===========
 
-é€šç”¨çš„å¹¿å‘Šæ æ§ä»¶ï¼Œè®©ä½ è½»æ¾å®ç°å¹¿å‘Šå¤´æ•ˆæœã€‚æ”¯æŒæ— é™å¾ªç¯ï¼Œå¯ä»¥è®¾ç½®è‡ªåŠ¨ç¿»é¡µå’Œæ—¶é—´(è€Œä¸”éå¸¸æ™ºèƒ½ï¼Œæ‰‹æŒ‡è§¦ç¢°åˆ™æš‚åœç¿»é¡µï¼Œç¦»å¼€è‡ªåŠ¨å¼€å§‹ç¿»é¡µã€‚ä½ ä¹Ÿå¯ä»¥è®¾ç½®åœ¨ç•Œé¢onPauseçš„æ—¶å€™ä¸è¿›è¡Œè‡ªåŠ¨ç¿»é¡µï¼ŒonResumeä¹‹åç»§ç»­è‡ªåŠ¨ç¿»é¡µ)ï¼Œå¹¶ä¸”æä¾›å¤šç§ç¿»é¡µç‰¹æ•ˆã€‚
-å¯¹æ¯”å…¶ä»–å¹¿å‘Šæ æ§ä»¶ï¼Œå¤§å¤šéƒ½éœ€è¦å¯¹æºç è¿›è¡Œæ”¹åŠ¨æ‰èƒ½åŠ è½½ç½‘ç»œå›¾ç‰‡ï¼Œæˆ–è€…å¸®ä½ é›†æˆä¸æ˜¯ä½ æ‰€éœ€è¦çš„å›¾ç‰‡ç¼“å­˜åº“ã€‚è€Œè¿™ä¸ªåº“èƒ½è®©æœ‰ä»£ç æ´ç™–çš„ä½ æ¬¢å–œï¼Œä¸éœ€è¦å¯¹åº“æºç è¿›è¡Œä¿®æ”¹ä½ å°±å¯ä»¥ä½¿ç”¨ä»»ä½•ä½ å–œæ¬¢çš„ç½‘ç»œå›¾ç‰‡åº“è¿›è¡Œé…åˆã€‚
+Í¨ÓÃµÄ¹ã¸æÀ¸¿Ø¼ş£¬ÈÃÄãÇáËÉÊµÏÖ¹ã¸æÍ·Ğ§¹û¡£Ö§³ÖÎŞÏŞÑ­»·£¬¿ÉÒÔÉèÖÃ×Ô¶¯·­Ò³ºÍÊ±¼ä(¶øÇÒ·Ç³£ÖÇÄÜ£¬ÊÖÖ¸´¥ÅöÔòÔİÍ£·­Ò³£¬Àë¿ª×Ô¶¯¿ªÊ¼·­Ò³¡£ÄãÒ²¿ÉÒÔÉèÖÃÔÚ½çÃæonPauseµÄÊ±ºò²»½øĞĞ×Ô¶¯·­Ò³£¬onResumeÖ®ºó¼ÌĞø×Ô¶¯·­Ò³)£¬²¢ÇÒÌá¹©¶àÖÖ·­Ò³ÌØĞ§¡£
+¶Ô±ÈÆäËû¹ã¸æÀ¸¿Ø¼ş£¬´ó¶à¶¼ĞèÒª¶ÔÔ´Âë½øĞĞ¸Ä¶¯²ÅÄÜ¼ÓÔØÍøÂçÍ¼Æ¬£¬»òÕß°ïÄã¼¯³É²»ÊÇÄãËùĞèÒªµÄÍ¼Æ¬»º´æ¿â¡£¶øÕâ¸ö¿âÄÜÈÃÓĞ´úÂë½àñ±µÄÄã»¶Ï²£¬²»ĞèÒª¶Ô¿âÔ´Âë½øĞĞĞŞ¸ÄÄã¾Í¿ÉÒÔÊ¹ÓÃÈÎºÎÄãÏ²»¶µÄÍøÂçÍ¼Æ¬¿â½øĞĞÅäºÏ¡£
 
 ## Demo
-ç”¨æ¨¡æ‹Ÿå™¨è¿è¡Œçš„æ•ˆæœï¼Œé¼ æ ‡æ‹¨åŠ¨å’Œæ¨¡æ‹Ÿå™¨å¤ªå¡ç­‰åŸå› ï¼Œå®é™…æ•ˆæœæ¯”æ•ˆæœå›¾æ›´ç‚«å“¦ï½ï½
+ÓÃÄ£ÄâÆ÷ÔËĞĞµÄĞ§¹û£¬Êó±ê²¦¶¯ºÍÄ£ÄâÆ÷Ì«¿¨µÈÔ­Òò£¬Êµ¼ÊĞ§¹û±ÈĞ§¹ûÍ¼¸üìÅÅ¶¡«¡«
 ![](https://github.com/saiwu-bigkoo/Android-ConvenientBanner/blob/master/preview/convenientbannerdemo.gif)
 
-- [demoä»£ç è¯·çœ‹æˆ³è¿™é‡Œ](https://github.com/saiwu-bigkoo/Android-ConvenientBanner/blob/master/app/src/main/java/com/bigkoo/convenientbannerdemo/MainActivity.java)
+- [demo´úÂëÇë¿´´ÁÕâÀï](https://github.com/saiwu-bigkoo/Android-ConvenientBanner/blob/master/app/src/main/java/com/bigkoo/convenientbannerdemo/MainActivity.java)
 
-demoæ˜¯ç”¨Moduleæ–¹å¼ä¾èµ–ï¼Œä½ ä¹Ÿå¯ä»¥ä½¿ç”¨gradle ä¾èµ–:
+demoÊÇÓÃModule·½Ê½ÒÀÀµ£¬ÄãÒ²¿ÉÒÔÊ¹ÓÃgradle ÒÀÀµ:
 ```java
    compile 'com.bigkoo:convenientbanner:2.0.5'
 ```
@@ -26,14 +26,14 @@ demoæ˜¯ç”¨Moduleæ–¹å¼ä¾èµ–ï¼Œä½ ä¹Ÿå¯ä»¥ä½¿ç”¨gradle ä¾èµ–:
         android:id="@+id/convenientBanner"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        app:canLoop="true" //æ§åˆ¶å¾ªç¯ä¸å¦
+        app:canLoop="true" //¿ØÖÆÑ­»·Óë·ñ
 />
 ```
 
 ### config in java code
 
 ```java
-//è‡ªå®šä¹‰ä½ çš„Holderï¼Œå®ç°æ›´å¤šå¤æ‚çš„ç•Œé¢ï¼Œä¸ä¸€å®šæ˜¯å›¾ç‰‡ç¿»é¡µï¼Œå…¶ä»–ä»»ä½•æ§ä»¶ç¿»é¡µäº¦å¯ã€‚
+//×Ô¶¨ÒåÄãµÄHolder£¬ÊµÏÖ¸ü¶à¸´ÔÓµÄ½çÃæ£¬²»Ò»¶¨ÊÇÍ¼Æ¬·­Ò³£¬ÆäËûÈÎºÎ¿Ø¼ş·­Ò³Òà¿É¡£
 convenientBanner.setPages(
                 new CBViewHolderCreator<LocalImageHolderView>() {
                     @Override
@@ -41,13 +41,13 @@ convenientBanner.setPages(
                         return new LocalImageHolderView();
                     }
                 }, localImages)
-                //è®¾ç½®ä¸¤ä¸ªç‚¹å›¾ç‰‡ä½œä¸ºç¿»é¡µæŒ‡ç¤ºå™¨ï¼Œä¸è®¾ç½®åˆ™æ²¡æœ‰æŒ‡ç¤ºå™¨ï¼Œå¯ä»¥æ ¹æ®è‡ªå·±éœ€æ±‚è‡ªè¡Œé…åˆè‡ªå·±çš„æŒ‡ç¤ºå™¨,ä¸éœ€è¦åœ†ç‚¹æŒ‡ç¤ºå™¨å¯ç”¨ä¸è®¾
+                //ÉèÖÃÁ½¸öµãÍ¼Æ¬×÷Îª·­Ò³Ö¸Ê¾Æ÷£¬²»ÉèÖÃÔòÃ»ÓĞÖ¸Ê¾Æ÷£¬¿ÉÒÔ¸ù¾İ×Ô¼ºĞèÇó×ÔĞĞÅäºÏ×Ô¼ºµÄÖ¸Ê¾Æ÷,²»ĞèÒªÔ²µãÖ¸Ê¾Æ÷¿ÉÓÃ²»Éè
                 .setPageIndicator(new int[]{R.drawable.ic_page_indicator, R.drawable.ic_page_indicator_focused})
-                //è®¾ç½®æŒ‡ç¤ºå™¨çš„æ–¹å‘
+                //ÉèÖÃÖ¸Ê¾Æ÷µÄ·½Ïò
                 .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
-                //è®¾ç½®ç¿»é¡µçš„æ•ˆæœï¼Œä¸éœ€è¦ç¿»é¡µæ•ˆæœå¯ç”¨ä¸è®¾
-                //.setPageTransformer(Transformer.DefaultTransformer);    é›†æˆç‰¹æ•ˆä¹‹åä¼šæœ‰ç™½å±ç°è±¡ï¼Œæ–°ç‰ˆå·²ç»åˆ†ç¦»ï¼Œå¦‚æœè¦é›†æˆç‰¹æ•ˆçš„ä¾‹å­å¯ä»¥çœ‹Demoçš„ç‚¹å‡»å“åº”ã€‚
-//        convenientBanner.setManualPageable(false);//è®¾ç½®ä¸èƒ½æ‰‹åŠ¨å½±å“
+                //ÉèÖÃ·­Ò³µÄĞ§¹û£¬²»ĞèÒª·­Ò³Ğ§¹û¿ÉÓÃ²»Éè
+                //.setPageTransformer(Transformer.DefaultTransformer);    ¼¯³ÉÌØĞ§Ö®ºó»áÓĞ°×ÆÁÏÖÏó£¬ĞÂ°æÒÑ¾­·ÖÀë£¬Èç¹ûÒª¼¯³ÉÌØĞ§µÄÀı×Ó¿ÉÒÔ¿´DemoµÄµã»÷ÏìÓ¦¡£
+//        convenientBanner.setManualPageable(false);//ÉèÖÃ²»ÄÜÊÖ¶¯Ó°Ïì
 
 public class LocalImageHolderView implements Holder<Integer>{
     private ImageView imageView;
@@ -71,41 +71,41 @@ public class LocalImageHolderView implements Holder<Integer>{
 - [salvage](https://github.com/JakeWharton/salvage)
 - [LoopingViewPager](https://github.com/imbryk/LoopingViewPager)
 
->## æ›´æ–°è¯´æ˜
->v1.1.0 ä¿®å¤äº†å¾€å‰æ»‘åŠ¨æœ€åä¸€é¡µä¼šå˜ç©ºç™½é¡µçš„BUG  <br />
->v1.1.1 ä¿®å¤ç¬¬ä¸‰æ–¹å›¾åº“ä¸‹è½½setTagå‡ºé”™çš„BUG  <br />
+>## ¸üĞÂËµÃ÷
+>v1.1.0 ĞŞ¸´ÁËÍùÇ°»¬¶¯×îºóÒ»Ò³»á±ä¿Õ°×Ò³µÄBUG  <br />
+>v1.1.1 ĞŞ¸´µÚÈı·½Í¼¿âÏÂÔØsetTag³ö´íµÄBUG  <br />
 
 >v1.1.2
- - ä¿®å¤ä¸‹æ‹‰åˆ·æ–°è‡ªåŠ¨ç¿»é¡µå¶å°”å¤±æ•ˆåœæ­¢BUG  <br />
- - æä¾›onPageChangeListenerçš„APIè°ƒç”¨  <br />
+ - ĞŞ¸´ÏÂÀ­Ë¢ĞÂ×Ô¶¯·­Ò³Å¼¶ûÊ§Ğ§Í£Ö¹BUG  <br />
+ - Ìá¹©onPageChangeListenerµÄAPIµ÷ÓÃ  <br />
  
 >v1.1.3
- - å¾ªç¯æ§åˆ¶ï¼Œå¯ä»¥è®¾ç½®ä¸ºä¸å¾ªç¯æ¨¡å¼  <br />
- - åŠ å…¥OnItemClcikListenerç›‘å¬å™¨ï¼Œä¿®å¤åŸå…ˆç‚¹å‡»å›¾ç‰‡positionå¤±å‡†BUG  <br />
- - è°ƒæ•´notifyDataSetChangedå‡½æ•°ï¼Œå¹¶åŠ å…¥notifyDataSetAddå‡½æ•°  <br />
+ - Ñ­»·¿ØÖÆ£¬¿ÉÒÔÉèÖÃÎª²»Ñ­»·Ä£Ê½  <br />
+ - ¼ÓÈëOnItemClcikListener¼àÌıÆ÷£¬ĞŞ¸´Ô­ÏÈµã»÷Í¼Æ¬positionÊ§×¼BUG  <br />
+ - µ÷ÕûnotifyDataSetChangedº¯Êı£¬²¢¼ÓÈënotifyDataSetAddº¯Êı  <br />
 
 >v1.1.4
- - getCurrentPageIndexå‡½æ•°æ”¹ä¸ºgetCurrentItem  <br />
- - åŠ å…¥setcurrentitemå‡½æ•°  <br />
+ - getCurrentPageIndexº¯Êı¸ÄÎªgetCurrentItem  <br />
+ - ¼ÓÈësetcurrentitemº¯Êı  <br />
 
 >v2.0.0
- - é‡æ–°ä¿®æ”¹å¾ªç¯é€»è¾‘  <br />
- - è§£å†³å¡é¡¿å’Œç™½å±ç°è±¡  <br />
- - Demoä¸­åŠ å…¥ä¸‹æ‹‰åˆ·æ–°å’Œæ§ä»¶å·¦å³æ‹¨åŠ¨å†²çªæ–¹æ¡ˆ  <br />
+ - ÖØĞÂĞŞ¸ÄÑ­»·Âß¼­  <br />
+ - ½â¾ö¿¨¶ÙºÍ°×ÆÁÏÖÏó  <br />
+ - DemoÖĞ¼ÓÈëÏÂÀ­Ë¢ĞÂºÍ¿Ø¼ş×óÓÒ²¦¶¯³åÍ»·½°¸  <br />
  
 >v2.0.1
- - å›æ»šåˆ°1.1.4çš„å¾ªç¯é€»è¾‘  <br />
- - åˆ†ç¦»ç‰¹æ•ˆä»£ç   <br />
+ - »Ø¹öµ½1.1.4µÄÑ­»·Âß¼­  <br />
+ - ·ÖÀëÌØĞ§´úÂë  <br />
 
 >v2.0.2
- - è°ƒæ•´setOnItemClickListener  <br />
- - åŠ å…¥ä»£ç New æ§ä»¶å’Œ add ListViewçš„HeaderViewæ•ˆæœä¾‹å­  <br />
+ - µ÷ÕûsetOnItemClickListener  <br />
+ - ¼ÓÈë´úÂëNew ¿Ø¼şºÍ add ListViewµÄHeaderViewĞ§¹ûÀı×Ó  <br />
  
 >v2.0.3
- - é€»è¾‘ç”±  301230 æ”¹ä¸º 012301230123â€”ã€‹å½“ç¬¬ä¸€ä¸ª0çš„æ—¶å€™å˜ä¸ºç¬¬äºŒä¸ª0ï¼Œæœ€åä¸€ä¸ª3çš„æ—¶å€™å˜ä¸ºç¬¬äºŒä¸ª3 <br />
+ - Âß¼­ÓÉ  301230 ¸ÄÎª 012301230123¡ª¡·µ±µÚÒ»¸ö0µÄÊ±ºò±äÎªµÚ¶ş¸ö0£¬×îºóÒ»¸ö3µÄÊ±ºò±äÎªµÚ¶ş¸ö3 <br />
  
 >v2.0.4
- - ä¿®å¤æ·»åŠ åŠ¨ç”»æ•ˆæœåç‚¹å‡»æ— æ•ˆé—®é¢˜ <br />
+ - ĞŞ¸´Ìí¼Ó¶¯»­Ğ§¹ûºóµã»÷ÎŞĞ§ÎÊÌâ <br />
 
 >v2.0.5
- - ä½¿ç”¨WeakReference fix å†…å­˜æ³„æ¼é—®é¢˜ <br />
+ - Ê¹ÓÃWeakReference fix ÄÚ´æĞ¹Â©ÎÊÌâ <br />

@@ -1,106 +1,89 @@
 package com.bigkoo.convenientbanner.adapter;
 
-import android.support.v4.view.PagerAdapter;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bigkoo.convenientbanner.R;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
-import com.bigkoo.convenientbanner.view.CBLoopViewPager;
+import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 
 import java.util.List;
 
 /**
  * Created by Sai on 15/7/29.
  */
-public class CBPageAdapter<T> extends PagerAdapter {
-    protected List<T> mDatas;
-    protected CBViewHolderCreator holderCreator;
-//    private View.OnClickListener onItemClickListener;
-    private boolean canLoop = true;
-    private CBLoopViewPager viewPager;
-    private final int MULTIPLE_COUNT = 300;
+public class CBPageAdapter<T> extends RecyclerView.Adapter<Holder>{
+    protected List<T> datas;
+    private CBViewHolderCreator creator;
+    private CBPageAdapterHelper helper;
+    private boolean canLoop;
+    private OnItemClickListener onItemClickListener;
 
-    public int toRealPosition(int position) {
-        int realCount = getRealCount();
-        if (realCount == 0)
-            return 0;
-        int realPosition = position % realCount;
-        return realPosition;
-    }
-
-    @Override
-    public int getCount() {
-        return canLoop ? getRealCount()*MULTIPLE_COUNT : getRealCount();
-    }
-
-    public int getRealCount() {
-        return mDatas == null ? 0 : mDatas.size();
-    }
-
-    @Override
-    public Object instantiateItem(ViewGroup container, int position) {
-        int realPosition = toRealPosition(position);
-
-        View view = getView(realPosition, null, container);
-//        if(onItemClickListener != null) view.setOnClickListener(onItemClickListener);
-        container.addView(view);
-        return view;
-    }
-
-    @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
-        View view = (View) object;
-        container.removeView(view);
-    }
-
-    @Override
-    public void finishUpdate(ViewGroup container) {
-        int position = viewPager.getCurrentItem();
-        if (position == 0) {
-            position = viewPager.getFristItem();
-        } else if (position == getCount() - 1) {
-            position = viewPager.getLastItem();
-        }
-        try {
-            viewPager.setCurrentItem(position, false);
-        }catch (IllegalStateException e){}
-    }
-
-    @Override
-    public boolean isViewFromObject(View view, Object object) {
-        return view == object;
-    }
-
-    public void setCanLoop(boolean canLoop) {
+    public CBPageAdapter(CBViewHolderCreator creator, List<T> datas, boolean canLoop) {
+        this.creator = creator;
+        this.datas = datas;
         this.canLoop = canLoop;
+        helper = new CBPageAdapterHelper();
     }
 
-    public void setViewPager(CBLoopViewPager viewPager) {
-        this.viewPager = viewPager;
+
+    @Override
+    public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
+        int layoutId = creator.getLayoutId();
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(layoutId, parent, false);
+        helper.onCreateViewHolder(parent,itemView);
+        return creator.createHolder(itemView);
     }
 
-    public CBPageAdapter(CBViewHolderCreator holderCreator, List<T> datas) {
-        this.holderCreator = holderCreator;
-        this.mDatas = datas;
-    }
+    @Override
+    public void onBindViewHolder(Holder holder, int position) {
+        helper.onBindViewHolder(holder.itemView, position, getItemCount());
+        int realPosition = position%datas.size();
+        holder.updateUI(datas.get(realPosition));
 
-    public View getView(int position, View view, ViewGroup container) {
-        Holder holder = null;
-        if (view == null) {
-            holder = (Holder) holderCreator.createHolder();
-            view = holder.createView(container.getContext());
-            view.setTag(R.id.cb_item_tag, holder);
-        } else {
-            holder = (Holder<T>) view.getTag(R.id.cb_item_tag);
+        if(onItemClickListener != null){
+            holder.itemView.setOnClickListener(new OnPageClickListener(realPosition));
         }
-        if (mDatas != null && !mDatas.isEmpty())
-            holder.UpdateUI(container.getContext(), position, mDatas.get(position));
-        return view;
     }
 
-//    public void setOnItemClickListener(View.OnClickListener onItemClickListener) {
-//        this.onItemClickListener = onItemClickListener;
-//    }
+    @Override
+    public int getItemCount() {
+        //根据模式决定长度
+        if(datas.size() == 0) return 0;
+        return canLoop ? 3*datas.size() : datas.size();
+    }
+
+    public int getRealItemCount(){
+        return datas.size();
+    }
+
+    public boolean isCanLoop() {
+        return canLoop;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    class OnPageClickListener implements View.OnClickListener {
+        private int position;
+        public OnPageClickListener(int position){
+            this.position = position;
+        }
+        @Override
+        public void onClick(View v) {
+            if(onItemClickListener != null)
+                onItemClickListener.onItemClick(position);
+        }
+
+        public int getPosition() {
+            return position;
+        }
+
+        public void setPosition(int position) {
+            this.position = position;
+        }
+    }
 }

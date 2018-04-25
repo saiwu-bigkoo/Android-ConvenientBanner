@@ -1,17 +1,16 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
-apply plugin: 'com.jfrog.bintray'
-
-version = "2.0.5"//aar的版本
+apply plugin: 'com.novoda.bintray-release'//添加JCenter插件
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "20.0.0"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.2"
 
     defaultConfig {
-        minSdkVersion 10
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion 14
+        targetSdkVersion 27
+        versionCode 3
+        versionName '2.0.6'
     }
     buildTypes {
         release {
@@ -19,82 +18,29 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    lintOptions {
+        abortOnError false
+    }
 }
 
-dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile ('com.android.support:appcompat-v7:21.0.3')
-}
-
-def siteUrl = 'https://github.com/saiwu-bigkoo/Android-ConvenientBanner'                        // #CONFIG# // project homepage
-def gitUrl = 'https://github.com/saiwu-bigkoo/Android-ConvenientBanner.git'                     // #CONFIG# // project git
-group = "com.bigkoo"
-
-//通过./gradlew install命令生成pom-default.xml 在 moudle库目录/build/poms/pom-default.xml
-install {
-    repositories.mavenInstaller {
-        // This generates POM.xml with proper parameters
-        pom {
-            project {
-                packaging 'aar'
-                name 'Convenient Banner For Android'                                   // #CONFIG# // project title
-                url siteUrl
-                // Set your license
-                licenses {
-                    license {
-                        name 'The Apache Software License, Version 2.0'
-                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                    }
-                }
-                developers {
-                    developer {
-                        id 'sai'                                           // #CONFIG# // your user id (you can write your nickname)
-                        name 'sai.wu'                                       // #CONFIG# // your user name
-                        email 'sai.wu@bigkoo.com'                               // #CONFIG# // your email
-                    }
-                }
-                scm {
-                    connection gitUrl
-                    developerConnection gitUrl
-                    url siteUrl
-                }
-            }
+allprojects {
+    tasks.withType(Javadoc) {//兼容中文字符
+        options{
+            encoding "UTF-8"
+            charSet 'UTF-8'
+            links "http://docs.oracle.com/javase/7/docs/api"
         }
     }
 }
-
-task sourcesJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
+publish {
+    userOrg = 'saiwu-bigkoo'//bintray.com 用户名/组织名 user/org name
+    groupId = 'com.bigkoo'//JCenter上显示的路径 path
+    artifactId = 'convenientbanner'//项目名称 project name
+    publishVersion = '2.0.6'//版本号 version code
+    desc = 'Simple and convenient banner'//项目描述 description
+    website = 'https://github.com/Bigkoo/Android-ConvenientBanner' //项目网址链接 link
 }
 
-task javadoc(type: Javadoc) {
-    source = android.sourceSets.main.java.srcDirs
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
-artifacts {
-    archives javadocJar
-    archives sourcesJar
-}
-
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
-bintray {
-    user = properties.getProperty("bintray.user")
-    key = properties.getProperty("bintray.apikey")
-    configurations = ['archives']
-    pkg {
-        repo = "maven"
-        name = "ConvenientBanner"                                                 // #CONFIG# project name in jcenter
-        websiteUrl = siteUrl
-        vcsUrl = gitUrl
-        licenses = ["Apache-2.0"]
-        publish = true
-    }
+dependencies {
+    implementation ('com.android.support:recyclerview-v7:27.0.2')
 }
