@@ -35,7 +35,7 @@ allprojects {
 publish {
     userOrg = 'saiwu-bigkoo'//bintray.com 用户名/组织名 user/org name
     groupId = 'com.bigkoo'//JCenter上显示的路径 path
-    artifactId = 'convenientbanner'//项目名称 project name
+    artifactId = 'ConvenientBanner'//项目名称 project name
     publishVersion = '2.0.7'//版本号 version code
     desc = 'Simple and convenient banner'//项目描述 description
     website = 'https://github.com/Bigkoo/Android-ConvenientBanner' //项目网址链接 link
