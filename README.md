@@ -14,7 +14,7 @@ ConvenientBanner
 
 demo是用Module方式依赖，你也可以使用gradle 依赖:
 ```java
-   compile 'com.bigkoo:convenientbanner:2.0.6'
+   compile 'com.bigkoo:convenientbanner:2.0.7'
 //compile 'com.bigkoo:convenientbanner:2.0.5'旧版
 ```
 
@@ -75,6 +75,8 @@ public class LocalImageHolderView implements Holder<Integer>{
 
 >## 更新说明
 
+>v2.0.7
+ - 加入与PhotoView，Fresco配合变为网络图片预览控件例子，新增获取和设置当前position api <br />
 
 >v2.0.6
  - 使用RecycleView进行重新实现，api基本不改变，加入xml配置翻页时间 <br />

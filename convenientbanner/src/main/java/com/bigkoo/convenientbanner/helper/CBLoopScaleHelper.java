@@ -151,6 +151,10 @@ public class CBLoopScaleHelper {
         mShowLeftCardWidth = showLeftCardWidth;
     }
 
+    public int getFirstItemPos() {
+        return mFirstItemPos;
+    }
+
     /**
      * 防止卡片在第一页和最后一页因无法"居中"而一直循环调用onScrollStateChanged-->SnapHelper.snapToTargetExistingView-->onScrollStateChanged
      * Created by jameson on 9/3/16.

@@ -126,7 +126,7 @@ public class ConvenientBanner<T> extends RelativeLayout {
             // 翻页指示的点
             ImageView pointView = new ImageView(getContext());
             pointView.setPadding(5, 0, 5, 0);
-            if (mPointViews.isEmpty())
+            if (cbLoopScaleHelper.getFirstItemPos()==count)
                 pointView.setImageResource(page_indicatorId[1]);
             else
                 pointView.setImageResource(page_indicatorId[0]);
@@ -181,6 +181,24 @@ public class ConvenientBanner<T> extends RelativeLayout {
      */
     public int getCurrentItem() {
         return cbLoopScaleHelper.getRealCurrentItem();
+    }
+    /**
+     * 设置当前页对应的position
+     * @return
+     */
+    public ConvenientBanner setCurrentItem(int position) {
+        cbLoopScaleHelper.setCurrentItem(canLoop ? mDatas.size()+position : position);
+        return this;
+    }
+
+    /**
+     * 设置第一次加载当前页对应的position
+     * setPageIndicator之前使用
+     * @return
+     */
+    public ConvenientBanner setFirstItemPos(int position) {
+        cbLoopScaleHelper.setFirstItemPos(canLoop ? mDatas.size()+position : position);
+        return this;
     }
     /**
      * 指示器的方向
