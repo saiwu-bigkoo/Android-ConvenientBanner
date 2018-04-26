@@ -176,6 +176,13 @@ public class ConvenientBanner<T> extends RelativeLayout {
     }
 
     /**
+     * 获取当前页对应的position
+     * @return
+     */
+    public int getCurrentItem() {
+        return cbLoopScaleHelper.getRealCurrentItem();
+    }
+    /**
      * 指示器的方向
      *
      * @param align 三个方向：居左 （RelativeLayout.ALIGN_PARENT_LEFT），居中 （RelativeLayout.CENTER_HORIZONTAL），居右 （RelativeLayout.ALIGN_PARENT_RIGHT）
