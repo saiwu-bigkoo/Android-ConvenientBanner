@@ -126,7 +126,7 @@ public class ConvenientBanner<T> extends RelativeLayout {
             // 翻页指示的点
             ImageView pointView = new ImageView(getContext());
             pointView.setPadding(5, 0, 5, 0);
-            if (cbLoopScaleHelper.getFirstItemPos()==count)
+            if (cbLoopScaleHelper.getFirstItemPos()%mDatas.size()==count)
                 pointView.setImageResource(page_indicatorId[1]);
             else
                 pointView.setImageResource(page_indicatorId[0]);

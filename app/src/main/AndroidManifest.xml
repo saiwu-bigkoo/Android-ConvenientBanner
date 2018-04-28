@@ -17,5 +17,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".AlbumActivity"></activity>
+        <activity android:name=".HeaderActivity"></activity>
     </application>
 </manifest>

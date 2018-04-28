@@ -23,7 +23,7 @@ import java.util.List;
  * Created by Sai on 15/7/30.
  * convenientbanner 控件 的 demo
  */
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, OnItemClickListener {
+public class MainActivity extends AppCompatActivity implements OnItemClickListener {
     private ConvenientBanner convenientBanner;//顶部广告栏控件
     private ArrayList<Integer> localImages = new ArrayList<Integer>();
     private List<String> networkImages;
@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         initViews();
         init();
         startActivity(new Intent(this, AlbumActivity.class));
+        startActivity(new Intent(this, HeaderActivity.class));
     }
 
     private void initViews() {
@@ -180,41 +181,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onPause();
 //        //停止翻页
         convenientBanner.stopTurning();
-    }
-
-    //点击切换效果
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-
-//        点击后加入两个内容
-//        localImages.clear();
-//        localImages.add(R.drawable.ic_test_2);
-//        localImages.add(R.drawable.ic_test_4);
-//        convenientBanner.notifyDataSetChanged();
-
-        //控制是否循环
-//        convenientBanner.setCanLoop(!convenientBanner.isCanLoop());
-
-
-//        String transforemerName = transformerList.get(position);
-//        try {
-//            Class cls = Class.forName("com.ToxicBakery.viewpager.transforms." + transforemerName);
-//            ABaseTransformer transforemer= (ABaseTransformer)cls.newInstance();
-//            convenientBanner.getViewPager().setPageTransformer(true,transforemer);
-//
-//            //部分3D特效需要调整滑动速度
-//            if(transforemerName.equals("StackTransformer")){
-//                convenientBanner.setScrollDuration(1200);
-//            }
-//
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (InstantiationException e) {
-//            e.printStackTrace();
-//        } catch (IllegalAccessException e) {
-//            e.printStackTrace();
-//        }
-
     }
 
 

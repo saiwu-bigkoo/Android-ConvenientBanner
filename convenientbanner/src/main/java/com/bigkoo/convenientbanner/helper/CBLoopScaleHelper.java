@@ -155,6 +155,12 @@ public class CBLoopScaleHelper {
         return mFirstItemPos;
     }
 
+    public int getRealItemCount(){
+        CBPageAdapter adapter = (CBPageAdapter) mRecyclerView.getAdapter();
+        int count = adapter.getRealItemCount();
+        return count;
+    }
+
     /**
      * 防止卡片在第一页和最后一页因无法"居中"而一直循环调用onScrollStateChanged-->SnapHelper.snapToTargetExistingView-->onScrollStateChanged
      * Created by jameson on 9/3/16.
