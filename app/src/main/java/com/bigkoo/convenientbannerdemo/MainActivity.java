@@ -44,8 +44,6 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         setContentView(R.layout.activity_main);
         initViews();
         init();
-        startActivity(new Intent(this, AlbumActivity.class));
-        startActivity(new Intent(this, HeaderActivity.class));
     }
 
     private void initViews() {
@@ -187,5 +185,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
     @Override
     public void onItemClick(int position) {
         Toast.makeText(this,"点击了第"+position+"个",Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(this, HeaderActivity.class));
+//        convenientBanner.setCanLoop(!convenientBanner.isCanLoop());
     }
 }

@@ -93,6 +93,20 @@ public class ConvenientBanner<T> extends RelativeLayout {
         return this;
     }
 
+    public ConvenientBanner setCanLoop(boolean canLoop){
+        this.canLoop = canLoop;
+        pageAdapter.setCanLoop(canLoop);
+        notifyDataSetChanged();
+        return this;
+    }
+
+    public boolean isCanLoop(){
+        return canLoop;
+    }
+
+
+
+
     /**
      * 通知数据变化
      */

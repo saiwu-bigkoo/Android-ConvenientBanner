@@ -1,5 +1,6 @@
 package com.bigkoo.convenientbannerdemo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
@@ -119,6 +120,8 @@ public class HeaderActivity extends AppCompatActivity implements OnItemClickList
     @Override
     public void onItemClick(int position) {
         Toast.makeText(this,"点击了Banner第"+position+"个",Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(this, AlbumActivity.class));
+
     }
 
     @Override

@@ -55,6 +55,10 @@ public class CBPageAdapter<T> extends RecyclerView.Adapter<Holder>{
         return canLoop ? 3*datas.size() : datas.size();
     }
 
+    public void setCanLoop(boolean canLoop){
+        this.canLoop = canLoop;
+    }
+
     public int getRealItemCount(){
         return datas.size();
     }

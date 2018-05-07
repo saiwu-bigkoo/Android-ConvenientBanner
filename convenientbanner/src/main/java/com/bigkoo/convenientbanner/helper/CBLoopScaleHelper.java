@@ -135,12 +135,15 @@ public class CBLoopScaleHelper {
     }
 
     public int getCurrentItem() {
-        return mRecyclerView.getLayoutManager().getPosition(mLinearSnapHelper.findSnapView(mRecyclerView.getLayoutManager()));
+        View view = mLinearSnapHelper.findSnapView(mRecyclerView.getLayoutManager());
+        if(view != null)
+            return mRecyclerView.getLayoutManager().getPosition(view);
+        return 0;
     }
     public int getRealCurrentItem() {
         CBPageAdapter adapter = (CBPageAdapter) mRecyclerView.getAdapter();
         int count = adapter.getRealItemCount();
-        return mRecyclerView.getLayoutManager().getPosition(mLinearSnapHelper.findSnapView(mRecyclerView.getLayoutManager()))%count;
+        return getCurrentItem()%count;
     }
 
     public void setPagePadding(int pagePadding) {

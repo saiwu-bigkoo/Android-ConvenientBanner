@@ -14,7 +14,7 @@ ConvenientBanner
 
 demo是用Module方式依赖，你也可以使用gradle 依赖:
 ```java
-   compile 'com.bigkoo:ConvenientBanner:2.0.8'//地址变ConvenientBanner 大写了，额。。。
+   compile 'com.bigkoo:ConvenientBanner:2.0.9'//地址变ConvenientBanner 大写了，额。。。
 //compile 'com.bigkoo:convenientbanner:2.0.5'旧版
 ```
 
@@ -74,6 +74,9 @@ public class LocalImageHolderView implements Holder<Integer>{
 - [RecyclerViewCardGallery](https://github.com/zjw-swun/RecyclerViewCardGallery)
 
 >## 更新说明
+
+>v2.0.9
+ -  暴露canLoop的API动态控制<br />
 
 >v2.0.8
  - 加入作为列表顶部header demo，修复loop模式下第一次的指示器图标不选中问题 <br />
