@@ -62,15 +62,18 @@ public class CBLoopScaleHelper {
                         setCurrentItem(position);
                     }
                 }
-                onPageChangeListener.onScrollStateChanged(recyclerView, newState);
-                onPageChangeListener.onPageSelected(position%count);
+                if(onPageChangeListener != null) {
+                    onPageChangeListener.onScrollStateChanged(recyclerView, newState);
+                    onPageChangeListener.onPageSelected(position % count);
+                }
             }
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 //Log.e("TAG", String.format("onScrolled dx=%s, dy=%s", dx, dy));
                 super.onScrolled(recyclerView, dx, dy);
-                onPageChangeListener.onScrolled(recyclerView, dx, dy);
+                if(onPageChangeListener != null)
+                    onPageChangeListener.onScrolled(recyclerView, dx, dy);
                 onScrolledChangedCallback();
             }
         });
