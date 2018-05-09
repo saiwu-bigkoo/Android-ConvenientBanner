@@ -9,8 +9,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 27
-        versionCode 4
-        versionName '2.1.0'
+        versionCode 5
+        versionName '2.1.1'
     }
     buildTypes {
         release {
@@ -36,7 +36,7 @@ publish {
     userOrg = 'saiwu-bigkoo'//bintray.com 用户名/组织名 user/org name
     groupId = 'com.bigkoo'//JCenter上显示的路径 path
     artifactId = 'ConvenientBanner'//项目名称 project name
-    publishVersion = '2.1.0'//版本号 version code
+    publishVersion = '2.1.1'//版本号 version code
     desc = 'Simple and convenient banner'//项目描述 description
     website = 'https://github.com/Bigkoo/Android-ConvenientBanner' //项目网址链接 link
 }

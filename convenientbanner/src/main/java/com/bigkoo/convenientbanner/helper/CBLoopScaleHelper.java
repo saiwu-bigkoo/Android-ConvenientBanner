@@ -1,8 +1,7 @@
 package com.bigkoo.convenientbanner.helper;
 
-import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.LinearSnapHelper;
+import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -25,7 +24,7 @@ public class CBLoopScaleHelper {
 
     private int mFirstItemPos;
 
-    private CardLinearSnapHelper mLinearSnapHelper = new CardLinearSnapHelper();
+    private PagerSnapHelper mPagerSnapHelper = new PagerSnapHelper();
     private OnPageChangeListener onPageChangeListener;
 
     public void attachToRecyclerView(final CBLoopViewPager mRecyclerView) {
@@ -37,19 +36,7 @@ public class CBLoopScaleHelper {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                // Log.e("TAG", "RecyclerView.OnScrollListener onScrollStateChanged");
                 int position = getCurrentItem();
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    mLinearSnapHelper.mNoNeedToScroll = position == 0 ||
-                            position == mRecyclerView.getAdapter().getItemCount() - 2;
-                    if (mLinearSnapHelper.finalSnapDistance[0] == 0
-                            && mLinearSnapHelper.finalSnapDistance[1] == 0) {
-                        //Log.e("TAG", "滑动停止后最终位置为" + position);
-                    }
-
-                } else {
-                    mLinearSnapHelper.mNoNeedToScroll = false;
-                }
                 //这里变换位置实现循环
                 CBPageAdapter adapter = (CBPageAdapter) mRecyclerView.getAdapter();
                 int count = adapter.getRealItemCount();
@@ -78,7 +65,7 @@ public class CBLoopScaleHelper {
             }
         });
         initWidth();
-        mLinearSnapHelper.attachToRecyclerView(mRecyclerView);
+        mPagerSnapHelper.attachToRecyclerView(mRecyclerView);
     }
 
     /**
@@ -116,7 +103,6 @@ public class CBLoopScaleHelper {
         ((LinearLayoutManager) mRecyclerView.getLayoutManager()).
                 scrollToPositionWithOffset(pos,
                         (mPagePadding + mShowLeftCardWidth));
-        //onScrolledChangedCallback();
         mRecyclerView.post(new Runnable() {
             @Override
             public void run() {
@@ -138,7 +124,7 @@ public class CBLoopScaleHelper {
     }
 
     public int getCurrentItem() {
-        View view = mLinearSnapHelper.findSnapView(mRecyclerView.getLayoutManager());
+        View view = mPagerSnapHelper.findSnapView(mRecyclerView.getLayoutManager());
         if(view != null)
             return mRecyclerView.getLayoutManager().getPosition(view);
         return 0;
@@ -165,27 +151,6 @@ public class CBLoopScaleHelper {
         CBPageAdapter adapter = (CBPageAdapter) mRecyclerView.getAdapter();
         int count = adapter.getRealItemCount();
         return count;
-    }
-
-    /**
-     * 防止卡片在第一页和最后一页因无法"居中"而一直循环调用onScrollStateChanged-->SnapHelper.snapToTargetExistingView-->onScrollStateChanged
-     * Created by jameson on 9/3/16.
-     */
-    private static class CardLinearSnapHelper extends LinearSnapHelper {
-        public boolean mNoNeedToScroll = false;
-        public int[] finalSnapDistance = {0, 0};
-
-        @Override
-        public int[] calculateDistanceToFinalSnap(@NonNull RecyclerView.LayoutManager layoutManager, @NonNull View targetView) {
-            //Log.e("TAG", "calculateDistanceToFinalSnap");
-            if (mNoNeedToScroll) {
-                finalSnapDistance[0] = 0;
-                finalSnapDistance[1] = 0;
-            } else {
-                finalSnapDistance = super.calculateDistanceToFinalSnap(layoutManager, targetView);
-            }
-            return finalSnapDistance;
-        }
     }
 
     public void setOnPageChangeListener(OnPageChangeListener onPageChangeListener) {

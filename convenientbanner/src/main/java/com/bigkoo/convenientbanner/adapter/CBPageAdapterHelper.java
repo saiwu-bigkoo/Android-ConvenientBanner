@@ -16,7 +16,6 @@ import com.bigkoo.convenientbanner.utils.ScreenUtil;
 public class CBPageAdapterHelper {
     public static int sPagePadding = 0;
     public static int sShowLeftCardWidth = 0;
-    private OnItemClickListener onItemClickListener;
 
     public void onCreateViewHolder(ViewGroup parent, View itemView) {
         RecyclerView.LayoutParams lp = (RecyclerView.LayoutParams) itemView.getLayoutParams();
