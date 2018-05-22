@@ -3,6 +3,7 @@ package com.bigkoo.convenientbanner;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -78,7 +79,10 @@ public class ConvenientBanner<T> extends RelativeLayout {
         adSwitchTask = new AdSwitchTask(this);
     }
 
-
+    public ConvenientBanner setLayoutManager(RecyclerView.LayoutManager layoutManager) {
+        viewPager.setLayoutManager(layoutManager);
+        return this;
+    }
     public ConvenientBanner setPages(CBViewHolderCreator holderCreator, List<T> datas) {
         this.mDatas = datas;
         pageAdapter = new CBPageAdapter(holderCreator, mDatas, canLoop);
@@ -200,8 +204,8 @@ public class ConvenientBanner<T> extends RelativeLayout {
      * 设置当前页对应的position
      * @return
      */
-    public ConvenientBanner setCurrentItem(int position) {
-        cbLoopScaleHelper.setCurrentItem(canLoop ? mDatas.size()+position : position);
+    public ConvenientBanner setCurrentItem(int position, boolean smoothScroll) {
+        cbLoopScaleHelper.setCurrentItem(canLoop ? mDatas.size()+position : position, smoothScroll);
         return this;
     }
 
