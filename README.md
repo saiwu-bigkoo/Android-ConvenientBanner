@@ -36,19 +36,24 @@ demo是用Module方式依赖，你也可以使用gradle 依赖:
 ```java
 //自定义你的Holder，实现更多复杂的界面，不一定是图片翻页，其他任何控件翻页亦可。
 convenientBanner.setPages(
-                new CBViewHolderCreator<LocalImageHolderView>() {
+                new CBViewHolderCreator() {
                     @Override
-                    public LocalImageHolderView createHolder() {
-                        return new LocalImageHolderView();
+                    public LocalImageHolderView createHolder(View itemView) {
+                        return new LocalImageHolderView(itemView);
+                    }
+
+                    @Override
+                    public int getLayoutId() {
+                        return R.layout.item_localimage;
                     }
                 }, localImages)
                 //设置两个点图片作为翻页指示器，不设置则没有指示器，可以根据自己需求自行配合自己的指示器,不需要圆点指示器可用不设
-                .setPageIndicator(new int[]{R.drawable.ic_page_indicator, R.drawable.ic_page_indicator_focused})
+//                .setPageIndicator(new int[]{R.drawable.ic_page_indicator, R.drawable.ic_page_indicator_focused})
+                .setOnItemClickListener(this);
                 //设置指示器的方向
-                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
-                //设置翻页的效果，不需要翻页效果可用不设
-                //.setPageTransformer(Transformer.DefaultTransformer);    集成特效之后会有白屏现象，新版已经分离，如果要集成特效的例子可以看Demo的点击响应。
-//        convenientBanner.setManualPageable(false);//设置不能手动影响
+//                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
+//                .setOnPageChangeListener(this)//监听翻页事件
+                ;
 
 public class LocalImageHolderView implements Holder<Integer>{
     private ImageView imageView;
