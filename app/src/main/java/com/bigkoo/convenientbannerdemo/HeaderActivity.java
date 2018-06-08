@@ -57,7 +57,7 @@ public class HeaderActivity extends AppCompatActivity implements OnItemClickList
         View header =LayoutInflater.from(this).inflate(R.layout.item_covenientbanner_header,null);
         convenientBanner = (ConvenientBanner)header.findViewById(R.id.convenientBanner) ;
 
-        loadTestDatas();
+//        loadTestDatas();
         //本地图片例子
         convenientBanner.setPages(
                 new CBViewHolderCreator() {
