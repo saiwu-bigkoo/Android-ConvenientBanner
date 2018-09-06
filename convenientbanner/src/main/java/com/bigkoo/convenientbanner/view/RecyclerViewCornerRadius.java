@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.ViewTreeObserver;
 
 /**
+ * from https://github.com/wordplat/RecyclerViewCornerRadius
  * Created by tanyi
  * on 2018/9/6.
  */
