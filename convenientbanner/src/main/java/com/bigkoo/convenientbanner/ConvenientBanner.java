@@ -161,6 +161,32 @@ public class ConvenientBanner<T> extends RelativeLayout {
         return this;
     }
 
+    /**
+     * 设置指示器偏移
+     *
+     * @param leftMargin
+     * @param topMargin
+     * @param rightMargin
+     * @param bottomMargin
+     * @return
+     */
+    public ConvenientBanner setIndicatorMargin(Integer leftMargin, Integer topMargin, Integer rightMargin, Integer bottomMargin) {
+        ViewGroup.MarginLayoutParams layoutParams = (MarginLayoutParams) loPageTurningPoint.getLayoutParams();
+        if (leftMargin != null) {
+            layoutParams.leftMargin = leftMargin;
+        }
+        if (topMargin != null) {
+            layoutParams.topMargin = topMargin;
+        }
+        if (rightMargin != null) {
+            layoutParams.rightMargin = rightMargin;
+        }
+        if (bottomMargin != null) {
+            layoutParams.bottomMargin = bottomMargin;
+        }
+        loPageTurningPoint.setLayoutParams(layoutParams);
+        return this;
+    }
     public OnPageChangeListener getOnPageChangeListener() {
         return onPageChangeListener;
     }

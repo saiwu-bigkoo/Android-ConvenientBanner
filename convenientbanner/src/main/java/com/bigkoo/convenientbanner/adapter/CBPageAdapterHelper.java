@@ -17,9 +17,20 @@ public class CBPageAdapterHelper {
     public static int sPagePadding = 0;
     public static int sShowLeftCardWidth = 0;
 
-    public void onCreateViewHolder(ViewGroup parent, View itemView) {
-        RecyclerView.LayoutParams lp = (RecyclerView.LayoutParams) itemView.getLayoutParams();
-        lp.width = parent.getWidth() - ScreenUtil.dip2px(itemView.getContext(), 2 * (sPagePadding + sShowLeftCardWidth));
+    public void onCreateViewHolder(final ViewGroup parent, final View itemView) {
+        final RecyclerView.LayoutParams lp = (RecyclerView.LayoutParams) itemView.getLayoutParams();
+        final int parentWidth = parent.getMeasuredWidth();
+        if (parentWidth == 0) {
+            parent.post(new Runnable() {
+                @Override
+                public void run() {
+                    lp.width = parent.getMeasuredWidth() - ScreenUtil.dip2px(itemView.getContext(), 2 * (sPagePadding + sShowLeftCardWidth));
+                    itemView.setLayoutParams(lp);
+                }
+            });
+            return;
+        }
+        lp.width = parentWidth - ScreenUtil.dip2px(itemView.getContext(), 2 * (sPagePadding + sShowLeftCardWidth));
         itemView.setLayoutParams(lp);
     }
 
