@@ -9,10 +9,7 @@
         android:id="@+id/convenientBanner"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        app:canLoop="true"/>
-    <ListView
-        android:id="@+id/listView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        app:canLoop="true"
+        app:autoTurningTime="3000"/>
 
 </LinearLayout>
