@@ -1,14 +1,15 @@
 package com.bigkoo.convenientbanner.helper;
 
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.PagerSnapHelper;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewTreeObserver;
 
 import com.bigkoo.convenientbanner.adapter.CBPageAdapter;
 import com.bigkoo.convenientbanner.listener.OnPageChangeListener;
 import com.bigkoo.convenientbanner.view.CBLoopViewPager;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
 
 /**

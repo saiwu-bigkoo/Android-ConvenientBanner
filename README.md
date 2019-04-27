@@ -14,7 +14,10 @@ ConvenientBanner
 
 demo是用Module方式依赖，你也可以使用gradle 依赖:
 ```java
-   compile 'com.bigkoo:ConvenientBanner:2.1.4'//地址变ConvenientBanner 大写了，额。。。
+    implementation 'com.bigkoo:convenientbanner:2.1.5'//地址变小写了，额。。。
+    implementation 'androidx.recyclerview:recyclerview:1.0.0+'
+
+//   compile 'com.bigkoo:ConvenientBanner:2.1.4'//地址变ConvenientBanner 大写了，额。。。
 //compile 'com.bigkoo:convenientbanner:2.0.5'旧版
 ```
 
@@ -79,6 +82,9 @@ public class LocalImageHolderView implements Holder<Integer>{
 - [RecyclerViewCardGallery](https://github.com/zjw-swun/RecyclerViewCardGallery)
 
 >## 更新说明
+
+>v2.1.5
+ -  androidx<br />
 
 >v2.1.4
  -  数据为空的时候异常处理。<br />

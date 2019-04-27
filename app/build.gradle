@@ -1,30 +1,30 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
     defaultConfig {
         applicationId "com.bigkoo.convenientbannerdemo"
         minSdkVersion 15
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }
 
 dependencies {
-    implementation 'com.android.support:appcompat-v7:27.0.2'
-    implementation 'com.android.support:recyclerview-v7:27.0.2'
-//    compile 'com.bigkoo:ConvenientBanner:2.1.4'
-    compile 'com.facebook.fresco:fresco:1.3.0'
-    compile 'me.relex:photodraweeview:1.1.3'
-    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
-
-    implementation project(':convenientbanner')
+    implementation 'androidx.appcompat:appcompat:1.1.0+'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0+'
+    implementation 'com.bigkoo:convenientbanner:2.1.5'
+    api 'com.facebook.fresco:fresco:1.3.0'
+    api 'me.relex:photodraweeview:1.1.3'
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.46'
+    //        implementation project(':convenientbanner')
+    implementation 'androidx.recyclerview:recyclerview:1.0.0+'
+    implementation 'in.srain.cube:ultra-ptr:1.0.11'
 }

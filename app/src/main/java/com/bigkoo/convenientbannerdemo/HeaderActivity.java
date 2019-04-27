@@ -2,15 +2,11 @@ package com.bigkoo.convenientbannerdemo;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
+import com.bigkoo.PtrFrameLayoutCompat;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
@@ -21,6 +17,16 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import in.srain.cube.views.ptr.PtrDefaultHandler;
+import in.srain.cube.views.ptr.PtrFrameLayout;
+import in.srain.cube.views.ptr.PtrHandler;
+import in.srain.cube.views.ptr.header.MaterialHeader;
+
 /**
  * Created by Sai on 2018/4/28.
  */
@@ -28,6 +34,8 @@ import java.util.List;
 public class HeaderActivity extends AppCompatActivity implements OnItemClickListener, BaseQuickAdapter.OnItemClickListener {
     RecyclerView recyclerView;
     MyAdapter adapter;
+    protected PtrFrameLayoutCompat ptrFrameLayout;
+
     ArrayList<String> datas = new ArrayList<>();
     ConvenientBanner convenientBanner;
     private ArrayList<Integer> localImages = new ArrayList<Integer>();
@@ -44,12 +52,31 @@ public class HeaderActivity extends AppCompatActivity implements OnItemClickList
         for(int i = 0; i< 100; i++)
             datas.add("测试"+ i);
         adapter = new MyAdapter(R.layout.item_header_text,datas );
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
         View header = initHeader();
         adapter.addHeaderView(header);
 
         adapter.setOnItemClickListener(this);
+
+
+            ptrFrameLayout = findViewById(R.id.ptrFrameLayout);
+            ptrFrameLayout.setKeepHeaderWhenRefresh(true);
+            ptrFrameLayout.disableWhenHorizontalMove(true);
+
+            MaterialHeader headerView = new MaterialHeader(this);
+        headerView.setColorSchemeColors(new int[]{ContextCompat.getColor(getApplicationContext(),R.color.colorAccent)});
+        headerView.setPadding(0, 50, 0, 50);
+
+            ptrFrameLayout.setHeaderView(headerView);
+            ptrFrameLayout.setRatioOfHeaderHeightToRefresh(0.7f);
+            ptrFrameLayout.addPtrUIHandler(headerView);
+            PtrHandler ptrHandler = getPtrHandler();
+            if (ptrHandler != null) {
+                ptrFrameLayout.setPtrHandler(ptrHandler);
+            }
+
+
     }
 
     private View initHeader() {
@@ -57,7 +84,7 @@ public class HeaderActivity extends AppCompatActivity implements OnItemClickList
         View header =LayoutInflater.from(this).inflate(R.layout.item_covenientbanner_header,null);
         convenientBanner = (ConvenientBanner)header.findViewById(R.id.convenientBanner) ;
 
-//        loadTestDatas();
+        loadTestDatas();
         //本地图片例子
         convenientBanner.setPages(
                 new CBViewHolderCreator() {
@@ -138,6 +165,24 @@ public class HeaderActivity extends AppCompatActivity implements OnItemClickList
         protected void convert(BaseViewHolder helper, String item) {
             helper.setText(R.id.tvText, item);
         }
+    }
+
+    PtrDefaultHandler ptrHandler;
+    public PtrHandler getPtrHandler() {
+        if(ptrHandler == null){
+            ptrHandler = new PtrDefaultHandler() {
+                @Override
+                public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+                    return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
+                }
+
+                @Override
+                public void onRefreshBegin(PtrFrameLayout frame) {
+                    ptrFrameLayout.refreshComplete();
+                }
+            };
+        }
+        return ptrHandler;
     }
 
 }
