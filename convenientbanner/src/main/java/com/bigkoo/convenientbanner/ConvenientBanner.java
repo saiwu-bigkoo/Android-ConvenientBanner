@@ -143,6 +143,13 @@ public class ConvenientBanner<T> extends RelativeLayout {
         mPointViews.clear();
         this.page_indicatorId = page_indicatorId;
         if (mDatas == null) return this;
+        
+        //modify by yuxing begin 只有一张图片的话就不设置指示器
+        if(mDatas!=null&&mDatas.size()==1){
+            return this;
+        }
+        //modify by yuxing end
+
         for (int count = 0; count < mDatas.size(); count++) {
             // 翻页指示的点
             ImageView pointView = new ImageView(getContext());
@@ -250,6 +257,13 @@ public class ConvenientBanner<T> extends RelativeLayout {
      * @return
      */
     public ConvenientBanner startTurning(long autoTurningTime) {
+        
+         //modify by yuxing begin 只有一张图片的话就不滚动翻页
+        if(mDatas!=null&&mDatas.size()==1){
+            return this;
+        }
+        //modify by yuxing end
+        
         if (autoTurningTime < 0) return this;
         //如果是正在翻页的话先停掉
         if (turning) {
