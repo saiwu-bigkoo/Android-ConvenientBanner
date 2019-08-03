@@ -2,7 +2,6 @@ package com.bigkoo.convenientbannerdemo;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -16,6 +15,8 @@ import com.bigkoo.convenientbanner.view.RecyclerViewCornerRadius;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Created by Sai on 15/7/30.

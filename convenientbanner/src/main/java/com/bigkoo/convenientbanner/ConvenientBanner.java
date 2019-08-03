@@ -2,8 +2,6 @@ package com.bigkoo.convenientbanner;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -23,6 +21,9 @@ import com.bigkoo.convenientbanner.view.CBLoopViewPager;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * 页面翻转控件，极方便的广告栏
@@ -45,6 +46,7 @@ public class ConvenientBanner<T> extends RelativeLayout {
     private CBPageChangeListener pageChangeListener;
     private OnPageChangeListener onPageChangeListener;
     private AdSwitchTask adSwitchTask;
+    private boolean isVertical = false;
 
     public CBLoopViewPager getViewPager() {
         return viewPager;
@@ -277,6 +279,8 @@ public class ConvenientBanner<T> extends RelativeLayout {
     }
 
     //触碰控件的时候，翻页应该停止，离开的时候如果之前是开启了翻页的话则重新启动翻页
+
+    float startX , startY;
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
 
@@ -288,6 +292,7 @@ public class ConvenientBanner<T> extends RelativeLayout {
             // 停止翻页
             if (canTurn) stopTurning();
         }
+
         return super.dispatchTouchEvent(ev);
     }
 
@@ -312,11 +317,5 @@ public class ConvenientBanner<T> extends RelativeLayout {
             }
         }
     }
-
-//    @Override
-//    protected void onAttachedToWindow() {
-//        super.onAttachedToWindow();
-//        startTurning(autoTurningTime);
-//    }
 
 }
