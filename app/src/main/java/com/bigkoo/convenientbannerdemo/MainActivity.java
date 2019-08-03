@@ -6,9 +6,11 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.ConvenientBanner;
+import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
+import com.bigkoo.convenientbanner.view.CBLoopViewPager;
+import com.bigkoo.convenientbanner.view.RecyclerViewCornerRadius;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -51,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
 //        initImageLoader();
         loadTestDatas();
         //本地图片例子
-        convenientBanner.setPages(
+        CBLoopViewPager cbLoopViewPager = convenientBanner.setPages(
                 new CBViewHolderCreator() {
                     @Override
                     public LocalImageHolderView createHolder(View itemView) {
@@ -65,7 +67,11 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                 }, localImages)
                 //设置两个点图片作为翻页指示器，不设置则没有指示器，可以根据自己需求自行配合自己的指示器,不需要圆点指示器可用不设
 //                .setPageIndicator(new int[]{R.drawable.ic_page_indicator, R.drawable.ic_page_indicator_focused})
-                .setOnItemClickListener(this);
+                .setOnItemClickListener(this)
+                .getViewPager();
+        RecyclerViewCornerRadius recyclerViewCornerRadius = new RecyclerViewCornerRadius(cbLoopViewPager);
+        recyclerViewCornerRadius.setCornerRadius(30);
+        cbLoopViewPager.addItemDecoration(recyclerViewCornerRadius);
                 //设置指示器的方向
 //                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
 //                .setOnPageChangeListener(this)//监听翻页事件

@@ -48,6 +48,10 @@ public class ConvenientBanner<T> extends RelativeLayout {
     private AdSwitchTask adSwitchTask;
     private boolean isVertical = false;
 
+    public CBLoopViewPager getViewPager() {
+        return viewPager;
+    }
+
     public enum PageIndicatorAlign {
         ALIGN_PARENT_LEFT, ALIGN_PARENT_RIGHT, CENTER_HORIZONTAL
     }
