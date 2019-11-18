@@ -31,8 +31,8 @@ import androidx.recyclerview.widget.RecyclerView;
  *
  * @author Sai 支持自动翻页
  */
-public class ConvenientBanner<T> extends RelativeLayout {
-    private List<T> mDatas;
+public class ConvenientBanner extends RelativeLayout {
+    private List mDatas;
     private int[] page_indicatorId;
     private ArrayList<ImageView> mPointViews = new ArrayList<ImageView>();
     private CBPageAdapter pageAdapter;
@@ -85,7 +85,7 @@ public class ConvenientBanner<T> extends RelativeLayout {
         viewPager.setLayoutManager(layoutManager);
         return this;
     }
-    public ConvenientBanner setPages(CBViewHolderCreator holderCreator, List<T> datas) {
+    public <T> ConvenientBanner setPages(CBViewHolderCreator holderCreator, List<T> datas) {
         this.mDatas = datas;
         pageAdapter = new CBPageAdapter(holderCreator, mDatas, canLoop);
         viewPager.setAdapter(pageAdapter);
