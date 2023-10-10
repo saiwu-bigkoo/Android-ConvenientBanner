@@ -1,6 +1,5 @@
 package com.bigkoo.convenientbanner.adapter;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +9,8 @@ import com.bigkoo.convenientbanner.holder.Holder;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 
 import java.util.List;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by Sai on 15/7/29.
@@ -60,7 +61,7 @@ public class CBPageAdapter<T> extends RecyclerView.Adapter<Holder>{
     }
 
     public int getRealItemCount(){
-        return datas.size();
+        return datas!=null?datas.size():0;
     }
 
     public boolean isCanLoop() {
